@@ -15,14 +15,24 @@
     "react": "^16.10.1",
     "react-dom": "^16.10.1",
     "react-measure": "^2.3.0",
+    "react-redux": "^7.1.1",
+    "redux": "^4.0.4",
+    "redux-logger": "^3.0.6",
+    "redux-thunk": "^2.3.0",
     "ress": "^2.0.1",
-    "styled-components": "^4.4.0"
+    "styled-components": "^4.4.0",
+    "typescript-fsa-reducers": "^1.2.1",
+    "typescript-fsa-redux-thunk": "^2.1.7"
   },
   "devDependencies": {
     "@types/node": "^12.7.8",
     "@types/react": "^16.9.3",
     "@types/react-dom": "^16.9.1",
     "@types/react-measure": "^2.0.5",
+    "@types/react-redux": "^7.1.4",
+    "@types/redux": "^3.6.0",
+    "@types/redux-logger": "^3.0.7",
+    "@types/redux-thunk": "^2.1.0",
     "@types/styled-components": "^4.1.19",
     "typescript": "3.6.3"
   },

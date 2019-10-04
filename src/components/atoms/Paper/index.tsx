@@ -1,6 +1,10 @@
-import React, { useEffect, useRef } from 'react';
+import React, { ReactNode, useEffect, useRef } from 'react';
 import Measure, { ContentRect } from 'react-measure';
 import styled from 'styled-components';
+
+type Props = {
+  children: ReactNode;
+};
 
 const Atelier = styled.div`
   position: relative;
@@ -22,43 +26,27 @@ const Canvas = styled.canvas`
 
 const Motif = styled.div``;
 
-const Paper = () => {
+let h2c: Html2CanvasStatic;
+
+// html2canvas を import するとエラーとなるのでCSRの時だけ読み込む
+if (process.browser) {
+  h2c = require('html2canvas');
+}
+
+const Paper = (props: Props) => {
+  console.log('render');
+
+  const { children } = props;
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const motifRef = useRef<HTMLDivElement>(null);
-  const startTime = 0;
-  let ctx: CanvasRenderingContext2D | null;
-  let color = '#000000';
-  let font = '10px sans-serif';
-  let fontSize = 10;
-  let textAlign: CanvasTextAlign = 'start';
-  // let letterSpacing = 'normal';
-  // let lineHeight = 1.2;
+  // const startTime = 0;
+  // let ctx: CanvasRenderingContext2D | null;
 
   const draw = () => {
     window.requestAnimationFrame(draw);
-    const now = performance.now();
-    const sec = ((now - startTime) / 1000) % 1;
-
-    // canvasRef.current!.style.letterSpacing = letterSpacing;
-
-    console.log(sec);
-
-    ctx!.clearRect(0, 0, 1000, 1000);
-
-    ctx!.save();
-    ctx!.font = font;
-    ctx!.textAlign = textAlign;
-    ctx!.textBaseline = 'alphabetic';
-    ctx!.fillStyle = color;
-    ctx!.fillText(
-      'Hello WorldHello WorldHello WorldHello WorldHello WorldHello WorldHello WorldHello WorldHello WorldHello WorldHello WorldHello WorldHello WorldHello WorldHello WorldHello WorldHello WorldHello WorldHello WorldHello WorldHello WorldHello WorldHello WorldHello WorldHello WorldHello WorldHello WorldHello WorldHello WorldHello WorldHello WorldHello WorldHello WorldHello World',
-      0,
-      (fontSize + (fontSize * 1.2 - fontSize) / 2) *
-        (window.devicePixelRatio || 1)
-    );
-
-    // ctx!.fillText('Hello World', 200, 0);
-    ctx!.restore();
+    // const now = performance.now();
+    // const sec = ((now - startTime) / 1000) % 1;
+    // console.log(sec);
   };
 
   const onResize = (contentRect: ContentRect) => {
@@ -76,36 +64,18 @@ const Paper = () => {
 
   useEffect(() => {
     if (canvasRef.current) {
-      ctx = canvasRef.current.getContext('2d')!;
+      // ctx = canvasRef.current.getContext('2d')!;
       draw();
     }
   }, [canvasRef]);
 
   useEffect(() => {
-    if (motifRef.current && motifRef.current.hasChildNodes()) {
-      const motifChildEl = motifRef.current.firstChild as HTMLElement;
-      const style = getComputedStyle(motifChildEl);
-      color = style.color || '#000000';
-      font = [
-        style.fontStyle,
-        style.fontVariant,
-        style.fontWeight,
-        `${parseInt(style.fontSize) * window.devicePixelRatio}px`,
-        '/',
-        style.lineHeight,
-        style.fontFamily
-      ].join(' ');
-      fontSize = parseInt(style.fontSize);
-      textAlign = style.textAlign as CanvasTextAlign;
-
-      motifChildEl.style.color = 'transparent';
-
-      // letterSpacing = style.letterSpacing;
-      console.log(color, font, textAlign, fontSize, style.fontSize);
+    if (motifRef.current && h2c) {
+      h2c(motifRef.current).then(canvas => {
+        document.body.appendChild(canvas);
+      });
     }
   }, [motifRef]);
-
-  console.log('render');
 
   return (
     <Atelier>
@@ -117,14 +87,7 @@ const Paper = () => {
         )}
       </Measure>
       <Motif ref={motifRef}>
-        <div>
-          Hello WorldHello WorldHello WorldHello WorldHello WorldHello
-          WorldHello WorldHello WorldHello WorldHello WorldHello WorldHello
-          WorldHello WorldHello WorldHello WorldHello WorldHello WorldHello
-          WorldHello WorldHello WorldHello WorldHello WorldHello WorldHello
-          WorldHello WorldHello WorldHello WorldHello WorldHello WorldHello
-          WorldHello WorldHello WorldHello WorldHello World
-        </div>
+        {children}
       </Motif>
     </Atelier>
   );

@@ -8,7 +8,9 @@
     "type-check": "tsc"
   },
   "dependencies": {
+    "@types/html2canvas": "^0.0.35",
     "@zeit/next-css": "^1.0.1",
+    "html2canvas": "^1.0.0-rc.5",
     "next": "latest",
     "react": "^16.10.1",
     "react-dom": "^16.10.1",

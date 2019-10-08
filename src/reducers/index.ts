@@ -1,8 +1,14 @@
 import { combineReducers } from 'redux';
-import home from './home';
+import * as Example from './Example';
 
-export default function createRootReducer() {
+export function initialState() {
+  return {
+    example: Example.initialState(),
+  };
+}
+
+export function createRootReducer() {
   return combineReducers({
-    home,
+    example: Example.reducer,
   });
 }

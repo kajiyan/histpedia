@@ -2,8 +2,8 @@ import { createStore, applyMiddleware, compose, AnyAction } from 'redux';
 import thunkMiddleware, { ThunkMiddleware } from 'redux-thunk';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { createLogger } from 'redux-logger';
-import createRootReducer from '../reducers';
-import * as homeCounterActions from '../actions/Home/counter';
+import { createRootReducer } from '../reducers';
+import * as exampleActions from '../actions/Example';
 
 interface State {}
 
@@ -31,19 +31,17 @@ const configureStore = (initialState?: any) => {
 
   // Redux DevTools Configuration
   const actionCreators = {
-    ...homeCounterActions
+    ...exampleActions
   };
   // If Redux DevTools Extension is installed use it, otherwise use Redux compose
   /* eslint-disable no-underscore-dangle */
-  const composeEnhancers = (
-    process.browser
-    && (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
-  )
-    ? (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({
-        // Options: http://extension.remotedev.io/docs/API/Arguments.html
-        actionCreators
-      })
-    : compose;
+  const composeEnhancers =
+    process.browser && (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
+      ? (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({
+          // Options: http://extension.remotedev.io/docs/API/Arguments.html
+          actionCreators
+        })
+      : compose;
   /* eslint-enable no-underscore-dangle */
 
   // Apply Middleware & Compose Enhancers

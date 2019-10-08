@@ -1,9 +1,10 @@
-import React, { ReactNode, useEffect, useRef } from 'react';
+import { NextComponentType, NextPageContext } from 'next';
+import React, { useEffect, useRef } from 'react';
 import Measure, { ContentRect } from 'react-measure';
 import styled from 'styled-components';
 
 type Props = {
-  children: ReactNode;
+  className?: string;
 };
 
 const Atelier = styled.div`
@@ -33,7 +34,7 @@ if (process.browser) {
   h2c = require('html2canvas');
 }
 
-const Paper = (props: Props) => {
+const Paper: NextComponentType<NextPageContext, {}, Props> = props => {
   console.log('render');
 
   const { children } = props;
@@ -86,9 +87,7 @@ const Paper = (props: Props) => {
           </Easel>
         )}
       </Measure>
-      <Motif ref={motifRef}>
-        {children}
-      </Motif>
+      <Motif ref={motifRef}>{children}</Motif>
     </Atelier>
   );
 };

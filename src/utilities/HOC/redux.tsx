@@ -1,23 +1,25 @@
 import { NextPage, NextPageContext } from 'next';
-import React from 'react';
-import { AnyAction, Store } from 'redux';
-import { Provider } from 'react-redux';
-import { configureStore } from '../../store/configureStore';
 import App from 'next/app';
+import React from 'react';
+import { Provider } from 'react-redux';
+import { initialState } from '../../reducers';
+import {
+  configureStore,
+  StoreState,
+  ReduxStore
+} from '../../store/configureStore';
 
-let reduxStore: Store<AppReducersMapObject, AnyAction> & {
-  dispatch: unknown;
-};
+let reduxStore: ReduxStore;
 
-const getOrInitializeStore = (initialState?: AppReducersMapObject) => {
+const getOrInitializeStore = (preloadedState = initialState()) => {
   // Always make a new store if server, otherwise state is shared between requests
   if (typeof window === 'undefined') {
-    return configureStore(initialState);
+    return configureStore(preloadedState);
   }
 
   // Create store if unavailable on the client and set it on the window object
   if (!reduxStore) {
-    reduxStore = configureStore(initialState);
+    reduxStore = configureStore(preloadedState);
   }
 
   return reduxStore;
@@ -28,7 +30,7 @@ export const withRedux = (PageComponent: NextPage, { ssr = true } = {}) => {
     initialReduxState,
     ...props
   }: {
-    initialReduxState: AppReducersMapObject;
+    initialReduxState: StoreState;
   }) => {
     const store = getOrInitializeStore(initialReduxState);
     return (
@@ -57,9 +59,7 @@ export const withRedux = (PageComponent: NextPage, { ssr = true } = {}) => {
   if (ssr || PageComponent.getInitialProps) {
     WithRedux.getInitialProps = async (
       context: NextPageContext & {
-        reduxStore: Store<AppReducersMapObject, AnyAction> & {
-          dispatch: unknown;
-        };
+        reduxStore: ReduxStore;
       }
     ) => {
       // Get or Create the store with `undefined` as initialState

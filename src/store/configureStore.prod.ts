@@ -1,11 +1,11 @@
-import { applyMiddleware, createStore, DeepPartial } from 'redux';
+import { applyMiddleware, createStore } from 'redux';
 import thunk from 'redux-thunk';
-import createRootReducer from '../reducers';
+import { createRootReducer, initialState } from '../reducers';
 
 const reducer = createRootReducer();
 const enhancer = applyMiddleware(thunk);
 
-function configureStore(preloadedState?: DeepPartial<AppReducersMapObject>) {
+function configureStore(preloadedState = initialState()) {
   return createStore(reducer, preloadedState, enhancer);
 }
 

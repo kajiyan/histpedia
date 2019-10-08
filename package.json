@@ -5,6 +5,8 @@
     "dev": "next",
     "build": "next build",
     "start": "next start",
+    "export": "next export",
+    "prod": "cross-env NODE_ENV=production NODE_PATH=./ run-s build export",
     "type-check": "tsc"
   },
   "dependencies": {
@@ -14,6 +16,7 @@
     "react": "^16.10.1",
     "react-dom": "^16.10.1",
     "react-measure": "^2.3.0",
+    "react-motion": "^0.5.2",
     "react-redux": "^7.1.1",
     "redux": "^4.0.4",
     "redux-logger": "^3.0.6",
@@ -27,11 +30,13 @@
     "@types/react": "^16.9.3",
     "@types/react-dom": "^16.9.1",
     "@types/react-measure": "^2.0.5",
+    "@types/react-motion": "^0.0.29",
     "@types/react-redux": "^7.1.4",
     "@types/redux": "^3.6.0",
     "@types/redux-logger": "^3.0.7",
     "@types/redux-thunk": "^2.1.0",
     "@types/styled-components": "^4.1.19",
+    "cross-env": "^6.0.3",
     "typescript": "3.6.3"
   },
   "license": "ISC"

@@ -3,6 +3,7 @@ import 'ress/dist/ress.min.css';
 import App, { AppInitialProps, AppProps } from 'next/app';
 import React from 'react';
 import { ThemeProvider } from 'styled-components';
+import TransitionMotionExample from '../src/components/atoms/TransitionMotionExample';
 
 import theme from '../src/styles/Theme';
 
@@ -14,11 +15,14 @@ class HistpediaApp extends App<Props> {
   }
 
   render() {
-    const { Component, pageProps } = this.props;
+    const { Component, pageProps, router } = this.props;
 
     return (
       <ThemeProvider theme={theme}>
-        <Component {...pageProps} />
+        <>
+          <TransitionMotionExample route={router.route} />
+          <Component {...pageProps} />
+        </>
       </ThemeProvider>
     );
   }

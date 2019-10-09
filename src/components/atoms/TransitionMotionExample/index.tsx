@@ -35,15 +35,6 @@ class TransitionMotionExample extends React.Component<Props> {
       >
         {interpolatedStyles => (
           <>
-            {/* {interpolatedStyles.map(config => {
-              {
-                this.props.route === '/about' && (
-                  <div key={config.key} style={{ ...config.style }}>
-                    aaa
-                  </div>
-                );
-              }
-            })} */}
             {interpolatedStyles.map(config => (
               <div key={config.key} style={{ ...config.style }}>
                 {this.props.route}

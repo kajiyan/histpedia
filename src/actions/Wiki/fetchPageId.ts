@@ -1,62 +1,65 @@
 import { Dispatch } from 'redux';
-import axios from 'axios';
 import types from './types';
+import repositoryFactory from '../../services/repositoryFactory';
 
-const jsonpAdapter = require('axios-jsonp');
+const repository = repositoryFactory.get('wiki');
 
 export function asyncFetchPageIdStarted(dispatch: Dispatch) {
-  dispatch({
+  return dispatch({
     type: types.asyncFetchPageIdStarted
   });
-
-  return {
-    type: types.asyncFetchPageIdStarted
-  };
 }
 
-export function asyncFetchPageIdDone(dispatch: Dispatch) {
-  dispatch({
-    type: types.asyncFetchPageIdDone
+export function asyncFetchPageIdDone(
+  dispatch: Dispatch,
+  payload: {
+    pageid: number; // ページのID
+    title: string; // ページのタイトル（URLに指定されているものは`_`で単語同士が接続されている）
+  }
+) {
+  return dispatch({
+    type: types.asyncFetchPageIdDone,
+    payload
   });
-
-  return {
-    type: types.asyncFetchPageIdDone
-  };
 }
 
-export function asyncFetchPageIdFailed(dispatch: Dispatch) {
-  dispatch({
-    type: types.asyncFetchPageIdFailed
+export function asyncFetchPageIdFailed(dispatch: Dispatch, error: Error) {
+  return dispatch({
+    type: types.asyncFetchPageIdFailed,
+    payload: {
+      error
+    },
+    error: true
   });
-
-  return {
-    type: types.asyncFetchPageIdFailed
-  };
 }
 
 function fetchPageId(titles: string) {
   return async (dispatch: Dispatch) => {
     asyncFetchPageIdStarted(dispatch);
 
-    console.log(titles)
-
     try {
-      const result = await axios.get('http://ja.wikipedia.org/w/api.php', {
-        adapter: jsonpAdapter,
-        params: {
-          action: 'query',
-          format: 'json',
-          formatversion: 'latest',
-          utf8: 1,
-          titles: 'ねこ'
-        }
+      const response = await repository.getPageId(titles);
+      const { pages } = response.data.query;
+
+      // 検索結果が1件以上返ってきており、1件目にpageidが存在するか
+      if (pages.length >= 1 && pages[0].pageid) {
+        // ページのIDが取得できた時の処理
+        const pageid = pages[0].pageid;
+        const title = pages[0].title;
+
+        return asyncFetchPageIdDone(dispatch, {
+          pageid,
+          title
+        });
+      }
+
+      // ページのIDが取得できなかった時の処理
+      return asyncFetchPageIdDone(dispatch, {
+        pageid: -1,
+        title: titles
       });
-
-      console.log(result);
-
-      asyncFetchPageIdDone(dispatch);
     } catch (error) {
-      asyncFetchPageIdFailed(dispatch);
+      return asyncFetchPageIdFailed(dispatch, new Error(error));
     }
   };
 }

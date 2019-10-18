@@ -22,11 +22,25 @@ class WikiPage extends React.Component<Props> {
       );
 
       if (
-        fetchPageIdAction.type === types.asyncFetchPageIdDone
-        && fetchPageIdAction.payload.pageid > 0
+        fetchPageIdAction.type === types.asyncFetchPageIdDone &&
+        fetchPageIdAction.payload.pageid > 0
       ) {
+        // 指定されたキーワードに該当するページのIDが取得できたら、
+        // その更新履歴のIDを取得する
         const { pageid } = fetchPageIdAction.payload;
-        await actions.fetchRevisions(pageid)(store.dispatch);
+        const fetchRevisionsAction = await actions.fetchRevisions(pageid)(
+          store.dispatch
+        );
+
+        if (
+          fetchRevisionsAction.type === types.asyncFetchRevisionsDone &&
+          fetchRevisionsAction.payload.result.length > 0
+        ) {
+          const { result, entities } = fetchRevisionsAction.payload;
+          const { revisions } = entities;
+          const curRevId = revisions[result[0]].revid;
+          await actions.fetchContent(curRevId)(store.dispatch);
+        }
       }
     } catch (error) {
       console.error(error);

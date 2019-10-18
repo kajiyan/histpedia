@@ -1,4 +1,5 @@
 import { Dispatch } from 'redux';
+import { normalize, schema } from 'normalizr';
 import types from './types';
 import repositoryFactory from '../../services/repositoryFactory';
 
@@ -14,7 +15,12 @@ export function asyncFetchRevisionsStarted(dispatch: Dispatch) {
 export function asyncFetchRevisionsDone(
   dispatch: Dispatch,
   payload: {
-    revisions: WikiRevision[];
+    result: string[];
+    entities: {
+      revisions: {
+        [key: string]: WikiRevision;
+      };
+    };
   }
 ) {
   return dispatch({
@@ -38,16 +44,21 @@ function fetchRevisions(pageid: number) {
     asyncFetchRevisionsStarted(dispatch);
 
     try {
-      const revisions = await new Promise<WikiRevision[]>(
-        resolve => {
+      const revisions = await new Promise<WikiRevision[] | string>(
+        (resolve, reject) => {
           (async function stackRevisions(
             results: WikiRevision[] = [],
             rvstartid?: number
           ) {
-            const response = await repository.getRevisions(pageid, rvstartid);
+            const response = await repository.getRevisions(pageid,　rvstartid);
             const { pages } = response.data.query;
-            // 検索結果が1件以上返ってきており、1件目にpageidとリビジョンが存在するか
-            if (pages.length >= 1 && pages[0].pageid && pages[0].revisions) {
+
+            // 検索結果が1件以上返ってきており、0件目にリビジョンが存在しているか
+            if (
+              pages.length >= 1 &&
+              pages[0].revisions &&
+              typeof pages[0].missing === 'undefined'
+            ) {
               const { revisions } = pages[0];
               // 取得したリビジョンの末尾の親リビジョンのIDを取得する
               const endParentId = revisions[revisions.length - 1].parentid;
@@ -61,13 +72,14 @@ function fetchRevisions(pageid: number) {
                 stackRevisions(results, endParentId);
               }
             } else {
-              resolve(results);
+              // リビジョンの取得に失敗した場合はエラーメッセージを指定して状態をrejectにする
+              reject('missing');
             }
           })();
         }
       );
 
-      // 差分を求める場合
+      // 差分のバイト数を求める場合
       // revisions.forEach((revision, index) => {
       //   if (index > 0) {
       //     revision.diff = revision.size - revisions[index - 1].size;
@@ -76,7 +88,30 @@ function fetchRevisions(pageid: number) {
       //   revision.diff = revision.size;
       // });
 
-      return asyncFetchRevisionsDone(dispatch, { revisions });
+      const revisionSchema = new schema.Entity<WikiRevision>(
+        'revisions',
+        {},
+        {
+          idAttribute: (value: WikiRevision) => {
+            return value.revid.toString();
+          }
+        }
+      );
+      const revisionListSchema = new schema.Array(revisionSchema);
+      const { result, entities } = normalize<
+        WikiRevision,
+        {
+          revisions: {
+            [key: string]: WikiRevision;
+          };
+        },
+        string[]
+      >(revisions, revisionListSchema);
+
+      return asyncFetchRevisionsDone(dispatch, {
+        result,
+        entities
+      });
     } catch (error) {
       return asyncFetchRevisionsFailed(dispatch, new Error(error));
     }

@@ -2,14 +2,14 @@ import { createStore, applyMiddleware, compose, AnyAction } from 'redux';
 import thunkMiddleware, { ThunkMiddleware } from 'redux-thunk';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { createLogger } from 'redux-logger';
-import { createRootReducer } from '../reducers';
+import { createRootReducer, initialState } from '../reducers';
 import * as exampleActions from '../actions/Example';
 
 interface State {}
 
 const rootReducer = createRootReducer();
 
-const configureStore = (initialState?: any) => {
+const configureStore = (preloadedState = initialState()) => {
   // Redux Configuration
   const middleware = [];
   const enhancers = [];
@@ -49,7 +49,7 @@ const configureStore = (initialState?: any) => {
   const enhancer = composeEnhancers(...enhancers);
 
   // Create Store
-  const store = createStore(rootReducer, initialState, enhancer);
+  const store = createStore(rootReducer, preloadedState, enhancer);
 
   if ((module as any).hot) {
     (module as any).hot.accept(

@@ -33,7 +33,7 @@ export function reducer(state = initialState(), action: Actions) {
       return state.withMutations(mutable => {
         mutable.set('currentRevisionIndex', 0);
         mutable.set('prevRevisionIndex', 0);
-        mutable.entityIds.concat(result);
+        mutable.update('entityIds', entityIds => entityIds.concat(result));
         return mutable;
       });
     case types.asyncFetchRevisionsFailed:

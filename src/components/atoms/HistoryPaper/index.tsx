@@ -11,7 +11,7 @@ type Props = {
 const Content = styled.div``;
 
 const HistoryPaper: NextComponentType<NextPageContext, {}, Props> = props => {
-  return <Content>{props.history.text}</Content>;
+  return <Content dangerouslySetInnerHTML={{ __html: props.history.text! }} />;
 };
 
 export default HistoryPaper;

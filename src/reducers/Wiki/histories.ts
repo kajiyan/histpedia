@@ -2,16 +2,16 @@ import * as Immutable from 'Immutable';
 import types from '../../actions/Wiki/types';
 
 export type Injects = {
-  currentRevisionId?: Immutable.Set<string>;
-  entityIds?: Immutable.OrderedSet<string>;
-  prevRevisionId?: Immutable.Set<string>;
+  currentRevisionIndex?: number;
+  entityIds?: Immutable.List<string>;
+  prevRevisionIndex?: number;
 };
 
 export function initialState(injects?: Injects) {
   return Immutable.Record({
-    currentRevisionId: Immutable.Set<string>(),
-    entityIds: Immutable.OrderedSet<string>(),
-    prevRevisionId: Immutable.Set<string>(),
+    currentRevisionIndex: 0,
+    entityIds: Immutable.List<string>(),
+    prevRevisionIndex: 0,
     ...injects
   })();
 }
@@ -19,12 +19,30 @@ export function initialState(injects?: Injects) {
 export function reducer(state = initialState(), action: Actions) {
   switch (action.type) {
     case types.asyncFetchRevisionsStarted:
-      return state.update('entityIds', value => value.clear());
+      console.log(state);
+
+      return state.withMutations(mutable => {
+        mutable.set('currentRevisionIndex', 0);
+        mutable.set('prevRevisionIndex', 0);
+        mutable.entityIds.clear();
+        return mutable;
+      });
     case types.asyncFetchRevisionsDone:
       const { result } = action.payload;
-      return state.update('entityIds', value => value.union(result));
+
+      return state.withMutations(mutable => {
+        mutable.set('currentRevisionIndex', 0);
+        mutable.set('prevRevisionIndex', 0);
+        mutable.update('entityIds', entityIds => entityIds.concat(result));
+        return mutable;
+      });
     case types.asyncFetchRevisionsFailed:
-      return state.update('entityIds', value => value.clear());
+      return state.withMutations(mutable => {
+        mutable.set('currentRevisionIndex', 0);
+        mutable.set('prevRevisionIndex', 0);
+        mutable.entityIds.clear();
+        return mutable;
+      });
     default:
       return state;
   }

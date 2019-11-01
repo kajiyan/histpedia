@@ -1,4 +1,5 @@
 import 'ress/dist/ress.min.css';
+import '../src/styles/wikipedia.css';
 
 import App, { AppContext, AppProps, AppInitialProps } from 'next/app';
 import withRedux from 'next-redux-wrapper';
@@ -6,10 +7,9 @@ import React from 'react';
 import { Store } from 'redux';
 import { Provider } from 'react-redux';
 import { ThemeProvider } from 'styled-components';
-import * as Immutable from 'Immutable';
 import TransitionMotionExample from '../src/components/atoms/TransitionMotionExample';
 import theme from '../src/styles/Theme';
-import { configureStore, StoreState } from '../src/store/configureStore';
+import { configureStore } from '../src/store/configureStore';
 
 type Props = AppProps<AppInitialProps> & {
   err?:
@@ -52,6 +52,5 @@ class HistpediaApp extends App<Props> {
 }
 
 export default withRedux(configureStore, {
-  // serializeState: (state: StoreState) => state,
-  deserializeState: (state: StoreState) => Immutable.fromJS(state)
+  serializeState: () => {}
 })(HistpediaApp);

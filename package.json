@@ -1,3 +1,6 @@
 {
-  "name": "histpedia"
+  "name": "histpedia",
+  "dependencies": {
+    "cross-env": "^7.0.2"
+  }
 }

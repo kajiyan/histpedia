@@ -1,0 +1,22 @@
+{
+  "devDependencies": {
+    "@types/node": "^14.0.9",
+    "@types/react": "^16.9.35",
+    "@types/react-dom": "^16.9.8",
+    "next-compose-plugins": "^2.2.0",
+    "typescript": "^3.9.3"
+  },
+  "dependencies": {
+    "next": "^9.4.4",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1"
+  },
+  "scripts": {
+    "dev": "next",
+    "build": "next build",
+    "start": "next start",
+    "type-check": "tsc"
+  },
+  "name": "@kajiyan/histpedia-app",
+  "version": "1.0.0"
+}

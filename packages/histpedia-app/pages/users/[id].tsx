@@ -19,9 +19,7 @@ const StaticPropsDetail: React.FunctionComponent<Props> = ({
     return (
       <Layout title="Error | Next.js + TypeScript Example">
         <p>
-          <span style={{ color: 'red' }}>Error:</span>
-          {' '}
-          {errors}
+          <span style={{ color: 'red' }}>Error:</span> {errors}
         </p>
       </Layout>
     );
@@ -60,9 +58,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 // It won't be called on client-side, so you can even do
 // direct database queries.
 // ParsedUrlQuery | undefined
-export const getStaticProps: GetStaticProps = async ({
-  params,
-}) => {
+export const getStaticProps: GetStaticProps = async ({ params }) => {
   try {
     const id = params?.id;
     const item = sampleUserData.find((data) => data.id === Number(id));

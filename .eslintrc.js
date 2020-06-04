@@ -34,6 +34,13 @@ module.exports = {
         specialLink: ['hrefLeft', 'hrefRight'],
       },
     ],
+    // devDependencies を import できるファイルを設定する
+    'import/no-extraneous-dependencies': [
+      'error',
+      {
+        devDependencies: ['**/next.config.js'],
+      },
+    ],
   },
   settings: {
     react: {

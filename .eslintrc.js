@@ -22,7 +22,6 @@ module.exports = {
      * If you extend a config which uses a plugin, it is recommended to add "prettier/that-plugin" (if available). For example, eslint-config-airbnb enables eslint-plugin-react rules, so "prettier/react" is needed:
      * https://github.com/prettier/eslint-config-prettier#installation
      */
-    'prettier/babel',
     'prettier/react',
   ],
   parser: 'babel-eslint',
@@ -53,8 +52,12 @@ module.exports = {
       extends: [
         'airbnb-typescript',
         'airbnb/hooks',
+        'plugin:@typescript-eslint/recommended',
+        // 型情報が必要なルールの設定 TypeScriptのビルドが必要となるのでパフォーマンスに影響する
+        // 'plugin:@typescript-eslint/recommended-requiring-type-checking',
         'plugin:prettier/recommended',
         'prettier/react',
+        // @typescript-eslint/eslint-plugin を使用するのに必要な設定
         'prettier/@typescript-eslint',
       ],
       parser: '@typescript-eslint/parser',
@@ -67,7 +70,6 @@ module.exports = {
       },
       plugins: [
         '@typescript-eslint',
-        // 'prettier'
       ],
       rules: {
         // Next.js の Link タグがエラーにならないようにする設定

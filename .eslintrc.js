@@ -7,33 +7,33 @@ module.exports = {
     node: true,
   },
   extends: [
-    'airbnb-typescript',
+    'airbnb',
     'airbnb/hooks',
-    'plugin:@typescript-eslint/recommended',
-    'plugin:react/recommended',
-    'prettier/@typescript-eslint',
+    /**
+     * 下記を省略した形式（plugin:prettier/recommended）で設定する
+     * extends: ['prettier']
+     * plugins: ['prettier']
+     * rules: { 'prettier/prettier': 'error' }
+     * https://github.com/prettier/eslint-plugin-prettier#recommended-configuration
+     */
     'plugin:prettier/recommended',
+    /**
+     * eslint-config-prettier で Prettier と競合する可能性のあるルールを解決する
+     * If you extend a config which uses a plugin, it is recommended to add "prettier/that-plugin" (if available). For example, eslint-config-airbnb enables eslint-plugin-react rules, so "prettier/react" is needed:
+     * https://github.com/prettier/eslint-config-prettier#installation
+     */
+    'prettier/babel',
     'prettier/react',
   ],
-  parser: '@typescript-eslint/parser',
+  parser: 'babel-eslint',
   parserOptions: {
-    project: './tsconfig.json',
-    sourceType: 'module',
     ecmaFeatures: {
       jsx: true,
     },
+    sourceType: 'module',
   },
-  plugins: ['@typescript-eslint', 'prettier', 'react'],
+  // plugins: ['prettier'],
   rules: {
-    // Next.js の Link タグがエラーにならないようにする設定
-    'jsx-a11y/anchor-is-valid': [
-      'error',
-      {
-        aspects: ['invalidHref', 'preferButton'],
-        components: ['Link'],
-        specialLink: ['hrefLeft', 'hrefRight'],
-      },
-    ],
     // devDependencies を import できるファイルを設定する
     'import/no-extraneous-dependencies': [
       'error',
@@ -47,4 +47,39 @@ module.exports = {
       version: package.dependencies.react,
     },
   },
+  overrides: [
+    {
+      files: ['**/*.ts', '**/*.tsx'],
+      extends: [
+        'airbnb-typescript',
+        'airbnb/hooks',
+        'plugin:prettier/recommended',
+        'prettier/react',
+        'prettier/@typescript-eslint',
+      ],
+      parser: '@typescript-eslint/parser',
+      parserOptions: {
+        ecmaFeatures: {
+          jsx: true,
+        },
+        project: './tsconfig.json',
+        sourceType: 'module',
+      },
+      plugins: [
+        '@typescript-eslint',
+        // 'prettier'
+      ],
+      rules: {
+        // Next.js の Link タグがエラーにならないようにする設定
+        'jsx-a11y/anchor-is-valid': [
+          'error',
+          {
+            aspects: ['invalidHref', 'preferButton'],
+            components: ['Link'],
+            specialLink: ['hrefLeft', 'hrefRight'],
+          },
+        ],
+      },
+    },
+  ],
 };

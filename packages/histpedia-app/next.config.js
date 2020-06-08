@@ -7,18 +7,13 @@ const nextConfig = {
   env: {
     rootPath: '/',
   },
-  webpack: (config) => ({
-    ...config,
-    resolve: {
-      alias: {
-        ...config.resolve.alias,
-        // '~': path.resolve(__dirname, 'packages/histpedia-app'),
-      },
-    },
-  }),
+  webpack: (config) => {
+    config.resolve.alias = {
+      ...config.resolve.alias,
+      '~': path.resolve(__dirname, './src'),
+    };
+    return config;
+  },
 };
 
-module.exports = withPlugins(
-  [],
-  nextConfig,
-);
+module.exports = withPlugins([], nextConfig);

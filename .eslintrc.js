@@ -37,7 +37,11 @@ module.exports = {
     'import/no-extraneous-dependencies': [
       'error',
       {
-        devDependencies: ['**/next.config.js'],
+        devDependencies: [
+          '**/next.config.js',
+          '**/postcss.config.js',
+          'packages/postcss-config/index.js',
+        ],
       },
     ],
   },

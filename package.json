@@ -6,12 +6,19 @@
   "name": "@kajiyan/histpedia",
   "private": true,
   "scripts": {
-    "lint:script": "eslint --fix --ext .ts,.tsx --ignore-pattern .eslintignore ."
+    "dev": "yarn workspace @kajiyan/histpedia-app dev",
+    "prod": "yarn workspace @kajiyan/histpedia-app prod",
+    "start": "yarn workspace @kajiyan/histpedia-app start",
+    "analyze": "yarn workspace @kajiyan/histpedia-app analyze",
+    "lint": "yarn lint:script && yarn lint:style",
+    "lint:script": "eslint --fix --ext .ts,.tsx --ignore-pattern .eslintignore .",
+    "lint:style": "stylelint --fix --cache --syntax css-in-js './**/*.ts?(x)'"
   },
   "workspaces": [
     "packages/*"
   ],
   "devDependencies": {
+    "@kajiyan/stylelint-config": "1.0.0",
     "@typescript-eslint/eslint-plugin": "^3.1.0",
     "babel-eslint": "^10.1.0",
     "eslint": "6.8.0",

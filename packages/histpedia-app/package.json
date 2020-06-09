@@ -16,15 +16,16 @@
     "core-js": "^3.6.5",
     "next": "^9.4.4",
     "react": "^16.13.1",
-    "react-dom": "^16.13.1",
-    "ress": "^2.0.4"
+    "react-dom": "^16.13.1"
   },
   "license": "MIT",
   "scripts": {
-    "dev": "next",
+    "dev": "next dev",
     "build": "next build",
-    "start": "next start",
-    "type-check": "tsc"
+    "prod": "yarn build && yarn export",
+    "export": "yarn preprod && NODE_ENV=prodyuction yarn build && next export",
+    "start": "next start -p 3000",
+    "preprod": "rimraf out && rimraf .next"
   },
   "name": "@kajiyan/histpedia-app",
   "version": "1.0.0"

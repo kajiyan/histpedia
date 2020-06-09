@@ -1,6 +1,6 @@
 import App, { AppContext, AppProps, AppInitialProps } from 'next/app';
 import React from 'react';
-import 'ress/dist/ress.min.css';
+import '../styles/ress.min.css';
 
 type TPageProps = {
   // eslint-disable-next-line @typescript-eslint/ban-types

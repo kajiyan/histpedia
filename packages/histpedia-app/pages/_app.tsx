@@ -1,5 +1,6 @@
 import App, { AppContext, AppProps, AppInitialProps } from 'next/app';
 import React from 'react';
+import { reduxWrapper } from '../src/store';
 import '../styles/ress.min.css';
 
 type TPageProps = {
@@ -32,4 +33,4 @@ class HistpediaApp extends App<Props> {
   }
 }
 
-export default HistpediaApp;
+export default reduxWrapper.withRedux(HistpediaApp);

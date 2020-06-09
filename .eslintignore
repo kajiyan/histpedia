@@ -161,3 +161,4 @@ lib
 **/*/out/**/*
 **/*/.stylelintcache
 **/*/production
+**/*/@types/*.d.ts

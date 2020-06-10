@@ -6,9 +6,9 @@ type ReturnTypes<T> = {
 };
 type CreatorsToActions<T> = Unwrap<ReturnTypes<T>>;
 
-declare type Actions = CreatorsToActions<
-  typeof import('../src/actions/Example')
->;
+declare type Actions =
+  | CreatorsToActions<typeof import('../src/actions/Example')>
+  | CreatorsToActions<typeof import('../src/actions/Wiki/fetchPageId')>;
 
 declare type WikiContent = {
   pageid: number;

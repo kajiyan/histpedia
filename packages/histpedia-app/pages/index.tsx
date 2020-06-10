@@ -1,30 +1,18 @@
 import React from 'react';
 import Link from 'next/link';
-import { bindActionCreators, Dispatch } from 'redux';
-import { connect } from 'react-redux';
-import ExampleActions from '../src/actions/Example';
+import { useDispatch, useSelector } from 'react-redux';
+import ExampleActions, { decrement, increment } from '../src/actions/Example';
 import Layout from '../components/Layout';
+import { StoreState } from '../src/store';
 
-function mapStateToProps(state: StoreState) {
-  return {
-    count: state.example.count,
-  };
-}
-
-function mapDispatchToProps(dispatch: Dispatch) {
-  return bindActionCreators(ExampleActions, dispatch);
-}
-
-type Props = ReturnType<typeof mapStateToProps> &
-  ReturnType<typeof mapDispatchToProps>;
-
-const IndexPage = (props: Props): JSX.Element => {
-  const { count } = props;
+const IndexPage = (): JSX.Element => {
+  const dispatch = useDispatch();
+  const exampleState = useSelector((state: StoreState) => state.example);
 
   return (
     <Layout title="Home | Next.js + TypeScript Example">
       <h1>
-        Hello Next.js {count}
+        Hello Next.js {exampleState.count}
         <span role="img" aria-label="Hello">
           👋
         </span>
@@ -34,8 +22,22 @@ const IndexPage = (props: Props): JSX.Element => {
           <a>About</a>
         </Link>
       </p>
+      <div>
+        <button onClick={() => dispatch(increment())} type="button">
+          increment
+        </button>
+        <button onClick={() => dispatch(decrement())} type="button">
+          decrement
+        </button>
+        <button
+          onClick={() => dispatch(ExampleActions.asyncIncrement())}
+          type="button"
+        >
+          async increment
+        </button>
+      </div>
     </Layout>
   );
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(IndexPage);
+export default IndexPage;

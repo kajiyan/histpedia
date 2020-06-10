@@ -19,6 +19,8 @@
   "dependencies": {
     "@emotion/core": "^10.0.28",
     "@emotion/styled": "^10.0.27",
+    "axios": "^0.19.2",
+    "axios-jsonp": "^1.0.4",
     "core-js": "^3.6.5",
     "next": "^9.4.4",
     "next-redux-wrapper": "^6.0.2",

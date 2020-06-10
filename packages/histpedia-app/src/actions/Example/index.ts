@@ -4,7 +4,7 @@ import types from './types';
 export function asyncIncrementStarted(
   dispatch: Dispatch
 ): {
-  type: 'COUNTER_ASYNC_INCREMENT_STARTED';
+  type: typeof types.asyncIncrementStarted;
 } {
   dispatch({
     type: types.asyncIncrementStarted,
@@ -18,7 +18,7 @@ export function asyncIncrementStarted(
 export function asyncIncrementDone(
   dispatch: Dispatch
 ): {
-  type: 'COUNTER_ASYNC_INCREMENT_DONE';
+  type: typeof types.asyncIncrementDone;
 } {
   dispatch({
     type: types.asyncIncrementDone,
@@ -32,7 +32,7 @@ export function asyncIncrementDone(
 export function asyncIncrementFailed(
   dispatch: Dispatch
 ): {
-  type: 'COUNTER_ASYNC_INCREMENT_FAILED';
+  type: typeof types.asyncIncrementFailed;
 } {
   dispatch({
     type: types.asyncIncrementFailed,
@@ -59,13 +59,13 @@ function asyncIncrement(): (dispatch: Dispatch<Actions>) => Promise<void> {
 }
 
 export function increment(): {
-  type: 'COUNTER_INCREMENT';
+  type: typeof types.increment;
 } {
   return { type: types.increment };
 }
 
 export function decrement(): {
-  type: 'COUNTER_DECREMENT';
+  type: typeof types.decrement;
 } {
   return { type: types.decrement };
 }
@@ -73,7 +73,7 @@ export function decrement(): {
 export function updateCount(
   amount: number
 ): {
-  type: 'COUNTER_UPDATE_COUNT';
+  type: typeof types.updateCount;
   payload: {
     amount: number;
   };

@@ -24,7 +24,7 @@ const Layout: React.FunctionComponent<Props> = ({
     </Head>
     <header>
       <nav>
-        <Link href="/wiki/猫">
+        <Link href="/wiki/[titles]" as="/wiki/ネコ">
           <a>Wiki</a>
         </Link>{' '}
         |{' '}

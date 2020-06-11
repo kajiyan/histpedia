@@ -6,25 +6,30 @@ import WikiActions from '../../../src/actions/Wiki';
 import { StoreState } from '../../../src/store';
 
 const WikiPage = (): JSX.Element => {
-  console.log('WikiPage');
   const dispatch = useDispatch();
   const wikiState = useSelector((state: StoreState) => state.wiki);
-  const { pageid, initialized } = wikiState.histories;
+  const { pageid, initialized, entityIds } = wikiState.histories;
   const router = useRouter();
   // URL エンコードする必要がある
   const { titles } = router.query;
 
   useEffect(() => {
     console.log('useEffect', pageid, initialized);
-    // Todo: 初期化が完了していなければURLに指定されたタイトルのIDを取得する
-    if (!initialized) {
-      dispatch(WikiActions.fetchPageId(titles as string));
-    }
 
-    if (!(typeof pageid === 'undefined') && pageid > -1) {
-      // Todo: Todo: リビジョンの取得
+    if (initialized) {
+      if (!(typeof pageid === 'undefined')) {
+        if (entityIds.isEmpty()) {
+          // pageid を取得済みかつ entityIds が未設定であれば Revision を取得する
+          dispatch(WikiActions.fetchRevisions(pageid));
+        } else {
+          // pageid を取得済みかつ entityIds が設定済みであれば Context を取得する
+          // Todo: 記事を取得する
+        }
+      }
     } else {
-      // Todo: 該当記事が見つからなかった時の処理
+      // string 型へのキャスト
+      // title が undefined の場合 404 ページが表示されるので undefined の可能性はない
+      dispatch(WikiActions.fetchPageId(titles as string));
     }
 
     return () => {
@@ -33,12 +38,7 @@ const WikiPage = (): JSX.Element => {
         console.log('useEffect clean', pageid, initialized);
       }
     };
-  }, [initialized, pageid, dispatch, titles]);
-
-  // string 型へのキャスト
-  // title が undefined の場合 404 ページが表示されるので undefined の可能性はない
-  // これを再レンダリングされるときに呼ばれないようにする
-  // dispatch(WikiActions.fetchPageId(titles as string));
+  }, [initialized, pageid, dispatch, titles, entityIds]);
 
   return (
     <>
@@ -53,7 +53,11 @@ const WikiPage = (): JSX.Element => {
         rel="noreferrer noopener"
         target="_blank"
       >
-        {titles} {pageid}
+        {titles}
+        <br />
+        PageID: {pageid}
+        <br />
+        Revisions: {entityIds.size}
       </a>
     </>
   );

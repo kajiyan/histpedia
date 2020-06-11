@@ -1,0 +1,32 @@
+{
+  "presets": [
+    [
+      "next/babel",
+      {
+        "class-properties": {},
+        "preset-env": {
+          "corejs": 3,
+          "modules": false,
+          "targets": [
+            ">0.25%",
+            "ie 11",
+            "not op_mini all",
+            "not Opera 64"
+          ],
+          "useBuiltIns": "usage"
+        },
+        "styled-jsx": {},
+        "transform-runtime": {}
+      }
+    ],
+    [
+      "@emotion/babel-preset-css-prop",
+      {
+        "cssPropOptimization": true,
+        "autoLabel": true,
+        "labelFormat": "[local]"
+      }
+    ]
+  ],
+  "plugins": []
+}

@@ -1,0 +1,22 @@
+{
+  "name": "@kajiyan/postcss-config",
+  "version": "1.0.0",
+  "description": "PostCSS configuration.",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:kajiyan/histpedia.git"
+  },
+  "author": "Hiroki Kajiya<https://hirokikajiya.com/>",
+  "license": "MIT",
+  "private": true,
+  "devDependencies": {
+    "postcss-easings": "^2.0.0",
+    "postcss-flexbugs-fixes": "^4.2.1",
+    "postcss-jsx": "^0.36.4",
+    "postcss-preset-env": "^6.7.0",
+    "postcss-reporter": "^6.0.1",
+    "postcss-sorting": "^5.0.1",
+    "postcss-syntax": "^0.36.2"
+  }
+}

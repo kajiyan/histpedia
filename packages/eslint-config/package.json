@@ -1,0 +1,21 @@
+{
+  "name": "@kajiyan/eslint-config",
+  "version": "1.0.0",
+  "description": "ESLint configuration.",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:kajiyan/histpedia.git"
+  },
+  "author": "Hiroki Kajiya<https://hirokikajiya.com/>",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "lint": "eslint --ext js .",
+    "test": "npm run test:js && npm run test:ts",
+    "test:js": "eslint --ext js -c index.js --no-ignore example/js/**/*.js",
+    "test:ts": "eslint --ext ts -c typescript.js --no-ignore example/ts/**/*.ts"
+  },
+  "devDependencies": {},
+  "dependencies": {}
+}

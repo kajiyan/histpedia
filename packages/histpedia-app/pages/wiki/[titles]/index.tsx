@@ -9,21 +9,26 @@ const WikiPage = (): JSX.Element => {
   const dispatch = useDispatch();
   const wikiState = useSelector((state: StoreState) => state.wiki);
   const { pageid, initialized, entityIds } = wikiState.histories;
+  const entities = wikiState.entities.history;
   const router = useRouter();
   // URL エンコードする必要がある
   const { titles } = router.query;
 
   useEffect(() => {
-    console.log('useEffect', pageid, initialized);
-
     if (initialized) {
-      if (!(typeof pageid === 'undefined')) {
+      if (typeof pageid !== 'undefined') {
         if (entityIds.isEmpty()) {
           // pageid を取得済みかつ entityIds が未設定であれば Revision を取得する
           dispatch(WikiActions.fetchRevisions(pageid));
-        } else {
+        } else if (entityIds.has(0)) {
           // pageid を取得済みかつ entityIds が設定済みであれば Context を取得する
-          // Todo: 記事を取得する
+          // entityIds.has(0) で undefined でないことを保証している
+          const entityId = entityIds.get(0) as string;
+          const entity = entities.get(entityId);
+
+          if (typeof entity?.revid !== 'undefined') {
+            dispatch(WikiActions.fetchContent(entity.revid));
+          }
         }
       }
     } else {
@@ -33,12 +38,12 @@ const WikiPage = (): JSX.Element => {
     }
 
     return () => {
-      if (initialized && !(typeof pageid === 'undefined')) {
+      if (initialized && typeof pageid !== 'undefined') {
         // Todo: ステートの初期化をする
         console.log('useEffect clean', pageid, initialized);
       }
     };
-  }, [initialized, pageid, dispatch, titles, entityIds]);
+  }, [dispatch, entities, entityIds, initialized, pageid, titles]);
 
   return (
     <>
@@ -59,6 +64,19 @@ const WikiPage = (): JSX.Element => {
         <br />
         Revisions: {entityIds.size}
       </a>
+      <div
+        // eslint-disable-next-line react/no-danger
+        dangerouslySetInnerHTML={(() => {
+          if (entityIds.has(0)) {
+            return {
+              __html: entities.get(entityIds.get(0) as string)?.text as string,
+            };
+          }
+          return {
+            __html: '',
+          };
+        })()}
+      />
     </>
   );
 };

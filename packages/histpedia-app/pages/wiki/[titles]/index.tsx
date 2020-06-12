@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector, shallowEqual } from 'react-redux';
 import Wiki from '../../../src/components/templates/wiki';
 import WikiActions from '../../../src/actions/Wiki';
 import { StoreState } from '../../../src/store';
@@ -25,11 +25,10 @@ const WikiPage = (): JSX.Element => {
       ...pickHistoriesState,
       ...pickEntitiesState,
     };
-  });
+  }, shallowEqual);
 
   const { pageid, initialized, history, entityIds } = wikiState;
   const entities = history;
-  // const max = entityIds.size;
   const router = useRouter();
   // URL エンコードする必要がある
   const { titles } = router.query;

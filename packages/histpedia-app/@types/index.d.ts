@@ -8,6 +8,7 @@ type CreatorsToActions<T> = Unwrap<ReturnTypes<T>>;
 
 declare type Actions =
   | CreatorsToActions<typeof import('../src/actions/Example')>
+  | CreatorsToActions<typeof import('../src/actions/Wiki/controller')>
   | CreatorsToActions<typeof import('../src/actions/Wiki/fetchContent')>
   | CreatorsToActions<typeof import('../src/actions/Wiki/fetchPageId')>
   | CreatorsToActions<typeof import('../src/actions/Wiki/fetchRevisions')>;

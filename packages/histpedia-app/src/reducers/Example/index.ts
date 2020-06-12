@@ -1,11 +1,13 @@
 import types from '../../actions/Example/types';
 
 interface State {
+  c: number;
   count: number;
 }
 
 export function initialState(injects?: State): State {
   return {
+    c: 0,
     count: 0,
     ...injects,
   };

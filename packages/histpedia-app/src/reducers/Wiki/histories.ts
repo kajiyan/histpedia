@@ -6,16 +6,18 @@ export type Injects = {
    * -1  該当記事なし
    * >=0 該当記事のID
    */
-  pageid: number | undefined;
+  currentEntityIdIndex: number;
   entityIds: Immutable.List<string>;
   initialized: boolean;
+  pageid: number | undefined;
 };
 
 export function initialState(
   injects: Injects = {
-    pageid: undefined,
+    currentEntityIdIndex: 0,
     entityIds: Immutable.List<string>(),
     initialized: false,
+    pageid: undefined,
   }
 ): Immutable.Record<Injects> & Readonly<Injects> {
   return Immutable.Record(injects)();
@@ -63,6 +65,14 @@ export function reducer(
     case types.asyncFetchRevisionsFailed: {
       return state.withMutations((mutable) => {
         mutable.set('entityIds', mutable.entityIds.clear());
+        return mutable;
+      });
+    }
+    case types.updateCurrentEntityIdIndex: {
+      return state.withMutations((mutable) => {
+        const { index } = action.payload;
+
+        mutable.set('currentEntityIdIndex', index);
         return mutable;
       });
     }

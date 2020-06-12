@@ -42,11 +42,11 @@ const nextConfig = {
        * .css ファイルを読み込むのは _app.tsx 内の ress だけになる見込み
        * Warning: Built-in CSS support is being disabled due to custom CSS configuration being detected.
        */
-      {
-        test: /\.(css)$/,
-        exclude: /node_modules/,
-        use: [{ loader: 'postcss-loader' }],
-      },
+      // {
+      //   test: /\.(css)$/,
+      //   exclude: /node_modules/,
+      //   use: [{ loader: 'postcss-loader' }],
+      // },
       {
         test: /\.(tsx)$/,
         exclude: /node_modules/,

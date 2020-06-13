@@ -3,11 +3,12 @@ import types from '../../actions/Wiki/types';
 
 export type Injects = {
   /*
-   * -1  該当記事なし
-   * >=0 該当記事のID
+   * pageid 記事IDの数値 -1 であれば該当記事なし >=0 であれば該当記事のID
+   * fetchingDiffContent リビジョン同士の差分を比較中かの真偽値
    */
   currentEntityIdIndex: number;
   entityIds: Immutable.List<string>;
+  fetchingDiffContent: boolean;
   initialized: boolean;
   pageid: number | undefined;
 };
@@ -16,6 +17,7 @@ export function initialState(
   injects: Injects = {
     currentEntityIdIndex: 0,
     entityIds: Immutable.List<string>(),
+    fetchingDiffContent: false,
     initialized: false,
     pageid: undefined,
   }
@@ -73,6 +75,33 @@ export function reducer(
         const { index } = action.payload;
 
         mutable.set('currentEntityIdIndex', index);
+        return mutable;
+      });
+    }
+    // リビジョン同士の差分を比較開始
+    case types.asyncFetchDiffContentStarted: {
+      return state.withMutations((mutable) => {
+        const { fetching } = action.payload;
+
+        mutable.set('fetchingDiffContent', fetching);
+        return mutable;
+      });
+    }
+    // リビジョン同士の差分の比較をして終了
+    case types.asyncFetchDiffContentDone: {
+      return state.withMutations((mutable) => {
+        const { fetching } = action.payload;
+
+        mutable.set('fetchingDiffContent', fetching);
+        return mutable;
+      });
+    }
+    // リビジョン同士の差分の比較をできずに終了
+    case types.asyncFetchDiffContentFailed: {
+      return state.withMutations((mutable) => {
+        const { fetching } = action.payload;
+
+        mutable.set('fetchingDiffContent', fetching);
         return mutable;
       });
     }

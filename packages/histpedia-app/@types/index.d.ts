@@ -6,6 +6,14 @@ type ReturnTypes<T> = {
 };
 type CreatorsToActions<T> = Unwrap<ReturnTypes<T>>;
 
+declare module 'worker-loader?name=static/[hash].worker.js!*' {
+  class WebpackWorker extends Worker {
+    constructor()
+  }
+
+  export default WebpackWorker
+}
+
 declare type Actions =
   | CreatorsToActions<typeof import('../src/actions/Example')>
   | CreatorsToActions<typeof import('../src/actions/Wiki/controller')>

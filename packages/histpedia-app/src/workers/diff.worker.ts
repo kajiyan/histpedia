@@ -380,7 +380,7 @@ const calculateOperations = (tokensA: string[], tokensB: string[]) => {
       typeof operation.endInBefore !== 'undefined' &&
       /^\s$/.test(
         tokensA
-          .slice(operation.startInBefore, +operation.endInBefore + 1 || 9e9)
+          .slice(operation.startInBefore, operation.endInBefore + 1)
           .join('')
       ) &&
       lastOperation.action === 'replace'
@@ -399,7 +399,7 @@ const calculateOperations = (tokensA: string[], tokensB: string[]) => {
 const consecutiveWhere = (start: number, content: string[], isnt: boolean) => {
   let answer;
   let lastMatchingIndex: number | undefined;
-  const sliceContent = content.slice(start, +content.length + 1 || 9e9);
+  const sliceContent = content.slice(start, content.length + 1);
 
   if (isnt) {
     for (let i = 0, len = sliceContent.length; i < len; i += 1) {
@@ -428,7 +428,7 @@ const consecutiveWhere = (start: number, content: string[], isnt: boolean) => {
   }
 
   if (typeof lastMatchingIndex !== 'undefined') {
-    return sliceContent.slice(0, +lastMatchingIndex + 1 || 9e9);
+    return sliceContent.slice(0, lastMatchingIndex + 1);
   }
 
   return [];
@@ -511,7 +511,7 @@ const operationMap = (
     case 'equal': {
       if (typeof operation.endInBefore !== 'undefined') {
         result = tokensA
-          .slice(operation.startInBefore, +operation.endInBefore + 1 || 9e9)
+          .slice(operation.startInBefore, operation.endInBefore + 1)
           .join('');
       }
       break;
@@ -519,10 +519,7 @@ const operationMap = (
     case 'insert': {
       if (typeof operation.endInAfter !== 'undefined') {
         result = insWrap(
-          tokensB.slice(
-            operation.startInAfter,
-            +operation.endInAfter + 1 || 9e9
-          )
+          tokensB.slice(operation.startInAfter, operation.endInAfter + 1)
         );
       }
       break;
@@ -530,10 +527,7 @@ const operationMap = (
     case 'delete': {
       if (typeof operation.endInBefore !== 'undefined') {
         result = delWrap(
-          tokensA.slice(
-            operation.startInBefore,
-            +operation.endInBefore + 1 || 9e9
-          )
+          tokensA.slice(operation.startInBefore, operation.endInBefore + 1)
         );
       }
       break;
@@ -544,17 +538,11 @@ const operationMap = (
         typeof operation.endInAfter !== 'undefined'
       ) {
         const del = delWrap(
-          tokensA.slice(
-            operation.startInBefore,
-            +operation.endInBefore + 1 || 9e9
-          )
+          tokensA.slice(operation.startInBefore, operation.endInBefore + 1)
         );
 
         const ins = insWrap(
-          tokensB.slice(
-            operation.startInAfter,
-            +operation.endInAfter + 1 || 9e9
-          )
+          tokensB.slice(operation.startInAfter, operation.endInAfter + 1)
         );
 
         result = del + ins;

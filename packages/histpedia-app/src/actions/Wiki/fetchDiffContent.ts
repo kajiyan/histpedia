@@ -76,7 +76,7 @@ export function asyncFetchDiffContentFailed(
 //  => (dispatch: Dispatch<Actions>, getState: any) => Promise<void>
 
 function fetchDiffContent(
-  currentEntityIdIndex?: number
+  currentEntityIdIndex: number
 ): ThunkAction<
   Promise<
     | ReturnType<typeof asyncFetchDiffContentDone>
@@ -87,19 +87,17 @@ function fetchDiffContent(
   Actions
 > {
   return async (dispatch: Dispatch<any>, getState) => {
+    // 差分を取得済みかも見る
+
     asyncFetchDiffContentStarted(dispatch);
 
-    // const diffWorker = new DiffWorker();
     const wikiState = getState().wiki;
-    const entities = wikiState.entities.history;
     const { entityIds } = wikiState.histories;
+    const prevEntityIdIndex = currentEntityIdIndex - 1;
+    const currentEntityId = entityIds.get(currentEntityIdIndex);
+    const prevEntityId = entityIds.get(prevEntityIdIndex);
 
-    // 引数に EntityID の Index が指定されていれば +1 して次の index も用意する
-    if (typeof currentEntityIdIndex !== 'undefined') {
-      const prevEntityIdIndex = currentEntityIdIndex - 1;
-      const currentEntityId = entityIds.get(currentEntityIdIndex);
-      const prevEntityId = entityIds.get(prevEntityIdIndex);
-
+    try {
       // EntityID の List に index が存在していれば EntityID を取得する
       // List 先頭の index が引数に指定されていると prevEntityIdIndex（-1）が存在しないので false となる
       if (
@@ -107,53 +105,69 @@ function fetchDiffContent(
         typeof prevEntityId !== 'undefined' &&
         prevEntityIdIndex >= 0
       ) {
-        // #has で List に存在する index であることを保証しているので型変換する
-        const currentEntity = entities.get(currentEntityId);
-        const prevEntity = entities.get(prevEntityId);
+        const diffHTML = await new Promise<string>((resolve, reject) => {
+          (async () => {
+            const entities = wikiState.entities.history;
+            const currentEntity = entities.get(currentEntityId);
+            const prevEntity = entities.get(prevEntityId);
 
-        // pageid が undefined であれば未取得のリビジョンとみなしコンテンツを取得する
-        if (
-          typeof currentEntity?.pageid === 'undefined' &&
-          typeof currentEntity?.revid !== 'undefined'
-        ) {
-          await dispatch(contentActions.fetchContent(currentEntity.revid));
-        }
+            // pageid が undefined であれば未取得のリビジョンとみなしコンテンツを取得する
+            if (
+              typeof currentEntity?.pageid === 'undefined' &&
+              typeof currentEntity?.revid !== 'undefined'
+            ) {
+              await dispatch(contentActions.fetchContent(currentEntity.revid));
+            }
 
-        if (
-          typeof prevEntity?.pageid === 'undefined' &&
-          typeof prevEntity?.revid !== 'undefined'
-        ) {
-          await dispatch(contentActions.fetchContent(prevEntity.revid));
-        }
+            // pageid が undefined であれば未取得のリビジョンとみなしコンテンツを取得する
+            if (
+              typeof prevEntity?.pageid === 'undefined' &&
+              typeof prevEntity?.revid !== 'undefined'
+            ) {
+              await dispatch(contentActions.fetchContent(prevEntity.revid));
+            }
 
-        console.log(
-          '----------> done',
-          currentEntity?.revid,
-          prevEntity?.revid
-        );
+            if (
+              typeof currentEntity?.text !== 'undefined' &&
+              typeof prevEntity?.text !== 'undefined'
+            ) {
+              const diffWorker = new DiffWorker();
+
+              const onMessage = (e: { data: { html: string } }) => {
+                console.log('----------> onMessage', e.data.html);
+                resolve(e.data.html);
+              };
+
+              diffWorker.addEventListener('message', onMessage, false);
+
+              diffWorker.postMessage({
+                htmlA: currentEntity?.text,
+                htmlB: prevEntity?.text,
+              });
+            } else {
+              // コンテンツの取得に失敗した場合はエラーメッセージを指定して状態を reject にする
+              reject(new Error('[fetchDiffContent] Content Missing'));
+            }
+          })();
+        });
+
+        console.log('----------> done', diffHTML);
 
         return asyncFetchDiffContentDone(dispatch);
 
-        // const onMessage = () => {
-        //   console.log('----------> onMessage');
-        // };
-
-        // diffWorker.addEventListener('message', onMessage, false);
-
-        // diffWorker.postMessage(10);
-
         // console.log(nextEntity?.pageid);
       }
+
       // 先頭の記事の処理
       console.log('----------> 先頭の記事の処理');
+      return asyncFetchDiffContentFailed(dispatch, new Error());
+    } catch (error) {
+      console.log('----------> failed');
+
+      // エラーが発生した場合はエラーメッセージの文字列を投げる
+      return asyncFetchDiffContentFailed(dispatch, error);
     }
 
-    console.log('----------> failed');
-
-    // エラーが発生した場合はエラーメッセージの文字列を投げる
-    return asyncFetchDiffContentFailed(dispatch, new Error());
-
-    // console.log(currentEntityIdIndex, nextEntityIdIndex, getState());
     // diffWorker.terminate();
   };
 }

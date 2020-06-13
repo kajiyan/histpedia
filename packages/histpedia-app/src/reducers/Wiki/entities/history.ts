@@ -35,6 +35,12 @@ export function reducer(
         });
       }, state);
     }
+    // リビジョン同士の差分の比較をして終了
+    case types.asyncFetchDiffContentDone: {
+      const { diffHTML, entityId } = action.payload;
+
+      return state.update(entityId, (history) => history.merge({ diffHTML }));
+    }
     default: {
       return state;
     }

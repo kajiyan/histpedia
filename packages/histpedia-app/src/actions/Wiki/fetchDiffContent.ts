@@ -34,16 +34,23 @@ export function asyncFetchDiffContentStarted(
  * asyncFetchDiffContentDone
  */
 export function asyncFetchDiffContentDone(
-  dispatch: Dispatch
+  dispatch: Dispatch,
+  payload: {
+    diffHTML: string;
+    entityId: string;
+  }
 ): {
   type: typeof types.asyncFetchDiffContentDone;
   payload: {
+    diffHTML: string;
+    entityId: string;
     fetching: boolean;
   };
 } {
   return dispatch({
     type: types.asyncFetchDiffContentDone,
     payload: {
+      ...payload,
       fetching: false,
     },
   });
@@ -93,21 +100,29 @@ function fetchDiffContent(
 
     const wikiState = getState().wiki;
     const { entityIds } = wikiState.histories;
+    const entities = wikiState.entities.history;
     const prevEntityIdIndex = currentEntityIdIndex - 1;
     const currentEntityId = entityIds.get(currentEntityIdIndex);
     const prevEntityId = entityIds.get(prevEntityIdIndex);
 
-    try {
-      // EntityID の List に index が存在していれば EntityID を取得する
-      // List 先頭の index が引数に指定されていると prevEntityIdIndex（-1）が存在しないので false となる
-      if (
-        typeof currentEntityId !== 'undefined' &&
-        typeof prevEntityId !== 'undefined' &&
-        prevEntityIdIndex >= 0
-      ) {
+    // if (typeof currentEntityId !== 'undefined') {
+    //   const currentEntity = entities.get(currentEntityId);
+
+    //   if (typeof currentEntity?.diffHTML !== 'undefined') {
+    //     asyncFetchDiffContentStarted(dispatch);
+    //   }
+    // }
+
+    // EntityID の List に index が存在していれば EntityID を取得する
+    // List 先頭の index が引数に指定されていると prevEntityIdIndex（-1）が存在しないので false となる
+    if (
+      typeof currentEntityId !== 'undefined' &&
+      typeof prevEntityId !== 'undefined' &&
+      prevEntityIdIndex >= 0
+    ) {
+      try {
         const diffHTML = await new Promise<string>((resolve, reject) => {
           (async () => {
-            const entities = wikiState.entities.history;
             const currentEntity = entities.get(currentEntityId);
             const prevEntity = entities.get(prevEntityId);
 
@@ -133,8 +148,13 @@ function fetchDiffContent(
             ) {
               const diffWorker = new DiffWorker();
 
-              const onMessage = (e: { data: { html: string } }) => {
-                console.log('----------> onMessage', e.data.html);
+              const onMessage = (e: {
+                data: {
+                  html: string;
+                };
+              }) => {
+                diffWorker.removeEventListener('message', onMessage, false);
+                diffWorker.terminate();
                 resolve(e.data.html);
               };
 
@@ -151,24 +171,48 @@ function fetchDiffContent(
           })();
         });
 
-        console.log('----------> done', diffHTML);
-
-        return asyncFetchDiffContentDone(dispatch);
-
-        // console.log(nextEntity?.pageid);
+        return asyncFetchDiffContentDone(dispatch, {
+          diffHTML,
+          entityId: currentEntityId,
+        });
+      } catch (error) {
+        // エラーが発生した場合はエラーメッセージの文字列を投げる
+        return asyncFetchDiffContentFailed(dispatch, error);
       }
-
-      // 先頭の記事の処理
-      console.log('----------> 先頭の記事の処理');
-      return asyncFetchDiffContentFailed(dispatch, new Error());
-    } catch (error) {
-      console.log('----------> failed');
-
-      // エラーが発生した場合はエラーメッセージの文字列を投げる
-      return asyncFetchDiffContentFailed(dispatch, error);
     }
 
-    // diffWorker.terminate();
+    // 先頭の記事の処理
+    if (typeof currentEntityId !== 'undefined') {
+      const currentEntity = entities.get(currentEntityId);
+      // pageid が undefined であれば未取得のリビジョンとみなしコンテンツを取得する
+      if (
+        typeof currentEntity?.pageid === 'undefined' &&
+        typeof currentEntity?.revid !== 'undefined'
+      ) {
+        await dispatch(contentActions.fetchContent(currentEntity.revid));
+
+        const diffHTML = currentEntity.text;
+
+        if (typeof diffHTML !== 'undefined') {
+          return asyncFetchDiffContentDone(dispatch, {
+            diffHTML,
+            entityId: currentEntityId,
+          });
+        }
+
+        return asyncFetchDiffContentFailed(
+          dispatch,
+          new Error(
+            '[Actions#fetchDiffContent] Failed to retrieve first revision content.'
+          )
+        );
+      }
+    }
+
+    return asyncFetchDiffContentFailed(
+      dispatch,
+      new Error("[Actions#fetchDiffContent] We couldn't find the entityID.")
+    );
   };
 }
 

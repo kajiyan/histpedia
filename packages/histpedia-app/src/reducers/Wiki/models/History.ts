@@ -1,6 +1,7 @@
 import * as Immutable from 'immutable';
 
 type Props = {
+  diffHTML?: string;
   pageid?: number;
   revid?: number;
   text?: string;
@@ -8,6 +9,7 @@ type Props = {
 };
 
 const defaultValues: Props = {
+  diffHTML: undefined,
   pageid: undefined,
   revid: undefined,
   text: undefined,

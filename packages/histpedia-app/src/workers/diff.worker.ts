@@ -1,5 +1,5 @@
 // eslint-disable-next-line @typescript-eslint/no-explicit-any, no-restricted-globals
-// const ctx: Worker = self as any;
+const ctx: Worker = self as any;
 
 type Operation = {
   action: string;
@@ -356,8 +356,6 @@ const calculateOperations = (tokensA: string[], tokensB: string[]) => {
     positionInBefore = match.endInBefore + 1;
   }
 
-  console.log(operations);
-
   for (let i = 0, len = operations.length; i < len; i += 1) {
     const operation = operations[i];
 
@@ -597,22 +595,15 @@ const diffHtml = (htmlA: string, htmlB: string) => {
   const tokensB = htmlToTokens(htmlB);
   const operations = calculateOperations(tokensA, tokensB);
 
-  // console.log(operations);
-
-  console.log(renderOperations(tokensA, tokensB, operations));
-
-  return 'result';
+  return renderOperations(tokensA, tokensB, operations);
 };
 
-self.addEventListener(
+ctx.addEventListener(
   'message',
   async (event: { data: { htmlA: string; htmlB: string } }) => {
-    console.log('worker側だよ！！ 受け取った値は', event.data);
-
     const html = diffHtml(event.data.htmlA, event.data.htmlB);
-    self.postMessage({ html });
+    ctx.postMessage({ html });
   }
 );
 
-// export default ctx;
-export default {};
+export default ctx;

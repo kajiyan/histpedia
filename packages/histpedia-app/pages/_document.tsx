@@ -24,7 +24,7 @@ export default class CustomDocument extends NextDocument<Props> {
 
   public render(): JSX.Element {
     return (
-      <Html lang="en">
+      <Html lang="ja" className="hp">
         <Head>
           <meta
             name="viewport"
@@ -32,7 +32,7 @@ export default class CustomDocument extends NextDocument<Props> {
           />
           <meta name="format-detection" content="telephone=no" />
         </Head>
-        <body>
+        <body className="hp-Body">
           <Main />
           <NextScript />
           <Global styles={globalStyle} />

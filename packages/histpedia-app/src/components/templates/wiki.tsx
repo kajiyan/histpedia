@@ -2,6 +2,7 @@ import styled from '@emotion/styled';
 import React from 'react';
 import { List } from 'immutable';
 import Controller from '../organisms/controller';
+import Player from '../organisms/player';
 
 /* types */
 type ContainerProps = {
@@ -17,6 +18,7 @@ const Component: React.FC<Props> = ({ className, entityIds }: Props) => {
   return (
     <div className={className}>
       <h1>Template</h1>
+      <Player entityIds={entityIds} />
       <Controller entityIds={entityIds} />
     </div>
   );

@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import React, { useState } from 'react';
+import React, { useEffect } from 'react';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import { List } from 'immutable';
 import WikiActions from '../../actions/Wiki';
@@ -42,18 +42,39 @@ const StyledComponent = styled(Component)``;
 const Controller: React.FC<ContainerProps> = ({
   entityIds,
 }: ContainerProps) => {
+  console.log('[Controller] render');
+
   const dispatch = useDispatch();
   const wikiState = useSelector((state: StoreState) => {
-    return (({ currentEntityIdIndex }) => ({ currentEntityIdIndex }))(
-      state.wiki.histories
-    );
+    return (({ currentEntityIdIndex, fetchingDiffContent }) => ({
+      currentEntityIdIndex,
+      fetchingDiffContent,
+    }))(state.wiki.histories);
   }, shallowEqual);
-  const { currentEntityIdIndex } = wikiState;
+  const { currentEntityIdIndex, fetchingDiffContent } = wikiState;
   const max = entityIds.size;
 
   const onSeek = (index: number) => {
     dispatch(WikiActions.updateCurrentEntityIdIndex(index));
   };
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      // fetchDiff
+      // start の時にフラグを倒す
+      // エンティティからpageIDとrevid渡す
+      // pageidを取得済みであれば読み込みスキップ
+      console.log(currentEntityIdIndex, fetchingDiffContent);
+      if (!fetchingDiffContent) {
+        dispatch(WikiActions.fetchDiffContent(currentEntityIdIndex));
+      }
+    }, 1000);
+
+    return () => {
+      console.log('[Controller] clear', intervalId);
+      clearInterval(intervalId);
+    };
+  }, [currentEntityIdIndex, dispatch, fetchingDiffContent]);
 
   return (
     <StyledComponent

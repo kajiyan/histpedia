@@ -107,7 +107,10 @@ function fetchDiffContent(
     if (typeof currentEntityId !== 'undefined') {
       let currentEntity = entities.get(currentEntityId);
 
-      if (typeof currentEntity !== 'undefined') {
+      if (
+        (typeof currentEntity?.text === 'undefined' && !diff) ||
+        (typeof currentEntity?.diffHTML === 'undefined' && diff)
+      ) {
         asyncFetchDiffContentStarted(dispatch);
 
         // pageid が undefined であれば未取得のリビジョンとみなしコンテンツを取得する
@@ -215,6 +218,15 @@ function fetchDiffContent(
           dispatch,
           new Error("[Actions#fetchDiffContent] We couldn't find the entityID.")
         );
+      }
+
+      // すでに処理済みのリビジョンの処理
+      if (typeof currentEntity?.text !== 'undefined') {
+        return asyncFetchDiffContentDone(dispatch, {
+          diffHTML: currentEntity.text,
+          entityId: currentEntityId,
+          viewEntityIdIndex: currentEntityIdIndex,
+        });
       }
     }
 

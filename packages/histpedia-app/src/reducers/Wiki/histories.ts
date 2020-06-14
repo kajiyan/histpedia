@@ -11,6 +11,7 @@ export type Injects = {
   entityIds: Immutable.List<string>;
   fetchingDiffContent: boolean;
   pageid: number | undefined;
+  paused: boolean;
   viewEntityIdIndex: number;
 };
 
@@ -21,6 +22,7 @@ export function initialState(
     entityIds: Immutable.List<string>(),
     fetchingDiffContent: false,
     pageid: undefined,
+    paused: false,
     viewEntityIdIndex: 0,
   }
 ): Immutable.Record<Injects> & Readonly<Injects> {
@@ -79,11 +81,21 @@ export function reducer(
         return mutable;
       });
     }
+    // 読み込むリビジョンのインデックスが変わった時
     case types.updateCurrentEntityIdIndex: {
       return state.withMutations((mutable) => {
         const { index } = action.payload;
 
         mutable.set('currentEntityIdIndex', index);
+        return mutable;
+      });
+    }
+    // 停止状態が変更された時
+    case types.updatePaused: {
+      return state.withMutations((mutable) => {
+        const { paused } = action.payload;
+
+        mutable.set('paused', paused);
         return mutable;
       });
     }

@@ -12,4 +12,5 @@ export default {
   asyncFetchRevisionsDone: 'WIKI_ASYNC_FETCH_REVISIONS_DONE',
   asyncFetchRevisionsFailed: 'WIKI_ASYNC_FETCH_REVISIONS_FAILED',
   updateCurrentEntityIdIndex: 'WIKI_UPDATE_CURRENT_ENTITY_ID_INDEX',
+  updatePaused: 'WIKI_UPDATE_PAUSED',
 } as const;

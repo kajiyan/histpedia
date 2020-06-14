@@ -14,6 +14,21 @@ export function updateCurrentEntityIdIndex(
   };
 }
 
+export function updatePaused(
+  paused: boolean
+): {
+  type: typeof types.updatePaused;
+  payload: {
+    paused: boolean;
+  };
+} {
+  return {
+    type: types.updatePaused,
+    payload: { paused },
+  };
+}
+
 export default {
   updateCurrentEntityIdIndex,
+  updatePaused,
 };

@@ -25,15 +25,15 @@ const WikiPage = (): JSX.Element => {
 
   useEffect(() => {
     if (initialized) {
+      // pageid を取得済みかつ entityIds が未設定であれば Revision の ID を取得する
       if (typeof pageid !== 'undefined') {
         if (entityIds.isEmpty()) {
-          // pageid を取得済みかつ entityIds が未設定であれば Revision を取得する
           dispatch(WikiActions.fetchRevisions(pageid));
         }
       }
     } else {
-      // string 型へのキャスト
-      // title が undefined の場合 404 ページが表示されるので undefined の可能性はない
+      // initialize していなければ pageID の取得をする
+      // string 型へキャストしているが title が undefined の場合 404 ページが表示されるので undefined の可能性はない
       dispatch(WikiActions.fetchPageId(titles as string));
     }
 

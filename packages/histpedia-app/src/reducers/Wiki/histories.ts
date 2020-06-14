@@ -9,8 +9,8 @@ export type Injects = {
   currentEntityIdIndex: number;
   entityIds: Immutable.List<string>;
   fetchingDiffContent: boolean;
-  initialized: boolean;
   pageid: number | undefined;
+  viewEntityIdIndex: number;
 };
 
 export function initialState(
@@ -18,8 +18,8 @@ export function initialState(
     currentEntityIdIndex: 0,
     entityIds: Immutable.List<string>(),
     fetchingDiffContent: false,
-    initialized: false,
     pageid: undefined,
+    viewEntityIdIndex: 0,
   }
 ): Immutable.Record<Injects> & Readonly<Injects> {
   return Immutable.Record(injects)();
@@ -32,7 +32,8 @@ export function reducer(
   switch (action.type) {
     case types.asyncFetchPageIdStarted: {
       return state.withMutations((mutable) => {
-        mutable.set('pageid', undefined).set('initialized', true);
+        mutable.set('pageid', undefined);
+        mutable.set('entityIds', mutable.entityIds.clear());
         return mutable;
       });
     }
@@ -47,6 +48,7 @@ export function reducer(
     case types.asyncFetchPageIdFailed: {
       return state.withMutations((mutable) => {
         mutable.set('pageid', undefined);
+        mutable.set('entityIds', mutable.entityIds.clear());
         return mutable;
       });
     }
@@ -90,9 +92,10 @@ export function reducer(
     // リビジョン同士の差分の比較をして終了
     case types.asyncFetchDiffContentDone: {
       return state.withMutations((mutable) => {
-        const { fetching } = action.payload;
+        const { fetching, viewEntityIdIndex } = action.payload;
 
         mutable.set('fetchingDiffContent', fetching);
+        mutable.set('viewEntityIdIndex', viewEntityIdIndex);
         return mutable;
       });
     }

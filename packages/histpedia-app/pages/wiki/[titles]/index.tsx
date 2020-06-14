@@ -8,42 +8,38 @@ import { StoreState } from '../../../src/store';
 
 const WikiPage = (): JSX.Element => {
   console.log('WikiPage');
-  const dispatch = useDispatch();
 
+  const router = useRouter();
+  const dispatch = useDispatch();
   const wikiState = useSelector((state: StoreState) => {
-    return (({ pageid, initialized, entityIds }) => ({
+    return (({ pageid, entityIds }) => ({
       pageid,
-      initialized,
       entityIds,
     }))(state.wiki.histories);
   }, shallowEqual);
 
-  const { pageid, initialized, entityIds } = wikiState;
-  const router = useRouter();
-  // URL エンコードする必要がある
-  const { titles } = router.query;
+  const { pageid, entityIds } = wikiState;
+  const { titles } = router.query; // URL デコtードする必要がある？
 
   useEffect(() => {
-    if (initialized) {
-      // pageid を取得済みかつ entityIds が未設定であれば Revision の ID を取得する
-      if (typeof pageid !== 'undefined') {
-        if (entityIds.isEmpty()) {
-          dispatch(WikiActions.fetchRevisions(pageid));
-        }
-      }
-    } else {
-      // initialize していなければ pageID の取得をする
-      // string 型へキャストしているが title が undefined の場合 404 ページが表示されるので undefined の可能性はない
+    if (typeof pageid === 'undefined') {
+      // pageID の取得をする
+      // string 型へキャストしているが title が undefined の場合は
+      // 404 ページが表示されるので undefined の可能性はない
       dispatch(WikiActions.fetchPageId(titles as string));
+    } else if (entityIds.isEmpty()) {
+      // pageid を取得済みかつ entityIds が未設定であれば Revision の ID を取得する
+      dispatch(WikiActions.fetchRevisions(pageid));
     }
 
     return () => {
-      if (initialized && typeof pageid !== 'undefined') {
-        // Todo: ステートの初期化をする
-        console.log('[WikiPage] useEffect clean', pageid, initialized);
-      }
+      console.log('%c[WikiPage] useEffect clean', 'color: green');
     };
-  }, [dispatch, entityIds, initialized, pageid, titles]);
+  }, [dispatch, entityIds, pageid, titles]);
+
+  if (entityIds.isEmpty()) {
+    return <div>Loading</div>;
+  }
 
   return (
     <>
@@ -67,8 +63,6 @@ const WikiPage = (): JSX.Element => {
         rel="noreferrer noopener"
         target="_blank"
       >
-        {titles}
-        <br />
         PageID: {pageid}
         <br />
         Revisions: {entityIds.size}

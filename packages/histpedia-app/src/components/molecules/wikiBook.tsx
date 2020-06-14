@@ -5,7 +5,7 @@ import History from '../../reducers/Wiki/models/History';
 
 /* types */
 type ContainerProps = {
-  entity: Required<History>;
+  entity?: History;
 };
 
 type Props = {
@@ -16,7 +16,7 @@ type Props = {
 const Component: React.FC<Props> = ({ className, entity }: Props) => {
   return (
     <div className={className}>
-      <WikiPaper entity={entity} />
+      <WikiPaper text={entity?.text} />
     </div>
   );
 };

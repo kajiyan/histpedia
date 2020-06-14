@@ -1,10 +1,9 @@
 import styled from '@emotion/styled';
 import React from 'react';
-import History from '../../reducers/Wiki/models/History';
 
 /* types */
 type ContainerProps = {
-  entity: Required<History>;
+  text?: string;
 };
 
 type Props = {
@@ -12,12 +11,16 @@ type Props = {
 } & ContainerProps;
 
 // DOM ------------------------------------------
-const Component: React.FC<Props> = ({ className, entity }: Props) => {
+const Component: React.FC<Props> = ({ className, text }: Props) => {
+  if (typeof text === 'undefined') {
+    return <div className={className} />;
+  }
+
   return (
     <div
       className={className}
       // eslint-disable-next-line react/no-danger
-      dangerouslySetInnerHTML={{ __html: entity.diffHTML }}
+      dangerouslySetInnerHTML={{ __html: text }}
     />
   );
 };
@@ -40,8 +43,8 @@ const StyledComponent = styled(Component)`
 `;
 
 // Container ------------------------------------------
-const WikiBook: React.FC<ContainerProps> = ({ entity }: ContainerProps) => {
-  return <StyledComponent entity={entity} />;
+const WikiBook: React.FC<ContainerProps> = ({ text }: ContainerProps) => {
+  return <StyledComponent text={text} />;
 };
 
 export default WikiBook;

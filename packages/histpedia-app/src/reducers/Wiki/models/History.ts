@@ -5,6 +5,7 @@ type Props = {
   pageid?: number;
   revid?: number;
   text?: string;
+  timestamp?: string;
   title?: string;
 };
 
@@ -13,6 +14,7 @@ const defaultValues: Props = {
   pageid: undefined,
   revid: undefined,
   text: undefined,
+  timestamp: undefined,
   title: undefined,
 };
 

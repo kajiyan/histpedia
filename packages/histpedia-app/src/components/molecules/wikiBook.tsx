@@ -26,6 +26,7 @@ const StyledComponent = styled(Component)``;
 
 // Container ------------------------------------------
 const WikiBook: React.FC<ContainerProps> = ({ entity }: ContainerProps) => {
+  console.log('[WikiBook] render');
   return <StyledComponent entity={entity} />;
 };
 

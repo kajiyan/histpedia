@@ -7,6 +7,7 @@ export type Injects = {
    * fetchingDiffContent リビジョン同士の差分を比較中かの真偽値
    */
   currentEntityIdIndex: number;
+  currentTitle: string | undefined;
   entityIds: Immutable.List<string>;
   fetchingDiffContent: boolean;
   pageid: number | undefined;
@@ -16,6 +17,7 @@ export type Injects = {
 export function initialState(
   injects: Injects = {
     currentEntityIdIndex: 0,
+    currentTitle: undefined,
     entityIds: Immutable.List<string>(),
     fetchingDiffContent: false,
     pageid: undefined,
@@ -31,9 +33,13 @@ export function reducer(
 ): ReturnType<typeof initialState> {
   switch (action.type) {
     case types.asyncFetchPageIdStarted: {
+      const { currentTitle } = action.payload;
+
       return state.withMutations((mutable) => {
-        mutable.set('pageid', undefined);
-        mutable.set('entityIds', mutable.entityIds.clear());
+        mutable
+          .set('currentTitle', currentTitle)
+          .set('entityIds', mutable.entityIds.clear())
+          .set('pageid', undefined);
         return mutable;
       });
     }
@@ -47,8 +53,9 @@ export function reducer(
     }
     case types.asyncFetchPageIdFailed: {
       return state.withMutations((mutable) => {
-        mutable.set('pageid', undefined);
-        mutable.set('entityIds', mutable.entityIds.clear());
+        mutable
+          .set('entityIds', mutable.entityIds.clear())
+          .set('pageid', undefined);
         return mutable;
       });
     }

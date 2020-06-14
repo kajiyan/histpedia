@@ -66,7 +66,10 @@ const Controller: React.FC<ContainerProps> = ({
       // pageidを取得済みであれば読み込みスキップ
       console.log(currentEntityIdIndex, fetchingDiffContent);
       if (!fetchingDiffContent) {
-        dispatch(WikiActions.fetchDiffContent(currentEntityIdIndex));
+        dispatch(WikiActions.fetchDiffContent(currentEntityIdIndex, false));
+        // dispatch(
+        //   WikiActions.updateCurrentEntityIdIndex(currentEntityIdIndex + 1)
+        // );
       }
     }, 1000);
 

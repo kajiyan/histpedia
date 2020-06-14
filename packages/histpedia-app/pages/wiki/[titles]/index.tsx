@@ -12,22 +12,26 @@ const WikiPage = (): JSX.Element => {
   const router = useRouter();
   const dispatch = useDispatch();
   const wikiState = useSelector((state: StoreState) => {
-    return (({ pageid, entityIds }) => ({
-      pageid,
+    return (({ currentTitle, entityIds, pageid }) => ({
       entityIds,
+      pageid,
+      currentTitle,
     }))(state.wiki.histories);
   }, shallowEqual);
 
-  const { pageid, entityIds } = wikiState;
-  const { titles } = router.query; // URL デコtードする必要がある？
+  const { currentTitle, entityIds, pageid } = wikiState;
+  const { titles } = router.query; // URL デコードする必要がある？
 
   useEffect(() => {
-    if (typeof pageid === 'undefined') {
-      // pageID の取得をする
+    // pageID が未取得、あるいは前回の開いた wiki/[titles] と
+    // タイトルが異なっていれば pageID を再取得する
+    if (typeof pageid === 'undefined' || currentTitle !== titles) {
       // string 型へキャストしているが title が undefined の場合は
       // 404 ページが表示されるので undefined の可能性はない
       dispatch(WikiActions.fetchPageId(titles as string));
-    } else if (entityIds.isEmpty()) {
+    }
+
+    if (typeof pageid !== 'undefined' && entityIds.isEmpty()) {
       // pageid を取得済みかつ entityIds が未設定であれば Revision の ID を取得する
       dispatch(WikiActions.fetchRevisions(pageid));
     }
@@ -35,9 +39,11 @@ const WikiPage = (): JSX.Element => {
     return () => {
       console.log('%c[WikiPage] useEffect clean', 'color: green');
     };
-  }, [dispatch, entityIds, pageid, titles]);
+  }, [currentTitle, dispatch, entityIds, pageid, titles]);
 
-  if (entityIds.isEmpty()) {
+  // Revision が未取得、あるいは前回の開いた wiki/[titles] と
+  // タイトルが異なっていればローディング画面を表示する
+  if (entityIds.isEmpty() || currentTitle !== titles) {
     return <div>Loading</div>;
   }
 

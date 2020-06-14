@@ -43,8 +43,9 @@ const StyledComponent = styled(Component)`
 `;
 
 // Container ------------------------------------------
-const WikiBook: React.FC<ContainerProps> = ({ text }: ContainerProps) => {
+const wikiPaper: React.FC<ContainerProps> = ({ text }: ContainerProps) => {
+  console.log('[wikiPaper] render');
   return <StyledComponent text={text} />;
 };
 
-export default WikiBook;
+export default wikiPaper;

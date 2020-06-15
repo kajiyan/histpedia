@@ -20,7 +20,7 @@ const WikiPage = (): JSX.Element => {
   }, shallowEqual);
 
   const { currentTitle, entityIds, pageid } = wikiState;
-  //　string 型へキャスト、titles が undefined の場合は 404 ページが表示されるので undefined の可能性はない
+  // string 型へキャスト、titles が undefined の場合は 404 ページが表示されるので undefined の可能性はない
   const titles = decodeURIComponent(router.query.titles as string);
 
   useEffect(() => {

@@ -15,18 +15,20 @@ export type Injects = {
   viewEntityIdIndex: number;
 };
 
+const defaultState: Injects = {
+  currentEntityIdIndex: 0,
+  currentTitle: undefined,
+  entityIds: Immutable.List<string>(),
+  fetchingDiffContent: false,
+  pageid: undefined,
+  paused: false,
+  viewEntityIdIndex: 0,
+};
+
 export function initialState(
-  injects: Injects = {
-    currentEntityIdIndex: 0,
-    currentTitle: undefined,
-    entityIds: Immutable.List<string>(),
-    fetchingDiffContent: false,
-    pageid: undefined,
-    paused: false,
-    viewEntityIdIndex: 0,
-  }
+  injects: Partial<Injects> = {}
 ): Immutable.Record<Injects> & Readonly<Injects> {
-  return Immutable.Record(injects)();
+  return Immutable.Record({ ...defaultState, ...injects })();
 }
 
 export function reducer(
@@ -38,10 +40,10 @@ export function reducer(
       const { currentTitle } = action.payload;
 
       return state.withMutations((mutable) => {
-        mutable
-          .set('currentTitle', currentTitle)
-          .set('entityIds', mutable.entityIds.clear())
-          .set('pageid', undefined);
+        mutable.merge({
+          ...defaultState,
+          currentTitle,
+        });
         return mutable;
       });
     }
@@ -55,9 +57,7 @@ export function reducer(
     }
     case types.asyncFetchPageIdFailed: {
       return state.withMutations((mutable) => {
-        mutable
-          .set('entityIds', mutable.entityIds.clear())
-          .set('pageid', undefined);
+        mutable.merge(defaultState);
         return mutable;
       });
     }

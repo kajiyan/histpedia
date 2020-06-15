@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { useDispatch, useSelector } from 'react-redux';
 import ExampleActions, { decrement, increment } from '../src/actions/Example';
 import Layout from '../components/Layout';
+import Home from '../src/components/templates/home';
 import Counter from '../components/counter';
 import { StoreState } from '../src/store';
 
@@ -19,6 +20,7 @@ const IndexPage = (): JSX.Element => {
           👋
         </span>
       </h1>
+      <Home />
       <div>{c}</div>
       <Counter />
       <p>

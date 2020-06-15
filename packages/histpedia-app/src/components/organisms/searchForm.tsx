@@ -39,7 +39,7 @@ const StyledComponent = styled(Component)``;
 
 // Container ------------------------------------------
 const SearchForm: React.FC<ContainerProps> = ({ classes }: ContainerProps) => {
-  const [titles, setTitles] = useState<string | undefined>();
+  const [titles, setTitles] = useState('');
   const router = useRouter();
 
   const onClick = useCallback(() => {}, []);
@@ -55,10 +55,18 @@ const SearchForm: React.FC<ContainerProps> = ({ classes }: ContainerProps) => {
 
   const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    router.push({
-      pathname: `/wiki/${titles}`,
-    });
-    console.log(titles, 'onSubmit');
+
+    // 入力された文字列の前後の空白を削除した後、文字列内のスペースを _ へ置き換える
+    const sanitizedTitles = titles
+      .replace(/^[\s\0x3000\uFEFF\xA0]+|[\s\0x3000\uFEFF\xA0]+$/g, '')
+      .replace(/\s|\0x3000|\uFEFF|\xA0/g, '_');
+
+    // サニタイズした文字列の
+    if (sanitizedTitles.length > 0) {
+      router.push({
+        pathname: `/wiki/${encodeURIComponent(sanitizedTitles)}`,
+      });
+    }
   };
 
   return (

@@ -29,8 +29,9 @@ export function getPageId(
       action: 'query',
       format: 'json',
       formatversion: 'latest',
-      utf8: 1,
+      redirects: 1,
       titles,
+      utf8: 1,
     },
   });
 }

@@ -68,9 +68,7 @@ function fetchPageId(
   | ReturnType<typeof asyncFetchPageIdFailed>
 > {
   return async (dispatch: Dispatch) => {
-    asyncFetchPageIdStarted(dispatch, {
-      currentTitle: titles,
-    });
+    asyncFetchPageIdStarted(dispatch);
 
     try {
       const response = await repository.getPageId(titles);

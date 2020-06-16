@@ -37,21 +37,19 @@ export function reducer(
 ): ReturnType<typeof initialState> {
   switch (action.type) {
     case types.asyncFetchPageIdStarted: {
-      const { currentTitle } = action.payload;
-
       return state.withMutations((mutable) => {
-        mutable.merge({
-          ...defaultState,
-          currentTitle,
-        });
+        mutable.merge(defaultState);
         return mutable;
       });
     }
     case types.asyncFetchPageIdDone: {
-      const { pageid } = action.payload;
+      const { pageid, currentTitle } = action.payload;
 
       return state.withMutations((mutable) => {
-        mutable.set('pageid', pageid);
+        mutable.merge({
+          currentTitle,
+          pageid,
+        });
         return mutable;
       });
     }

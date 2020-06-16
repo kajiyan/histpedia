@@ -1,5 +1,6 @@
 import styled from '@emotion/styled';
 import React from 'react';
+import Title from '../atoms/wiki/title';
 import WikiPaper from '../atoms/wikiPaper';
 import History from '../../reducers/Wiki/models/History';
 
@@ -16,6 +17,7 @@ type Props = {
 const Component: React.FC<Props> = ({ className, entity }: Props) => {
   return (
     <div className={className}>
+      <Title title={entity?.title} />
       <WikiPaper text={entity?.text} />
     </div>
   );

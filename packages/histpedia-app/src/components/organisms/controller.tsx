@@ -36,7 +36,6 @@ const Component: React.FC<Props> = ({
 }: Props) => {
   return (
     <div className={className}>
-      Controller {initialValue}
       <PlayButton
         onPause={onPause}
         onPlay={onPlay}

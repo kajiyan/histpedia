@@ -2,6 +2,7 @@ import styled from '@emotion/styled';
 import React from 'react';
 import { List } from 'immutable';
 import Controller from '../organisms/controller';
+import Header from '../organisms/wiki/header';
 import Player from '../organisms/player';
 
 /* types */
@@ -17,7 +18,7 @@ type Props = {
 const Component: React.FC<Props> = ({ className, entityIds }: Props) => {
   return (
     <div className={className}>
-      <h1>Template</h1>
+      <Header entityIds={entityIds} />
       <Player entityIds={entityIds} />
       <Controller entityIds={entityIds} />
     </div>

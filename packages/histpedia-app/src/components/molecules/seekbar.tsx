@@ -22,7 +22,6 @@ const Component: React.FC<Props> = ({
 }: Props) => {
   return (
     <div className={className}>
-      <div>seekbar</div>
       <Scrubber
         max={max}
         name="progress"

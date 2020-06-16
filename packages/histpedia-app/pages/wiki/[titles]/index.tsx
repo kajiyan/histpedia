@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useDispatch, useSelector, shallowEqual } from 'react-redux';
 import Wiki from '../../../src/components/templates/wiki';
@@ -48,22 +47,8 @@ const WikiPage = (): JSX.Element => {
 
   return (
     <>
-      <h1>
-        wiki page {titles} {pageid}
-      </h1>
-      <Link href="/">
-        <a>Home</a>
-      </Link>
-      <br />
-      <br />
-      <br />
-      <div>
-        <Wiki entityIds={entityIds} />
-      </div>
-      <br />
-      <br />
-      <br />
-      <a
+      <Wiki entityIds={entityIds} />
+      {/* <a
         href={`https://ja.wikipedia.org/w/index.php?curid=${pageid}`}
         rel="noreferrer noopener"
         target="_blank"
@@ -71,7 +56,7 @@ const WikiPage = (): JSX.Element => {
         PageID: {pageid}
         <br />
         Revisions: {entityIds.size}
-      </a>
+      </a> */}
     </>
   );
 };

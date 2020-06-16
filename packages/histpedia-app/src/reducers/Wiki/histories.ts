@@ -7,10 +7,10 @@ export type Injects = {
    * fetchingDiffContent リビジョン同士の差分を比較中かの真偽値
    */
   currentEntityIdIndex: number;
-  currentTitle: string | undefined;
+  currentTitle?: string;
   entityIds: Immutable.List<string>;
   fetchingDiffContent: boolean;
-  pageid: number | undefined;
+  pageid?: number;
   paused: boolean;
   viewEntityIdIndex: number;
 };
@@ -43,7 +43,7 @@ export function reducer(
       });
     }
     case types.asyncFetchPageIdDone: {
-      const { pageid, currentTitle } = action.payload;
+      const { currentTitle, pageid } = action.payload;
 
       return state.withMutations((mutable) => {
         mutable.merge({

@@ -1,4 +1,4 @@
-import { AxiosResponse } from 'axios';
+import axios, { AxiosResponse } from 'axios';
 import Repository from './repository';
 
 const url = 'https://ja.wikipedia.org/w/api.php';
@@ -70,8 +70,17 @@ export function getRevisions(
   });
 }
 
+export function getStylesheet(title: string): Promise<AxiosResponse<string>> {
+  return axios.get<string>(
+    `https://ja.wikipedia.org/api/rest_v1/page/html/${encodeURIComponent(
+      title
+    )}`
+  );
+}
+
 export default {
   getContent,
   getPageId,
   getRevisions,
+  getStylesheet,
 };

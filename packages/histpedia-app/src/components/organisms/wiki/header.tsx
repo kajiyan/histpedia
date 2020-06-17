@@ -78,8 +78,6 @@ const Header: React.FC<ContainerProps> = ({
     };
   }, shallowEqual);
 
-  console.log(entity?.toJS());
-
   return <StyledComponent classes={classes} entity={entity} />;
 };
 

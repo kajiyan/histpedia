@@ -64,7 +64,7 @@ const Controller: React.FC<ContainerProps> = ({
     }))(state.wiki.histories);
   }, shallowEqual);
   const { currentEntityIdIndex, fetchingDiffContent, paused } = wikiState;
-  const max = entityIds.size;
+  const max = entityIds.size - 1;
 
   /**
    * onPlay

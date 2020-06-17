@@ -7,11 +7,13 @@ export type Injects = {
    * fetchingDiffContent リビジョン同士の差分を比較中かの真偽値
    */
   currentEntityIdIndex: number;
-  currentTitle?: string;
+  currentTitle?: string; // 検索に使用された文字列
   entityIds: Immutable.List<string>;
   fetchingDiffContent: boolean;
   pageid?: number;
   paused: boolean;
+  stylesheets: Immutable.List<string>;
+  title?: string; // データの取得に使用された文字列、例えば「猫」で検索すると「ネコ」にリダイレクトされる
   viewEntityIdIndex: number;
 };
 
@@ -22,6 +24,8 @@ const defaultState: Injects = {
   fetchingDiffContent: false,
   pageid: undefined,
   paused: false,
+  stylesheets: Immutable.List<string>(),
+  title: undefined,
   viewEntityIdIndex: 0,
 };
 
@@ -36,35 +40,64 @@ export function reducer(
   action: Actions
 ): ReturnType<typeof initialState> {
   switch (action.type) {
+    // PageID の取得開始
     case types.asyncFetchPageIdStarted: {
       return state.withMutations((mutable) => {
         mutable.merge(defaultState);
         return mutable;
       });
     }
+    // PageID の取得成功
     case types.asyncFetchPageIdDone: {
-      const { currentTitle, pageid } = action.payload;
+      const { currentTitle, pageid, title } = action.payload;
 
       return state.withMutations((mutable) => {
         mutable.merge({
           currentTitle,
           pageid,
+          title,
         });
         return mutable;
       });
     }
+    // PageID の取得失敗
     case types.asyncFetchPageIdFailed: {
       return state.withMutations((mutable) => {
         mutable.merge(defaultState);
         return mutable;
       });
     }
+    // スタイルシートの取得開始
+    case types.asyncFetchStyleSheetStarted: {
+      return state.withMutations((mutable) => {
+        mutable.set('stylesheets', mutable.stylesheets.clear());
+        return mutable;
+      });
+    }
+    // スタイルシートの取得完了
+    case types.asyncFetchStyleSheetDone: {
+      return state.withMutations((mutable) => {
+        mutable.update('stylesheets', (stylesheets) =>
+          stylesheets.concat(action.payload.stylesheets)
+        );
+        return mutable;
+      });
+    }
+    // スタイルシートの取得失敗
+    case types.asyncFetchStyleSheetFailed: {
+      return state.withMutations((mutable) => {
+        mutable.set('stylesheets', mutable.stylesheets.clear());
+        return mutable;
+      });
+    }
+    // リビジョンの取得開始
     case types.asyncFetchRevisionsStarted: {
       return state.withMutations((mutable) => {
         mutable.set('entityIds', mutable.entityIds.clear());
         return mutable;
       });
     }
+    // リビジョンの取得完了
     case types.asyncFetchRevisionsDone: {
       const { result } = action.payload;
 
@@ -73,6 +106,7 @@ export function reducer(
         return mutable;
       });
     }
+    // リビジョンの取得失敗
     case types.asyncFetchRevisionsFailed: {
       return state.withMutations((mutable) => {
         mutable.set('entityIds', mutable.entityIds.clear());

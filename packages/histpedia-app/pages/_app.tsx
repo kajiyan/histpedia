@@ -2,7 +2,6 @@ import App, { AppContext, AppProps, AppInitialProps } from 'next/app';
 import React from 'react';
 import { reduxWrapper } from '../src/store';
 import '../styles/ress.min.css';
-import '../styles/wikipedia-base-style.css';
 
 type TPageProps = {
   // eslint-disable-next-line @typescript-eslint/ban-types

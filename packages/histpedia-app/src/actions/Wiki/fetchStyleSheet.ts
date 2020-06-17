@@ -77,7 +77,7 @@ function fetchStylesheet(
         const href = stylesheet.getAttribute('href');
 
         if (href) {
-          stylesheets.push(href);
+          stylesheets.push(`https://ja.wikipedia.org${href}`);
         }
       });
 

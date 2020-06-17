@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useDispatch, useSelector, shallowEqual } from 'react-redux';
 import Wiki from '../../../src/components/templates/wiki';
@@ -54,6 +55,12 @@ const WikiPage = (): JSX.Element => {
 
   return (
     <>
+      <Head>
+        <title>{currentTitle} - Histpedia</title>
+        {stylesheets.map((stylesheet) => (
+          <link rel="stylesheet" href={stylesheet} key={stylesheet} />
+        ))}
+      </Head>
       <Wiki entityIds={entityIds} />
       {/* <a
         href={`https://ja.wikipedia.org/w/index.php?curid=${pageid}`}

@@ -2,6 +2,7 @@ import styled from '@emotion/styled';
 import React, { useCallback, useState } from 'react';
 import { useRouter } from 'next/router';
 import classNames from 'classnames';
+import Container from '../molecules/container';
 import SearchFieldSet from '../molecules/searchFieldSet';
 
 /* types */
@@ -29,7 +30,13 @@ const Component: React.FC<Props> = ({
 }: Props) => {
   return (
     <form className={classNames(className, classes)} onSubmit={onSubmit}>
-      <SearchFieldSet onClick={onClick} onChange={onChange} onInput={onInput} />
+      <Container>
+        <SearchFieldSet
+          onClick={onClick}
+          onChange={onChange}
+          onInput={onInput}
+        />
+      </Container>
     </form>
   );
 };
@@ -61,7 +68,7 @@ const SearchForm: React.FC<ContainerProps> = ({ classes }: ContainerProps) => {
       .replace(/^[\s\0x3000\uFEFF\xA0]+|[\s\0x3000\uFEFF\xA0]+$/g, '')
       .replace(/\s|\0x3000|\uFEFF|\xA0/g, '_');
 
-    // サニタイズした文字列の
+    // サニタイズした文字列
     if (sanitizedTitles.length > 0) {
       router.push({
         pathname: `/wiki/${encodeURIComponent(sanitizedTitles)}`,

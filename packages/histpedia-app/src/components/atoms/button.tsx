@@ -35,7 +35,31 @@ const Component: React.FC<Props> = ({
 };
 
 // Style ------------------------------------------
-const StyledComponent = styled(Component)``;
+const StyledComponent = styled(Component)`
+  background-color: #000;
+  border: solid 1px #000;
+  border-radius: 2px 0 0 2px;
+  color: #fff;
+  font-size: 16px;
+  font-size: 1.6rem;
+  font-weight: 700;
+  text-align: center;
+  padding: 0.8em 1.2em;
+  line-height: 1.6;
+  width: 100%;
+  transition: background-color 0.25s ease, color 0.25s ease,
+    border-color 0.25s ease, box-shadow 0.25s ease;
+
+  &:focus {
+    box-shadow: inset 0 0 0 1px #000, inset 0 0 0 2px #fff;
+    outline: 0;
+  }
+
+  &:hover {
+    background-color: #484848;
+    border-color: #484848;
+  }
+`;
 
 // Container ------------------------------------------
 const Button: React.FC<ContainerProps> = ({

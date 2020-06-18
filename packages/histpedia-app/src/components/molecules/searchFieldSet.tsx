@@ -39,7 +39,7 @@ const Component: React.FC<Props> = ({
         />
       </fieldset>
       <MemoButton classes="sfs-Button" onClick={onClick} type="submit">
-        Search history
+        History Search
       </MemoButton>
     </div>
   );
@@ -47,10 +47,12 @@ const Component: React.FC<Props> = ({
 
 // Style ------------------------------------------
 const StyledComponent = styled(Component)`
-  display: flex;
-
   .sfs-Fieldset {
     border: none;
+    display: block;
+    width: 100%;
+    max-width: 490px;
+    margin: 0 auto 10px;
   }
 
   .sfs-Legend {
@@ -64,12 +66,12 @@ const StyledComponent = styled(Component)`
     border: 0;
   }
 
-  .sfs-SearchField {
-    border: solid 1px #000;
-  }
-
   .sfs-Button {
+    display: block;
     border: solid 1px #000;
+    width: 100%;
+    max-width: 490px;
+    margin: 0 auto;
   }
 `;
 

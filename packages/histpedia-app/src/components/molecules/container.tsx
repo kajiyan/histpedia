@@ -28,7 +28,10 @@ const Component: React.FC<Props> = ({
 // Style ------------------------------------------
 const StyledComponent = styled(Component)`
   max-width: 1280px;
-  margin: 0 auto;
+  margin-top: 0;
+  margin-right: auto;
+  margin-bottom: 0;
+  margin-left: auto;
 
   .sw-Container_Inner {
     padding: 0 ${(72 / 1280) * 100}%;

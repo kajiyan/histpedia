@@ -24,8 +24,9 @@ const Component: React.FC<Props> = ({
 }: Props) => {
   return (
     <input
+      autoComplete="off"
       className={classNames(className, classes)}
-      type="input"
+      type="text"
       name={name}
       onChange={onChange}
       onInput={onInput}
@@ -34,7 +35,21 @@ const Component: React.FC<Props> = ({
 };
 
 // Style ------------------------------------------
-const StyledComponent = styled(Component)``;
+const StyledComponent = styled(Component)`
+  border: solid 1px #000;
+  border-radius: 2px 0 0 2px;
+  font-size: 16px;
+  font-size: 1.6rem;
+  padding: 0.8em 1.2em;
+  line-height: 1.6;
+  width: 100%;
+
+  &:focus {
+    background-color: #fff;
+    box-shadow: inset 0 0 0 1px #000;
+    outline: 0;
+  }
+`;
 
 // Container ------------------------------------------
 const SearchField: React.FC<ContainerProps> = ({

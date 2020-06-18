@@ -1,6 +1,10 @@
 import { css, SerializedStyles } from '@emotion/core';
 
 const globalStyle: SerializedStyles = css`
+  :root {
+    font-size: 62.5%;
+  }
+
   .hp {
     background-color: #fff;
     color: #000;
@@ -15,14 +19,16 @@ const globalStyle: SerializedStyles = css`
     word-break: break-word;
     overflow-wrap: break-word;
     text-align: justify;
+    height: 100%;
   }
 
   .hp-Body {
     background-color: #fff;
+    height: 100%;
   }
 
-  :root {
-    font-size: 62.5%;
+  #__next {
+    height: 100%;
   }
 `;
 

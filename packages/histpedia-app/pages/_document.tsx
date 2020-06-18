@@ -31,6 +31,7 @@ export default class CustomDocument extends NextDocument<Props> {
             content="width=device-width, initial-scale=1, viewport-fit=cover"
           />
           <meta name="format-detection" content="telephone=no" />
+          <title>Histpedia</title>
         </Head>
         <body className="hp-Body">
           <Main />

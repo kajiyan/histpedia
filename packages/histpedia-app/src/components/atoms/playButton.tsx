@@ -1,8 +1,10 @@
 import styled from '@emotion/styled';
 import React, { useState } from 'react';
+import classNames from 'classnames';
 
 /* types */
 type ContainerProps = {
+  classes?: string;
   onPause?: () => void;
   onPlay?: () => void;
   initialPaused?: boolean;
@@ -15,27 +17,87 @@ type Props = {
 } & ContainerProps;
 
 // DOM ------------------------------------------
-const Component: React.FC<Props> = ({ className, onClick, paused }: Props) => {
+const Component: React.FC<Props> = ({
+  classes,
+  className,
+  onClick,
+  paused,
+}: Props) => {
   if (paused) {
     return (
-      <button className={className} type="button" onClick={onClick}>
-        再生
+      <button
+        className={classNames(className, classes)}
+        type="button"
+        onClick={onClick}
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="46"
+          height="36"
+          viewBox="0 0 46 36"
+          className="pb-SVG"
+        >
+          <title>再生</title>
+          <path d="M16 27L16 9 30 18 16 27" />
+        </svg>
       </button>
     );
   }
 
   return (
     <button className={className} type="button" onClick={onClick}>
-      一時停止
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="46"
+        height="36"
+        viewBox="0 0 46 36"
+        className="pb-SVG"
+      >
+        <title>一時停止</title>
+        <path d="M16.5 10H20.5V26H16.5zM25.5 10H29.5V26H25.5z" />
+      </svg>
     </button>
   );
 };
 
 // Style ------------------------------------------
-const StyledComponent = styled(Component)``;
+const StyledComponent = styled(Component)`
+  display: inline-block;
+  width: 46px;
+  height: 100%;
+  transition: background-color 0.1s ease, color 0.1s ease;
+  position: relative;
+
+  &::before {
+    content: '';
+    display: block;
+    width: 100%;
+    padding: ${(36 / 46) * 100}% 0 0;
+    position: relative;
+  }
+
+  &:hover {
+    background-color: #000;
+    color: #fff;
+
+    .pb-SVG {
+    }
+  }
+
+  .pb-SVG {
+    max-width: 100%;
+    width: 100%;
+    max-height: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+`;
 
 // Container ------------------------------------------
 const PlayButton: React.FC<ContainerProps> = ({
+  classes,
   onPause = function noop() {},
   onPlay = function noop() {},
   initialPaused = false,
@@ -54,7 +116,9 @@ const PlayButton: React.FC<ContainerProps> = ({
     }
   };
 
-  return <StyledComponent onClick={onClick} paused={paused} />;
+  return (
+    <StyledComponent classes={classes} onClick={onClick} paused={paused} />
+  );
 };
 
 export default PlayButton;

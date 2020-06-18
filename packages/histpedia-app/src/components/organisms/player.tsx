@@ -4,6 +4,7 @@ import { shallowEqual, useSelector } from 'react-redux';
 import { List } from 'immutable';
 import History from '../../reducers/Wiki/models/History';
 import WikiBook from '../molecules/wikiBook';
+import Container from '../molecules/container';
 import { StoreState } from '../../store/index';
 
 /* types */
@@ -20,13 +21,17 @@ type Props = {
 const Component: React.FC<Props> = ({ className, entity }: Props) => {
   return (
     <div className={className}>
-      <WikiBook entity={entity} />
+      <Container>
+        <WikiBook entity={entity} />
+      </Container>
     </div>
   );
 };
 
 // Style ------------------------------------------
-const StyledComponent = styled(Component)``;
+const StyledComponent = styled(Component)`
+  padding: 72px 0;
+`;
 
 // Container ------------------------------------------
 const Player: React.FC<ContainerProps> = ({ entityIds }: ContainerProps) => {

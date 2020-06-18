@@ -17,14 +17,18 @@ type Props = {
 const Component: React.FC<Props> = ({ className, entity }: Props) => {
   return (
     <div className={className}>
-      <Title title={entity?.title} />
+      <Title classes="wikiBook-Title" title={entity?.title} />
       <WikiPaper text={entity?.text} />
     </div>
   );
 };
 
 // Style ------------------------------------------
-const StyledComponent = styled(Component)``;
+const StyledComponent = styled(Component)`
+  .wikiBook-Title {
+    text-align: center;
+  }
+`;
 
 // Container ------------------------------------------
 const WikiBook: React.FC<ContainerProps> = ({ entity }: ContainerProps) => {

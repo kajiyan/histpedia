@@ -22,7 +22,14 @@ const Component: React.FC<Props> = ({ classes, className, title }: Props) => {
 };
 
 // Style ------------------------------------------
-const StyledComponent = styled(Component)``;
+const StyledComponent = styled(Component)`
+  font-size: 28px;
+  font-size: 2.8rem;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  padding-top: 0;
+  padding-bottom: 0.6em;
+`;
 
 // Container ------------------------------------------
 const Title: React.FC<ContainerProps> = ({

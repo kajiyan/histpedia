@@ -37,17 +37,42 @@ const Component: React.FC<Props> = ({
   return (
     <div className={className}>
       <PlayButton
+        classes="ctr-PlayButton"
         onPause={onPause}
         onPlay={onPlay}
         initialPaused={initialPaused}
       />
-      <Seekbar max={max} initialValue={initialValue} onSeek={onSeek} />
+      <Seekbar
+        classes="ctr-Seekbar"
+        max={max}
+        initialValue={initialValue}
+        onSeek={onSeek}
+      />
     </div>
   );
 };
 
 // Style ------------------------------------------
-const StyledComponent = styled(Component)``;
+const StyledComponent = styled(Component)`
+  background-color: #fff;
+  border-top: solid 1px #000;
+  display: flex;
+  width: 100%;
+  height: 36px;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  z-index: 1;
+
+  .ctr-PlayButton {
+    border-right: 1px solid;
+    flex-shrink: 0;
+  }
+
+  .ctr-Seekbar {
+    flex-grow: 1;
+  }
+`;
 
 // Container ------------------------------------------
 const Controller: React.FC<ContainerProps> = ({

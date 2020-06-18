@@ -25,7 +25,7 @@ const Component: React.FC<Props> = ({
   return (
     <div className={className}>
       <input
-        className="Wiki_Range"
+        className="scrubber-Input"
         type="range"
         value={value}
         max={max}
@@ -39,7 +39,115 @@ const Component: React.FC<Props> = ({
 };
 
 // Style ------------------------------------------
-const StyledComponent = styled(Component)``;
+const StyledComponent = styled(Component)`
+  height: 100%;
+  overflow: hidden;
+
+  &:before {
+    content: '';
+    display: block;
+    width: 100%;
+    height: 50%;
+    margin: -7px 0 0;
+  }
+
+  /* Generator http://danielstern.ca/range.css/#/ */
+  .scrubber-Input {
+    -webkit-appearance: none;
+    background-color: transparent;
+    display: block;
+    width: 100%;
+    margin: 4px 0;
+  }
+
+  .scrubber-Input:focus {
+    outline: none;
+  }
+
+  .scrubber-Input::-webkit-slider-runnable-track {
+    background: #000000;
+    border: 0;
+    width: 100%;
+    height: 5px;
+    cursor: pointer;
+  }
+
+  .scrubber-Input::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    cursor: pointer;
+    background: #000000;
+    border: 0;
+    border-radius: 7px;
+    width: 13px;
+    height: 13px;
+    margin-top: -4px;
+  }
+
+  .scrubber-Input:focus::-webkit-slider-runnable-track {
+    background: #787878;
+  }
+
+  .scrubber-Input::-moz-range-track {
+    cursor: pointer;
+    background: #000000;
+    border: 0;
+    width: 100%;
+    height: 5px;
+  }
+
+  .scrubber-Input::-moz-range-thumb {
+    cursor: pointer;
+    background: #000000;
+    border: 0;
+    border-radius: 7px;
+    width: 13px;
+    height: 13px;
+  }
+
+  .scrubber-Input::-ms-track {
+    cursor: pointer;
+    background: transparent;
+    border-color: transparent;
+    border-width: 4px 0;
+    color: transparent;
+    width: 100%;
+    height: 5px;
+  }
+
+  .scrubber-Input::-ms-fill-lower {
+    background: #000000;
+    border: 0;
+  }
+
+  .scrubber-Input::-ms-fill-upper {
+    background: #000000;
+    border: 0;
+  }
+
+  .scrubber-Input::-ms-thumb {
+    cursor: pointer;
+    background: #000000;
+    border: 0;
+    border-radius: 7px;
+    width: 13px;
+    height: 13px;
+    margin-top: 0;
+  }
+
+  .scrubber-Input:focus::-ms-fill-lower {
+    background: #000000;
+  }
+
+  .scrubber-Input:focus::-ms-fill-upper {
+    background: #787878;
+  }
+
+  @supports (-ms-ime-align: auto) {
+    .scrubber-Input {
+      margin: 0;
+    }
+  }
+`;
 
 // Container ------------------------------------------
 const Scrubber: React.FC<ContainerProps> = ({

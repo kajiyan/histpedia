@@ -1,9 +1,11 @@
 import styled from '@emotion/styled';
 import React from 'react';
+import classNames from 'classnames';
 import Scrubber from '../atoms/scrubber';
 
 /* types */
 type ContainerProps = {
+  classes?: string;
   max?: number;
   initialValue?: number;
   onSeek?: (index: number) => void;
@@ -16,12 +18,13 @@ type Props = {
 // DOM ------------------------------------------
 const Component: React.FC<Props> = ({
   className,
+  classes,
   max,
   initialValue,
   onChangeHandler,
 }: Props) => {
   return (
-    <div className={className}>
+    <div className={classNames(className, classes)}>
       <Scrubber
         max={max}
         name="progress"
@@ -33,10 +36,13 @@ const Component: React.FC<Props> = ({
 };
 
 // Style ------------------------------------------
-const StyledComponent = styled(Component)``;
+const StyledComponent = styled(Component)`
+  height: 100%;
+`;
 
 // Container ------------------------------------------
 const Seekbar: React.FC<ContainerProps> = ({
+  classes,
   max = 0,
   initialValue = 0,
   onSeek = function noop() {},
@@ -48,6 +54,7 @@ const Seekbar: React.FC<ContainerProps> = ({
 
   return (
     <StyledComponent
+      classes={classes}
       max={max}
       initialValue={initialValue}
       onChangeHandler={onChangeHandler}

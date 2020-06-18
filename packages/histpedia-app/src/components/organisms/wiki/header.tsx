@@ -28,8 +28,8 @@ const Component: React.FC<Props> = ({ classes, className, entity }: Props) => {
       <Container>
         <div className="wiki-Header_Inner">
           <Link href="/">
-            <a>
-              <Logo />
+            <a className="wiki-Header_Link">
+              <Logo classes="wiki-Header_heading" />
             </a>
           </Link>
           <Timestamp timestamp={entity?.timestamp} />
@@ -53,6 +53,30 @@ const StyledComponent = styled(Component)`
     display: flex;
     align-items: center;
     justify-content: space-between;
+  }
+
+  .wiki-Header_Link {
+    display: block;
+    width: ${(188 / 1136) * 100}%;
+    padding: 10px 0;
+
+    svg {
+      transition: fill 0.25s ease;
+    }
+
+    &:hover {
+      svg {
+        fill: #484848;
+      }
+    }
+  }
+
+  .wiki-Header_heading {
+    /* wikipedia のスタイルを上書き */
+    border-bottom: none;
+    padding-top: 0;
+    padding-bottom: 0;
+    margin-bottom: 0;
   }
 `;
 

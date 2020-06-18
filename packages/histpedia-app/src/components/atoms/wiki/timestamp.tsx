@@ -31,7 +31,11 @@ const Component: React.FC<Props> = ({
 };
 
 // Style ------------------------------------------
-const StyledComponent = styled(Component)``;
+const StyledComponent = styled(Component)`
+  font-size: 1.4rem;
+  letter-spacing: 0.02em;
+  line-height: 1.6;
+`;
 
 // Container ------------------------------------------
 const Timestamp: React.FC<ContainerProps> = ({

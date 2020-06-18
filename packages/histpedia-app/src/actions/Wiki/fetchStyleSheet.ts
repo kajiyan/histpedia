@@ -2,6 +2,9 @@ import { Dispatch } from 'redux';
 import types from './types';
 import repositoryFactory from '../../services/repositoryFactory';
 
+const HTTP_404_PAGE_STYLE_SHEET = [
+  'https://ja.wikipedia.org/w/load.php?modules=mediawiki.skinning.content.parsoid%7Cmediawiki.skinning.interface%7Csite.styles%7Cmediawiki.page.gallery.styles%7Cext.cite.style%7Cext.cite.styles&only=styles&skin=vector',
+];
 const repository = repositoryFactory.get('wiki');
 
 export function asyncFetchStyleSheetStarted(
@@ -37,6 +40,7 @@ export function asyncFetchStyleSheetFailed(
 ): {
   type: typeof types.asyncFetchStyleSheetFailed;
   payload: {
+    stylesheets: string[];
     error: Error;
   };
   error: boolean;
@@ -44,6 +48,7 @@ export function asyncFetchStyleSheetFailed(
   return dispatch({
     type: types.asyncFetchStyleSheetFailed,
     payload: {
+      stylesheets: HTTP_404_PAGE_STYLE_SHEET,
       error,
     },
     error: true,

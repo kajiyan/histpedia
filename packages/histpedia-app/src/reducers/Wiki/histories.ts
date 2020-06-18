@@ -86,7 +86,9 @@ export function reducer(
     // スタイルシートの取得失敗
     case types.asyncFetchStyleSheetFailed: {
       return state.withMutations((mutable) => {
-        mutable.set('stylesheets', mutable.stylesheets.clear());
+        mutable.update('stylesheets', (stylesheets) =>
+          stylesheets.concat(action.payload.stylesheets)
+        );
         return mutable;
       });
     }

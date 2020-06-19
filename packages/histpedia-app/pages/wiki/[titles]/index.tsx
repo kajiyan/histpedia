@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useDispatch, useSelector, shallowEqual } from 'react-redux';
+import CircularProgressCover from '../../../src/components/organisms/circularProgressCover';
 import Wiki from '../../../src/components/templates/wiki';
 import WikiActions from '../../../src/actions/Wiki';
 import { StoreState } from '../../../src/store';
@@ -50,7 +51,7 @@ const WikiPage = (): JSX.Element => {
   // Revision が未取得、スタイルシートが未取得、前回の開いた wiki/[titles] とタイトルが異なる、の
   // いづれかであればローディング画面を表示する
   if (entityIds.isEmpty() || stylesheets.isEmpty() || currentTitle !== titles) {
-    return <div>Loading</div>;
+    return <CircularProgressCover />;
   }
 
   return (

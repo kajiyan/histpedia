@@ -65,7 +65,7 @@ const StyledComponent = styled(Component)`
   z-index: 1;
 
   .ctr-PlayButton {
-    border-right: 1px solid;
+    border-right: 1px solid #000;
     flex-shrink: 0;
   }
 
@@ -122,7 +122,7 @@ const Controller: React.FC<ContainerProps> = ({
       // console.log(currentEntityIdIndex, fetchingDiffContent);
       if (!fetchingDiffContent) {
         dispatch(WikiActions.fetchDiffContent(currentEntityIdIndex, false));
-        if (!paused && currentEntityIdIndex < entityIds.size - 1) {
+        if (!paused && currentEntityIdIndex < max) {
           dispatch(
             WikiActions.updateCurrentEntityIdIndex(currentEntityIdIndex + 1)
           );
@@ -134,7 +134,7 @@ const Controller: React.FC<ContainerProps> = ({
       console.log('[Controller] clear', intervalId);
       clearInterval(intervalId);
     };
-  }, [currentEntityIdIndex, dispatch, fetchingDiffContent, paused]);
+  }, [currentEntityIdIndex, dispatch, fetchingDiffContent, max, paused]);
 
   return (
     <StyledComponent

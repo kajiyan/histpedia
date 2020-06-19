@@ -83,9 +83,6 @@ const StyledComponent = styled(Component)`
   &:hover {
     background-color: #000;
     color: #fff;
-
-    .pb-SVG {
-    }
   }
 
   .pb-SVG {

@@ -45,7 +45,11 @@ const Component: React.FC<Props> = ({
   }
 
   return (
-    <button className={className} type="button" onClick={onClick}>
+    <button
+      className={classNames(className, classes)}
+      type="button"
+      onClick={onClick}
+    >
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="46"

@@ -122,7 +122,7 @@ const Controller: React.FC<ContainerProps> = ({
       // console.log(currentEntityIdIndex, fetchingDiffContent);
       if (!fetchingDiffContent) {
         dispatch(WikiActions.fetchDiffContent(currentEntityIdIndex, false));
-        if (!paused) {
+        if (!paused && currentEntityIdIndex < entityIds.size - 1) {
           dispatch(
             WikiActions.updateCurrentEntityIdIndex(currentEntityIdIndex + 1)
           );

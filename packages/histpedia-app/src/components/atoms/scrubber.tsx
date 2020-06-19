@@ -158,6 +158,10 @@ const Scrubber: React.FC<ContainerProps> = ({
 }: ContainerProps) => {
   const [value, setValue] = useState(initialValue);
 
+  if (value !== initialValue) {
+    setValue(initialValue);
+  }
+
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setValue(parseInt(event.target.value, 10));
     onChangeHandler(event);

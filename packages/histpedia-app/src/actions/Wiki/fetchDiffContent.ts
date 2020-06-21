@@ -87,7 +87,6 @@ function fetchDiffContent(
   Promise<
     | ReturnType<typeof asyncFetchDiffContentDone>
     | ReturnType<typeof asyncFetchDiffContentFailed>
-    | void
   >,
   StoreState,
   undefined,
@@ -205,32 +204,29 @@ function fetchDiffContent(
           }
         }
 
-        // 先頭の記事の処理
-        if (typeof currentEntity?.text !== 'undefined') {
-          return asyncFetchDiffContentDone(dispatch, {
-            diffHTML: currentEntity.text,
-            entityId: currentEntityId,
-            viewEntityIdIndex: currentEntityIdIndex,
-          });
-        }
-
-        return asyncFetchDiffContentFailed(
-          dispatch,
-          new Error("[Actions#fetchDiffContent] We couldn't find the entityID.")
-        );
-      }
-
-      // すでに処理済みのリビジョンの処理
-      if (typeof currentEntity?.text !== 'undefined') {
         return asyncFetchDiffContentDone(dispatch, {
-          diffHTML: currentEntity.text,
+          // 先頭の記事のみ比較する差分が存在しないので text を diffHTML とする
+          diffHTML:
+            currentEntityIdIndex === 0 ? currentEntity?.text : undefined,
           entityId: currentEntityId,
           viewEntityIdIndex: currentEntityIdIndex,
         });
       }
+
+      // すでに処理済みのリビジョンの処理
+      // 表示位置（viewEntityIdIndex）のみをアップデートする
+      return asyncFetchDiffContentDone(dispatch, {
+        diffHTML: currentEntity?.diffHTML,
+        entityId: currentEntityId,
+        viewEntityIdIndex: currentEntityIdIndex,
+      });
     }
 
-    return undefined;
+    // 存在しない entityID が指定された場合は失敗とする
+    return asyncFetchDiffContentFailed(
+      dispatch,
+      new Error("[Actions#fetchDiffContent] We couldn't find the entityID.")
+    );
   };
 }
 

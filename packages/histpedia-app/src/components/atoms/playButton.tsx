@@ -107,6 +107,10 @@ const PlayButton: React.FC<ContainerProps> = ({
 
   const [paused, setPaused] = useState(initialPaused);
 
+  if (paused !== initialPaused) {
+    setPaused(initialPaused);
+  }
+
   const onClick = () => {
     setPaused(!paused);
 

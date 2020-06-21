@@ -14,15 +14,16 @@ type ContainerProps = {
 
 type Props = {
   className?: string;
+  diff: boolean;
   entity?: History;
 } & ContainerProps;
 
 // DOM ------------------------------------------
-const Component: React.FC<Props> = ({ className, entity }: Props) => {
+const Component: React.FC<Props> = ({ className, diff, entity }: Props) => {
   return (
     <div className={className}>
       <Container>
-        <WikiBook entity={entity} />
+        <WikiBook diff={diff} entity={entity} />
       </Container>
     </div>
   );
@@ -38,22 +39,24 @@ const Player: React.FC<ContainerProps> = ({ entityIds }: ContainerProps) => {
   console.log('[Player] render');
 
   // const dispatch = useDispatch();
-  const { entity } = useSelector((state: StoreState) => {
+  const { diff, entity } = useSelector((state: StoreState) => {
     const { entities, histories } = state.wiki;
     const entityId = entityIds.get(histories.viewEntityIdIndex);
 
     if (entityId) {
       return {
+        diff: histories.diff,
         entity: entities.history.get(entityId),
       };
     }
 
     return {
+      diff: histories.diff,
       entity: undefined,
     };
   }, shallowEqual);
 
-  return <StyledComponent entity={entity} entityIds={entityIds} />;
+  return <StyledComponent diff={diff} entity={entity} entityIds={entityIds} />;
 };
 
 export default Player;

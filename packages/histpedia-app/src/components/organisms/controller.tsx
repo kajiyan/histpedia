@@ -4,6 +4,7 @@ import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import { List } from 'immutable';
 import WikiActions from '../../actions/Wiki';
 import PlayButton from '../atoms/playButton';
+// import ToggleButton from '../atoms/toggleButton';
 import Seekbar from '../molecules/seekbar';
 import { StoreState } from '../../store/index';
 
@@ -22,6 +23,7 @@ type Props = {
   onPause: () => void;
   onPlay: () => void;
   onSeek: (index: number) => void;
+  onToggle: (value: boolean) => void;
 } & ContainerProps;
 
 // DOM ------------------------------------------
@@ -42,6 +44,11 @@ const Component: React.FC<Props> = ({
         onPlay={onPlay}
         initialPaused={initialPaused}
       />
+      {/*
+      <ToggleButton onToggle={onToggle}>
+        Difference from preceding version.
+      </ToggleButton>
+      */}
       <Seekbar
         classes="ctr-Seekbar"
         max={max}
@@ -82,13 +89,14 @@ const Controller: React.FC<ContainerProps> = ({
 
   const dispatch = useDispatch();
   const wikiState = useSelector((state: StoreState) => {
-    return (({ currentEntityIdIndex, fetchingDiffContent, paused }) => ({
+    return (({ currentEntityIdIndex, diff, fetchingDiffContent, paused }) => ({
       currentEntityIdIndex,
+      diff,
       fetchingDiffContent,
       paused,
     }))(state.wiki.histories);
   }, shallowEqual);
-  const { currentEntityIdIndex, fetchingDiffContent, paused } = wikiState;
+  const { currentEntityIdIndex, diff, fetchingDiffContent, paused } = wikiState;
   const max = entityIds.size - 1;
 
   /**
@@ -113,15 +121,21 @@ const Controller: React.FC<ContainerProps> = ({
     dispatch(WikiActions.updateCurrentEntityIdIndex(index));
   };
 
+  /**
+   * onToggle
+   */
+  const onToggle = (value: boolean) => {
+    dispatch(WikiActions.updateDiff(value));
+  };
+
   useEffect(() => {
     const intervalId = setInterval(() => {
       // fetchDiff
       // start の時にフラグを倒す
       // エンティティからpageIDとrevid渡す
       // pageidを取得済みであれば読み込みスキップ
-      // console.log(currentEntityIdIndex, fetchingDiffContent);
       if (!fetchingDiffContent) {
-        dispatch(WikiActions.fetchDiffContent(currentEntityIdIndex, false));
+        dispatch(WikiActions.fetchDiffContent(currentEntityIdIndex, diff));
         if (!paused && currentEntityIdIndex < max) {
           dispatch(
             WikiActions.updateCurrentEntityIdIndex(currentEntityIdIndex + 1)
@@ -134,7 +148,7 @@ const Controller: React.FC<ContainerProps> = ({
       console.log('[Controller] clear', intervalId);
       clearInterval(intervalId);
     };
-  }, [currentEntityIdIndex, dispatch, fetchingDiffContent, max, paused]);
+  }, [currentEntityIdIndex, diff, dispatch, fetchingDiffContent, max, paused]);
 
   return (
     <StyledComponent
@@ -145,6 +159,7 @@ const Controller: React.FC<ContainerProps> = ({
       onPause={onPause}
       onPlay={onPlay}
       onSeek={onSeek}
+      onToggle={onToggle}
     />
   );
 };

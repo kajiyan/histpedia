@@ -6,6 +6,7 @@ import History from '../../reducers/Wiki/models/History';
 
 /* types */
 type ContainerProps = {
+  diff: boolean;
   entity?: History;
 };
 
@@ -14,11 +15,16 @@ type Props = {
 } & ContainerProps;
 
 // DOM ------------------------------------------
-const Component: React.FC<Props> = ({ className, entity }: Props) => {
+const Component: React.FC<Props> = ({ diff, className, entity }: Props) => {
+  const text =
+    diff && typeof entity?.diffHTML !== 'undefined'
+      ? entity?.diffHTML
+      : entity?.text;
+
   return (
     <div className={className}>
       <Title classes="wikiBook-Title" title={entity?.title} />
-      <WikiPaper text={entity?.text} />
+      <WikiPaper text={text} />
     </div>
   );
 };
@@ -31,9 +37,12 @@ const StyledComponent = styled(Component)`
 `;
 
 // Container ------------------------------------------
-const WikiBook: React.FC<ContainerProps> = ({ entity }: ContainerProps) => {
+const WikiBook: React.FC<ContainerProps> = ({
+  diff,
+  entity,
+}: ContainerProps) => {
   console.log('[WikiBook] render');
-  return <StyledComponent entity={entity} />;
+  return <StyledComponent diff={diff} entity={entity} />;
 };
 
 export default WikiBook;

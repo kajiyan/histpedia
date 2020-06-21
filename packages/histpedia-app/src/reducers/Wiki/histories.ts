@@ -8,6 +8,7 @@ export type Injects = {
    */
   currentEntityIdIndex: number;
   currentTitle?: string; // 検索に使用された文字列
+  diff: boolean;
   entityIds: Immutable.List<string>;
   fetchingDiffContent: boolean;
   pageid?: number;
@@ -20,6 +21,7 @@ export type Injects = {
 const defaultState: Injects = {
   currentEntityIdIndex: 0,
   currentTitle: undefined,
+  diff: false,
   entityIds: Immutable.List<string>(),
   fetchingDiffContent: false,
   pageid: undefined,
@@ -117,36 +119,51 @@ export function reducer(
     }
     // 読み込むリビジョンのインデックスが変わった時
     case types.updateCurrentEntityIdIndex: {
-      return state.withMutations((mutable) => {
-        const { index } = action.payload;
+      const { index } = action.payload;
 
+      return state.withMutations((mutable) => {
         mutable.set('currentEntityIdIndex', index);
         return mutable;
       });
     }
     // 停止状態が変更された時
     case types.updatePaused: {
-      return state.withMutations((mutable) => {
-        const { paused } = action.payload;
+      const { diff, paused } = action.payload;
 
-        mutable.set('paused', paused);
+      return state.withMutations((mutable) => {
+        mutable.merge({
+          diff,
+          paused,
+        });
+        return mutable;
+      });
+    }
+    // 差分の表示状態が変更された時
+    case types.updateDiff: {
+      const { diff, paused } = action.payload;
+
+      return state.withMutations((mutable) => {
+        mutable.merge({
+          diff,
+          paused,
+        });
         return mutable;
       });
     }
     // リビジョン同士の差分を比較開始
     case types.asyncFetchDiffContentStarted: {
-      return state.withMutations((mutable) => {
-        const { fetching } = action.payload;
+      const { fetching } = action.payload;
 
+      return state.withMutations((mutable) => {
         mutable.set('fetchingDiffContent', fetching);
         return mutable;
       });
     }
     // リビジョン同士の差分の比較をして終了
     case types.asyncFetchDiffContentDone: {
-      return state.withMutations((mutable) => {
-        const { fetching, viewEntityIdIndex } = action.payload;
+      const { fetching, viewEntityIdIndex } = action.payload;
 
+      return state.withMutations((mutable) => {
         mutable.set('fetchingDiffContent', fetching);
         mutable.set('viewEntityIdIndex', viewEntityIdIndex);
         return mutable;
@@ -154,9 +171,9 @@ export function reducer(
     }
     // リビジョン同士の差分の比較をできずに終了
     case types.asyncFetchDiffContentFailed: {
-      return state.withMutations((mutable) => {
-        const { fetching } = action.payload;
+      const { fetching } = action.payload;
 
+      return state.withMutations((mutable) => {
         mutable.set('fetchingDiffContent', fetching);
         return mutable;
       });

@@ -18,6 +18,10 @@ const Component: React.FC<Props> = ({ classes, className, title }: Props) => {
     return <></>;
   }
 
+  if (title === 'HTTP 404') {
+    return <h1 className={classNames(className, classes)}>NOT FOUND</h1>;
+  }
+
   return <h1 className={classNames(className, classes)}>{title}</h1>;
 };
 

@@ -1,8 +1,10 @@
 import styled from '@emotion/styled';
 import React, { useState } from 'react';
+import classNames from 'classnames';
 
 /* types */
 type ContainerProps = {
+  classes?: string;
   name: string;
   max?: number;
   initialValue?: number;
@@ -17,13 +19,14 @@ type Props = {
 
 // DOM ------------------------------------------
 const Component: React.FC<Props> = ({
+  classes,
   className,
   max = 0,
   onChange,
   value,
 }: Props) => {
   return (
-    <div className={className}>
+    <div className={classNames(className, classes)}>
       <input
         className="scrubber-Input"
         type="range"
@@ -65,7 +68,7 @@ const StyledComponent = styled(Component)`
   }
 
   .scrubber-Input::-webkit-slider-runnable-track {
-    background: #000000;
+    background: #000;
     border: 0;
     width: 100%;
     height: 5px;
@@ -75,7 +78,7 @@ const StyledComponent = styled(Component)`
   .scrubber-Input::-webkit-slider-thumb {
     -webkit-appearance: none;
     cursor: pointer;
-    background: #000000;
+    background: #000;
     border: 0;
     border-radius: 7px;
     width: 13px;
@@ -84,12 +87,12 @@ const StyledComponent = styled(Component)`
   }
 
   .scrubber-Input:focus::-webkit-slider-runnable-track {
-    background: #787878;
+    background: #000;
   }
 
   .scrubber-Input::-moz-range-track {
     cursor: pointer;
-    background: #000000;
+    background: #000;
     border: 0;
     width: 100%;
     height: 5px;
@@ -97,7 +100,7 @@ const StyledComponent = styled(Component)`
 
   .scrubber-Input::-moz-range-thumb {
     cursor: pointer;
-    background: #000000;
+    background: #000;
     border: 0;
     border-radius: 7px;
     width: 13px;
@@ -115,18 +118,18 @@ const StyledComponent = styled(Component)`
   }
 
   .scrubber-Input::-ms-fill-lower {
-    background: #000000;
+    background: #000;
     border: 0;
   }
 
   .scrubber-Input::-ms-fill-upper {
-    background: #000000;
+    background: #000;
     border: 0;
   }
 
   .scrubber-Input::-ms-thumb {
     cursor: pointer;
-    background: #000000;
+    background: #000;
     border: 0;
     border-radius: 7px;
     width: 13px;
@@ -135,11 +138,11 @@ const StyledComponent = styled(Component)`
   }
 
   .scrubber-Input:focus::-ms-fill-lower {
-    background: #000000;
+    background: #000;
   }
 
   .scrubber-Input:focus::-ms-fill-upper {
-    background: #787878;
+    background: #000;
   }
 
   @supports (-ms-ime-align: auto) {
@@ -151,6 +154,7 @@ const StyledComponent = styled(Component)`
 
 // Container ------------------------------------------
 const Scrubber: React.FC<ContainerProps> = ({
+  classes,
   name,
   max,
   initialValue = 0,
@@ -168,7 +172,13 @@ const Scrubber: React.FC<ContainerProps> = ({
   };
 
   return (
-    <StyledComponent name={name} max={max} onChange={onChange} value={value} />
+    <StyledComponent
+      classes={classes}
+      name={name}
+      max={max}
+      onChange={onChange}
+      value={value}
+    />
   );
 };
 

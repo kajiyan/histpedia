@@ -26,6 +26,7 @@ const Component: React.FC<Props> = ({
   return (
     <div className={classNames(className, classes)}>
       <Scrubber
+        classes="seekbar-Scrubber"
         max={max}
         name="progress"
         initialValue={initialValue}
@@ -38,6 +39,41 @@ const Component: React.FC<Props> = ({
 // Style ------------------------------------------
 const StyledComponent = styled(Component)`
   height: 100%;
+  position: relative;
+  overflow: hidden;
+
+  &::before,
+  &::after {
+    box-sizing: content-box;
+    content: '';
+    display: block;
+    width: 10%;
+    height: 50%;
+    right: 0;
+    top: -3px;
+    position: absolute;
+  }
+
+  &::before {
+    background: linear-gradient(
+      90deg,
+      rgba(0, 0, 0, 1) 0%,
+      rgba(255, 255, 255, 1) 100%
+    );
+    padding: 0 0 5px;
+    z-index: 0;
+  }
+
+  &::after {
+    background-color: #fff;
+    z-index: 1;
+  }
+
+  .seekbar-Scrubber {
+    width: 90%;
+    position: relative;
+    z-index: 2;
+  }
 `;
 
 // Container ------------------------------------------

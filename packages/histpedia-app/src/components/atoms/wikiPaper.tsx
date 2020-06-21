@@ -30,12 +30,12 @@ const StyledComponent = styled(Component)`
   font-size: 1.5em;
 
   inc {
-    background-color: #ffeef0;
+    background-color: #fdb8c0;
     text-decoration: none;
   }
 
   del {
-    background-color: #e6ffed;
+    background-color: #acf2bd;
     text-decoration: none;
   }
 `;

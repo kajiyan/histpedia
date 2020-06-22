@@ -51,7 +51,7 @@ const StyledComponent = styled(Component)`
 `;
 
 // Container ------------------------------------------
-const Home: React.FC<ContainerProps> = ({ hoge }: ContainerProps) => {
+const Home: React.FC<ContainerProps> = () => {
   return <StyledComponent />;
 };
 

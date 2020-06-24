@@ -13,6 +13,7 @@ type ContainerProps = {
 type Props = {
   className?: string;
   onClick: () => void;
+  value: boolean;
 } & ContainerProps;
 
 // DOM ------------------------------------------
@@ -21,10 +22,18 @@ const Component: React.FC<Props> = ({
   classes,
   className,
   onClick,
+  value,
 }: Props) => {
   return (
     <button
-      className={classNames(className, classes)}
+      className={classNames(
+        className,
+        {
+          'tglBtn-on': value,
+          'tglBtn-off': !value,
+        },
+        classes
+      )}
       type="button"
       onClick={onClick}
     >
@@ -34,7 +43,30 @@ const Component: React.FC<Props> = ({
 };
 
 // Style ------------------------------------------
-const StyledComponent = styled(Component)``;
+const StyledComponent = styled(Component)`
+  display: inline-block;
+  border: solid 1px #000;
+  border-radius: 2px 0 0 2px;
+  font-size: 16px;
+  font-size: 1.6rem;
+  font-weight: 700;
+  text-align: center;
+  line-height: 1.6;
+  width: 100%;
+  padding: 0.8em 1.2em;
+  transition: background-color 0.1s ease, color 0.1s ease;
+
+  &:focus {
+    box-shadow: inset 0 0 0 1px #000, inset 0 0 0 2px #fff;
+    outline: 0;
+  }
+
+  &:hover,
+  &.tglBtn-on {
+    background-color: #000;
+    color: #fff;
+  }
+`;
 
 // Container ------------------------------------------
 const ToggleButton: React.FC<ContainerProps> = ({
@@ -47,6 +79,10 @@ const ToggleButton: React.FC<ContainerProps> = ({
 
   console.log('[ToggleButton] render', value);
 
+  if (value !== initialValue) {
+    setValue(initialValue);
+  }
+
   const onClick = () => {
     const nextValue = !value;
 
@@ -55,7 +91,7 @@ const ToggleButton: React.FC<ContainerProps> = ({
   };
 
   return (
-    <StyledComponent classes={classes} onClick={onClick}>
+    <StyledComponent classes={classes} onClick={onClick} value={value}>
       {children}
     </StyledComponent>
   );

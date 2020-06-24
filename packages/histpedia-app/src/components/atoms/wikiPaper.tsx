@@ -29,14 +29,31 @@ const Component: React.FC<Props> = ({ className, text }: Props) => {
 const StyledComponent = styled(Component)`
   font-size: 1.5em;
 
-  inc {
-    background-color: #fdb8c0;
+  ins,
+  del {
+    &:after {
+      font-size: 0.6em;
+      vertical-align: top;
+      padding: 0 0.25em;
+    }
+  }
+
+  ins {
+    background-color: #acf2bd;
     text-decoration: none;
+
+    &:after {
+      content: '+';
+    }
   }
 
   del {
-    background-color: #acf2bd;
+    background-color: #fdb8c0;
     text-decoration: none;
+
+    &:after {
+      content: '-';
+    }
   }
 `;
 

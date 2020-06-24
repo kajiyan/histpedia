@@ -181,8 +181,8 @@ function fetchDiffContent(
 
                     // Worker に比較する HTML を送る
                     diffWorker.postMessage({
-                      htmlA: currentEntity?.text,
-                      htmlB: prevEntity?.text,
+                      htmlA: prevEntity?.text.replace(/\r?\n/g, ''),
+                      htmlB: currentEntity?.text.replace(/\r?\n/g, ''),
                     });
                   } else {
                     // text キーに値が存在しなければコンテンツの取得に失敗しているので

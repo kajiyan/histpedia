@@ -26,7 +26,7 @@ const Component: React.FC<Props> = ({
   if (paused) {
     return (
       <button
-        className={classNames(className, classes)}
+        className={classNames(className, 'plybtn-paused', classes)}
         type="button"
         onClick={onClick}
       >
@@ -37,7 +37,7 @@ const Component: React.FC<Props> = ({
           viewBox="0 0 46 36"
           className="pb-SVG"
         >
-          <title>再生</title>
+          <title>play</title>
           <path d="M16 27L16 9 30 18 16 27" />
         </svg>
       </button>
@@ -46,7 +46,7 @@ const Component: React.FC<Props> = ({
 
   return (
     <button
-      className={classNames(className, classes)}
+      className={classNames(className, 'plybtn-playing', classes)}
       type="button"
       onClick={onClick}
     >
@@ -57,7 +57,7 @@ const Component: React.FC<Props> = ({
         viewBox="0 0 46 36"
         className="pb-SVG"
       >
-        <title>一時停止</title>
+        <title>pause</title>
         <path d="M16.5 10H20.5V26H16.5zM25.5 10H29.5V26H25.5z" />
       </svg>
     </button>
@@ -80,7 +80,13 @@ const StyledComponent = styled(Component)`
     position: relative;
   }
 
-  &:hover {
+  &:focus {
+    box-shadow: inset 0 0 0 1px #000, inset 0 0 0 2px #fff;
+    outline: 0;
+  }
+
+  &:hover,
+  &.plybtn-playing {
     background-color: #000;
     color: #fff;
   }

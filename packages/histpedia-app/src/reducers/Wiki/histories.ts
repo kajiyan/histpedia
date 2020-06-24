@@ -45,7 +45,15 @@ export function reducer(
     // PageID の取得開始
     case types.asyncFetchPageIdStarted: {
       return state.withMutations((mutable) => {
-        mutable.merge(defaultState);
+        mutable.merge({
+          currentEntityIdIndex: defaultState.currentEntityIdIndex,
+          diff: defaultState.diff,
+          entityIds: defaultState.entityIds,
+          fetchingDiffContent: defaultState.fetchingDiffContent,
+          paused: defaultState.paused,
+          stylesheets: defaultState.stylesheets,
+          viewEntityIdIndex: defaultState.viewEntityIdIndex,
+        });
         return mutable;
       });
     }

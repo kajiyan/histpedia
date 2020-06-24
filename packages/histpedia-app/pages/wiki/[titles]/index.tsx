@@ -23,14 +23,16 @@ const WikiPage = (): JSX.Element => {
   }, shallowEqual);
 
   const { currentTitle, entityIds, stylesheets, pageid, title } = wikiState;
-  // string 型へキャスト、titles が undefined の場合は 404 ページが表示されるので undefined の可能性はない
-  const titles = decodeURIComponent(router.query.titles as string);
+  const { titles } = router.query;
 
   useEffect(() => {
     // pageID が未取得、あるいは前回の開いた wiki/[titles] と
     // タイトルが異なっていれば pageID を再取得する
-    if (typeof pageid === 'undefined' || currentTitle !== titles) {
-      dispatch(WikiActions.fetchPageId(titles as string));
+    if (typeof pageid === 'undefined' && typeof titles !== 'undefined') {
+      const decodeTitles = decodeURIComponent(titles as string);
+      if (currentTitle !== decodeTitles) {
+        dispatch(WikiActions.fetchPageId(decodeTitles));
+      }
     }
 
     if (

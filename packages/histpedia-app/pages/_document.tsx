@@ -32,6 +32,10 @@ export default class CustomDocument extends NextDocument<Props> {
           />
           <meta name="format-detection" content="telephone=no" />
           <title>Histpedia</title>
+          <link
+            href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@700&display=swap"
+            rel="stylesheet"
+          />
         </Head>
         <body className="hp-Body">
           <Main />

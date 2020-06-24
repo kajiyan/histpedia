@@ -8,6 +8,7 @@ import NextDocument, {
   NextScript,
 } from 'next/document';
 import React from 'react';
+import { GA_TARGET_ID } from '../src/utils/gtag';
 import globalStyle from '../styles/global-style';
 
 // eslint-disable-next-line @typescript-eslint/ban-types
@@ -35,6 +36,21 @@ export default class CustomDocument extends NextDocument<Props> {
           <link
             href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@700&display=swap"
             rel="stylesheet"
+          />
+          <script
+            async
+            src={`https://www.googletagmanager.com/gtag/js?id=${GA_TARGET_ID}`}
+          />
+          <script
+            // eslint-disable-next-line react/no-danger
+            dangerouslySetInnerHTML={{
+              __html: `
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                gtag('js', new Date());
+                gtag('config', '${GA_TARGET_ID}', { page_path: window.location.pathname });
+              `,
+            }}
           />
         </Head>
         <body className="hp-Body">

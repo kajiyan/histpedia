@@ -32,7 +32,9 @@ const Component: React.FC<Props> = ({
 
 // Style ------------------------------------------
 const StyledComponent = styled(Component)`
+  font-family: 'Roboto Condensed', sans-serif;
   font-size: 1.4rem;
+  font-weight: 700;
   letter-spacing: 0.02em;
   line-height: 1.6;
 `;

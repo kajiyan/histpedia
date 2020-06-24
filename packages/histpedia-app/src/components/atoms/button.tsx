@@ -40,6 +40,7 @@ const StyledComponent = styled(Component)`
   border: solid 1px #000;
   border-radius: 2px 0 0 2px;
   color: #fff;
+  font-family: 'Roboto Condensed', sans-serif;
   font-size: 16px;
   font-size: 1.6rem;
   font-weight: 700;

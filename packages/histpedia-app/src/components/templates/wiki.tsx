@@ -3,6 +3,7 @@ import React from 'react';
 import { List } from 'immutable';
 import Controller from '../organisms/controller';
 import Header from '../organisms/wiki/header';
+import Progress from '../organisms/wiki/progress';
 import Player from '../organisms/player';
 
 /* types */
@@ -18,6 +19,7 @@ type Props = {
 const Component: React.FC<Props> = ({ className, entityIds }: Props) => {
   return (
     <div className={className}>
+      <Progress />
       <Header entityIds={entityIds} />
       <Player entityIds={entityIds} />
       <Controller entityIds={entityIds} />

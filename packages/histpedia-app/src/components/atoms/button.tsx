@@ -38,7 +38,7 @@ const Component: React.FC<Props> = ({
 const StyledComponent = styled(Component)`
   background-color: #000;
   border: solid 1px #000;
-  border-radius: 2px 0 0 2px;
+  border-radius: 2px;
   color: #fff;
   font-family: 'Roboto Condensed', sans-serif;
   font-size: 16px;

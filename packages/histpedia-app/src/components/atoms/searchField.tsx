@@ -37,7 +37,7 @@ const Component: React.FC<Props> = ({
 // Style ------------------------------------------
 const StyledComponent = styled(Component)`
   border: solid 1px #000;
-  border-radius: 2px 0 0 2px;
+  border-radius: 2px;
   font-size: 16px;
   font-size: 1.6rem;
   padding: 0.8em 1.2em;

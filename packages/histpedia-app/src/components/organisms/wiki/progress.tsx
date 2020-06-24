@@ -29,9 +29,15 @@ const Component: React.FC<Props> = ({ classes, className, loading }: Props) => {
       <span className="prgrs-Letter">i</span>
       <span className="prgrs-Letter">n</span>
       <span className="prgrs-Letter">g</span>
-      <span className="prgrs-Letter prgrs-Letter-blink">#</span>
-      <span className="prgrs-Letter prgrs-Letter-blink">#</span>
-      <span className="prgrs-Letter prgrs-Letter-blink">#</span>
+      <span className="prgrs-Letter prgrs-Letter-blink prgrs-Letter-blink-0">
+        #
+      </span>
+      <span className="prgrs-Letter prgrs-Letter-blink prgrs-Letter-blink-1">
+        #
+      </span>
+      <span className="prgrs-Letter prgrs-Letter-blink prgrs-Letter-blink-2">
+        #
+      </span>
     </div>
   );
 };
@@ -74,22 +80,22 @@ const StyledComponent = styled(Component)`
     width: 1em;
     height: 1em;
     transform: rotate(-90deg);
-
-    &:nth-last-child(1) {
-      animation-delay: 0.2s;
-    }
-
-    &:nth-last-child(2) {
-      animation-delay: 0.1s;
-    }
-
-    &:nth-last-child(3) {
-      animation-delay: 0s;
-    }
   }
 
   .prgrs-Letter-blink {
     animation: blink 0.6s steps(2, start) infinite;
+  }
+
+  .prgrs-Letter-blink-2 {
+    animation-delay: 0.2s;
+  }
+
+  .prgrs-Letter-blink-1 {
+    animation-delay: 0.1s;
+  }
+
+  .prgrs-Letter-blink-0 {
+    animation-delay: 0s;
   }
 `;
 

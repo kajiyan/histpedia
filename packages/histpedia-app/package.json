@@ -14,6 +14,7 @@
     "babel-plugin-emotion": "^10.0.33",
     "next-compose-plugins": "^2.2.0",
     "next-images": "^1.4.0",
+    "pm2": "^4.4.0",
     "postcss-loader": "^3.0.0",
     "typescript": "^3.9.3",
     "worker-loader": "^2.0.0"
@@ -40,12 +41,15 @@
   },
   "license": "MIT",
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "prod": "yarn build && yarn export",
+    "analyze": "ANALYZE=true yarn build",
+    "build": "yarn preprod && next build",
+    "dev": "next dev -p 3002",
     "export": "yarn preprod && NODE_ENV=prodyuction yarn build && next export",
-    "start": "next start -p 3000",
-    "preprod": "rimraf out && rimraf .next"
+    "preprod": "rimraf out && rimraf .next",
+    "server:delete": "pm2 delete \"Histpedia\"",
+    "server:launch": "pm2 start npm --name 'Histpedia' -- run start",
+    "server:logs": "pm2 logs \"Histpedia\"",
+    "start": "next start -p 3002"
   },
   "name": "@kajiyan/histpedia-app",
   "version": "1.0.0"

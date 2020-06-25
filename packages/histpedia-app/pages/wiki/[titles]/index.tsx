@@ -59,6 +59,12 @@ const WikiPage = (): JSX.Element => {
   return (
     <>
       <Head>
+        <meta property="og:title" content={`${currentTitle} - Histpedia`} />
+        <meta property="og:type" content="article" />
+        <meta
+          property="og:url"
+          content={`https://histpedia.org/${currentTitle}/`}
+        />
         <title>{currentTitle} - Histpedia</title>
         {stylesheets.map((stylesheet) => (
           <link rel="stylesheet" href={stylesheet} key={stylesheet} />

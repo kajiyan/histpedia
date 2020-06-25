@@ -15,7 +15,6 @@ declare module 'worker-loader?name=static/[hash].worker.js!*' {
 }
 
 declare type Actions =
-  | CreatorsToActions<typeof import('../src/actions/Example')>
   | CreatorsToActions<typeof import('../src/actions/Wiki/controller')>
   | CreatorsToActions<typeof import('../src/actions/Wiki/fetchContent')>
   | CreatorsToActions<typeof import('../src/actions/Wiki/fetchDiffContent')>

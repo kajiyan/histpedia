@@ -59,7 +59,8 @@ const StyledComponent = styled(Component)`
 
 // Container ------------------------------------------
 const wikiPaper: React.FC<ContainerProps> = ({ text }: ContainerProps) => {
-  console.log('[wikiPaper] render');
+  // console.log('[wikiPaper] render');
+
   return <StyledComponent text={text} />;
 };
 

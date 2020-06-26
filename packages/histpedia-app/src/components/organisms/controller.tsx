@@ -8,14 +8,13 @@ import ToggleButton from '../atoms/toggleButton';
 import Seekbar from '../molecules/seekbar';
 import { StoreState } from '../../store/index';
 
-// Todo 進捗を拾う
-
 /* types */
 type ContainerProps = {
   entityIds: List<string>;
 };
 
 type Props = {
+  hotPointsList: List<number | undefined>;
   className?: string;
   max: number;
   initialDiff: boolean;
@@ -29,6 +28,7 @@ type Props = {
 
 // DOM ------------------------------------------
 const Component: React.FC<Props> = ({
+  hotPointsList,
   className,
   max,
   initialDiff,
@@ -66,6 +66,7 @@ const Component: React.FC<Props> = ({
       </ToggleButton>
       <Seekbar
         classes="ctr-Seekbar"
+        hotPointsList={hotPointsList}
         max={max}
         initialValue={initialValue}
         onSeek={onSeek}
@@ -140,8 +141,9 @@ const Controller: React.FC<ContainerProps> = ({
       paused,
     }))(state.wiki.histories);
   }, shallowEqual);
-  // 差分のバイト数の List
-  const diffBytesList = useSelector(
+
+  // リビジョン同士の差分バイト数の List
+  const hotPointsList = useSelector(
     (state: StoreState) => {
       const { entities, histories } = state.wiki;
 
@@ -153,20 +155,7 @@ const Controller: React.FC<ContainerProps> = ({
       return is(listA, listB);
     }
   );
-  // ユーザーの List
-  const userList = useSelector(
-    (state: StoreState) => {
-      const { entities, histories } = state.wiki;
 
-      return histories.entityIds
-        .map((entityId) => entities.history.get(entityId)?.user)
-        .toSet();
-    },
-    (listA, listB) => {
-      return is(listA, listB);
-    }
-  );
-  // console.log(diffBytesList.toJS(), userList.toJS());
   const { currentEntityIdIndex, diff, fetchingDiffContent, paused } = wikiState;
   const max = entityIds.size - 1;
 
@@ -225,6 +214,7 @@ const Controller: React.FC<ContainerProps> = ({
     <StyledComponent
       entityIds={entityIds}
       max={max}
+      hotPointsList={hotPointsList}
       initialDiff={diff}
       initialPaused={paused}
       initialValue={currentEntityIdIndex}

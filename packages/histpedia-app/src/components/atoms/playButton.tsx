@@ -109,7 +109,7 @@ const PlayButton: React.FC<ContainerProps> = ({
   onPlay = function noop() {},
   initialPaused = false,
 }: ContainerProps) => {
-  console.log('[PlayButton] render');
+  // console.log('[PlayButton] render');
 
   const [paused, setPaused] = useState(initialPaused);
 

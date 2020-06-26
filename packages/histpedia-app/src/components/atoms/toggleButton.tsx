@@ -77,7 +77,7 @@ const ToggleButton: React.FC<ContainerProps> = ({
 }: ContainerProps) => {
   const [value, setValue] = useState(initialValue);
 
-  console.log('[ToggleButton] render', value);
+  // console.log('[ToggleButton] render', value);
 
   if (value !== initialValue) {
     setValue(initialValue);

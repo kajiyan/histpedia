@@ -36,7 +36,7 @@ const StyledComponent = styled(Component)`
 
 // Container ------------------------------------------
 const Player: React.FC<ContainerProps> = ({ entityIds }: ContainerProps) => {
-  console.log('[Player] render');
+  // console.log('[Player] render');
 
   const { diff, entity } = useSelector((state: StoreState) => {
     const { entities, histories } = state.wiki;

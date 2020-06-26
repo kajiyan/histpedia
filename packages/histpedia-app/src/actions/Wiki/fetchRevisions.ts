@@ -113,13 +113,15 @@ function fetchRevisions(
           if (index > 0) {
             return {
               ...revision,
-              diffBytes: revision.size - revisions[index - 1].size,
+              // 差分はその絶対値とする
+              diffBytes: Math.abs(revision.size - revisions[index - 1].size),
             };
           }
 
           return {
             ...revision,
-            diffBytes: revision.size,
+            // 最初のリビジョンにマイナス方向の差分はないと推測されるが念のため
+            diffBytes: Math.abs(revision.size),
           };
         }
       );

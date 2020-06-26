@@ -41,7 +41,8 @@ const WikiBook: React.FC<ContainerProps> = ({
   diff,
   entity,
 }: ContainerProps) => {
-  console.log('[WikiBook] render');
+  // console.log('[WikiBook] render');
+
   return <StyledComponent diff={diff} entity={entity} />;
 };
 

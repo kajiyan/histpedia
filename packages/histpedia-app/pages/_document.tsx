@@ -44,8 +44,8 @@ export default class CustomDocument extends NextDocument<Props> {
             content="https://histpedia.org/shared/images/ogp-0.png"
           />
           <title>Histpedia</title>
-          <link rel="manifest" href="site.webmanifest" />
-          <link rel="apple-touch-icon" href="icon.png" />
+          <link rel="manifest" href="/site.webmanifest" />
+          <link rel="apple-touch-icon" href="/icon.png" />
           <link
             href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@700&display=swap"
             rel="stylesheet"

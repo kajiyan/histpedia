@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import React, { useEffect } from 'react';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
-import { List } from 'immutable';
+import { List, is } from 'immutable';
 import WikiActions from '../../actions/Wiki';
 import PlayButton from '../atoms/playButton';
 import ToggleButton from '../atoms/toggleButton';
@@ -140,6 +140,33 @@ const Controller: React.FC<ContainerProps> = ({
       paused,
     }))(state.wiki.histories);
   }, shallowEqual);
+  // 差分のバイト数の List
+  const diffBytesList = useSelector(
+    (state: StoreState) => {
+      const { entities, histories } = state.wiki;
+
+      return histories.entityIds.map(
+        (entityId) => entities.history.get(entityId)?.diffBytes
+      );
+    },
+    (listA, listB) => {
+      return is(listA, listB);
+    }
+  );
+  // ユーザーの List
+  const userList = useSelector(
+    (state: StoreState) => {
+      const { entities, histories } = state.wiki;
+
+      return histories.entityIds
+        .map((entityId) => entities.history.get(entityId)?.user)
+        .toSet();
+    },
+    (listA, listB) => {
+      return is(listA, listB);
+    }
+  );
+  // console.log(diffBytesList.toJS(), userList.toJS());
   const { currentEntityIdIndex, diff, fetchingDiffContent, paused } = wikiState;
   const max = entityIds.size - 1;
 

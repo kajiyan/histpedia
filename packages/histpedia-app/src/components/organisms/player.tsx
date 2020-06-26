@@ -38,7 +38,6 @@ const StyledComponent = styled(Component)`
 const Player: React.FC<ContainerProps> = ({ entityIds }: ContainerProps) => {
   console.log('[Player] render');
 
-  // const dispatch = useDispatch();
   const { diff, entity } = useSelector((state: StoreState) => {
     const { entities, histories } = state.wiki;
     const entityId = entityIds.get(histories.viewEntityIdIndex);

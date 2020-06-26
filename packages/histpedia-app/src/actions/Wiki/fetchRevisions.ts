@@ -74,49 +74,55 @@ function fetchRevisions(
     asyncFetchRevisionsStarted(dispatch);
 
     try {
-      const revisions = await new Promise<WikiRevision[] | Error>(
-        (resolve, reject) => {
-          (async function stackRevisions(
-            results: WikiRevision[] = [],
-            rvstartid?: number
+      let revisions = await new Promise<WikiRevision[]>((resolve, reject) => {
+        (async function stackRevisions(
+          results: WikiRevision[] = [],
+          rvstartid?: number
+        ) {
+          const response = await repository.getRevisions(pageid, rvstartid);
+          const { pages } = response.data.query;
+
+          // 検索結果が1件以上返ってきており、0件目にリビジョンが存在しているか
+          if (
+            pages.length >= 1 &&
+            pages[0].revisions &&
+            typeof pages[0].missing === 'undefined'
           ) {
-            const response = await repository.getRevisions(pageid, rvstartid);
-            const { pages } = response.data.query;
+            const r = pages[0].revisions;
+            // 取得したリビジョンの末尾の親リビジョンのIDを取得する
+            const endParentId = r[r.length - 1].parentid;
+            const isComplete = endParentId === ROOT_REVISION_ID;
 
-            // 検索結果が1件以上返ってきており、0件目にリビジョンが存在しているか
-            if (
-              pages.length >= 1 &&
-              pages[0].revisions &&
-              typeof pages[0].missing === 'undefined'
-            ) {
-              const r = pages[0].revisions;
-              // 取得したリビジョンの末尾の親リビジョンのIDを取得する
-              const endParentId = r[r.length - 1].parentid;
-              const isComplete = endParentId === ROOT_REVISION_ID;
+            results.push(...r);
 
-              results.push(...r);
-
-              if (isComplete) {
-                resolve(results.reverse());
-              } else {
-                stackRevisions(results, endParentId);
-              }
+            if (isComplete) {
+              resolve(results.reverse());
             } else {
-              // リビジョンの取得に失敗した場合はエラーメッセージを指定して状態をrejectにする
-              reject(new Error('missing'));
+              stackRevisions(results, endParentId);
             }
-          })();
+          } else {
+            // リビジョンの取得に失敗した場合はエラーメッセージを指定して状態をrejectにする
+            reject(new Error('missing'));
+          }
+        })();
+      });
+
+      // 差分のバイト数を求める
+      revisions = revisions.map(
+        (revision, index): WikiRevision => {
+          if (index > 0) {
+            return {
+              ...revision,
+              diffBytes: revision.size - revisions[index - 1].size,
+            };
+          }
+
+          return {
+            ...revision,
+            diffBytes: revision.size,
+          };
         }
       );
-
-      // 差分のバイト数を求める場合
-      // revisions.forEach((revision, index) => {
-      //   if (index > 0) {
-      //     revision.diff = revision.size - revisions[index - 1].size;
-      //     return;
-      //   }
-      //   revision.diff = revision.size;
-      // });
 
       const revisionSchema = new schema.Entity<WikiRevision>(
         'revisions',

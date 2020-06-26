@@ -57,10 +57,13 @@ declare type WikiPageIdResponse = {
 };
 
 declare type WikiRevision = {
-  revid: number;
+  anon?: true;
+  diffBytes: number;
   parentid: number;
-  timestamp: string;
+  revid: number;
   size: number;
+  timestamp: string;
+  user: string;
 };
 
 declare type WikiRevisionsResponse = {

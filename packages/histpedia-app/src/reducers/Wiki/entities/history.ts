@@ -19,9 +19,12 @@ export function reducer(
       const { result, entities } = action.payload;
 
       return result.reduce((accumulator, entityId) => {
-        const { revid, timestamp } = entities.revisions[entityId];
+        const { diffBytes, revid, timestamp, user } = entities.revisions[
+          entityId
+        ];
+
         return accumulator.update(entityId, new History(), (history) => {
-          return history.merge({ revid, timestamp });
+          return history.merge({ diffBytes, revid, timestamp, user });
         });
       }, state);
     }

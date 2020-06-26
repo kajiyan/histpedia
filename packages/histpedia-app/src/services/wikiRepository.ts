@@ -45,7 +45,7 @@ export function getRevisions(
     pageids: number;
     prop: 'revisions';
     rvlimit: 'max';
-    rvprop: 'ids|timestamp|size';
+    rvprop: 'ids|size|timestamp|user';
     rvstartid?: number;
     format: 'json';
     formatversion: 'latest';
@@ -55,7 +55,7 @@ export function getRevisions(
     pageids: pageid,
     prop: 'revisions',
     rvlimit: 'max',
-    rvprop: 'ids|timestamp|size',
+    rvprop: 'ids|size|timestamp|user',
     format: 'json',
     formatversion: 'latest',
     utf8: 1,

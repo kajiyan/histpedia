@@ -85,7 +85,7 @@ const StyledComponent = styled(Component)`
   position: fixed;
   bottom: 0;
   left: 0;
-  z-index: 1;
+  z-index: 2;
 
   .ctr-PlayButton {
     border-right: 1px solid #000;
@@ -130,7 +130,7 @@ const StyledComponent = styled(Component)`
 const Controller: React.FC<ContainerProps> = ({
   entityIds,
 }: ContainerProps) => {
-  console.log('[Controller] render');
+  // console.log('[Controller] render');
 
   const dispatch = useDispatch();
   const wikiState = useSelector((state: StoreState) => {
@@ -205,7 +205,7 @@ const Controller: React.FC<ContainerProps> = ({
     }, 1000);
 
     return () => {
-      console.log('[Controller] clear', intervalId);
+      // console.log('[Controller] clear', intervalId);
       clearInterval(intervalId);
     };
   }, [currentEntityIdIndex, diff, dispatch, fetchingDiffContent, max, paused]);

@@ -64,7 +64,7 @@ const StyledComponent = styled(Component)`
   position: fixed;
   top: 50%;
   right: 0;
-  z-index: 2;
+  z-index: 3;
   transform: translateY(-50%);
   opacity: 0;
   visibility: hidden;

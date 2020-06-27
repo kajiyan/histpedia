@@ -79,7 +79,7 @@ const StyledComponent = styled(Component)`
     -webkit-appearance: none;
     cursor: pointer;
     background: #000;
-    border: 0;
+    border: solid 1px #fff;
     border-radius: 7px;
     width: 13px;
     height: 13px;
@@ -101,7 +101,7 @@ const StyledComponent = styled(Component)`
   .scrubber-Input::-moz-range-thumb {
     cursor: pointer;
     background: #000;
-    border: 0;
+    border: solid 1px #fff;
     border-radius: 7px;
     width: 13px;
     height: 13px;
@@ -130,7 +130,7 @@ const StyledComponent = styled(Component)`
   .scrubber-Input::-ms-thumb {
     cursor: pointer;
     background: #000;
-    border: 0;
+    border: solid 1px #fff;
     border-radius: 7px;
     width: 13px;
     height: 13px;

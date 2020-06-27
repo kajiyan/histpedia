@@ -47,7 +47,7 @@ const StyledComponent = styled(Component)`
   position: fixed;
   top: 0;
   left: 0;
-  z-index: 1;
+  z-index: 2;
 
   .wiki-Header_Inner {
     display: flex;

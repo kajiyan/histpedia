@@ -91,7 +91,7 @@ const StyledComponent = styled(Component)`
   .seekbar-Scrubber {
     width: 90%;
     position: relative;
-    z-index: 2;
+    z-index: 3;
   }
 
   .seekbar-HotSpots {
@@ -101,7 +101,7 @@ const StyledComponent = styled(Component)`
     position: absolute;
     top: 0;
     left: 0;
-    z-index: 3;
+    z-index: 2;
   }
 `;
 

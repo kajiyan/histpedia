@@ -1,8 +1,9 @@
 import styled from '@emotion/styled';
 import React from 'react';
 import { shallowEqual, useSelector } from 'react-redux';
-import { List } from 'immutable';
+import { List, is } from 'immutable';
 import History from '../../reducers/Wiki/models/History';
+import EndRoll from '../molecules/endroll';
 import WikiBook from '../molecules/wikiBook';
 import Container from '../molecules/container';
 import { StoreState } from '../../store/index';
@@ -15,16 +16,25 @@ type ContainerProps = {
 type Props = {
   className?: string;
   diff: boolean;
+  ended: boolean;
   entity?: History;
+  userList: List<string | undefined>;
 } & ContainerProps;
 
 // DOM ------------------------------------------
-const Component: React.FC<Props> = ({ className, diff, entity }: Props) => {
+const Component: React.FC<Props> = ({
+  className,
+  diff,
+  ended,
+  entity,
+  userList,
+}: Props) => {
   return (
     <div className={className}>
       <Container>
         <WikiBook diff={diff} entity={entity} />
       </Container>
+      <EndRoll editorList={userList} ended={ended} />
     </div>
   );
 };
@@ -38,24 +48,57 @@ const StyledComponent = styled(Component)`
 const Player: React.FC<ContainerProps> = ({ entityIds }: ContainerProps) => {
   // console.log('[Player] render');
 
-  const { diff, entity } = useSelector((state: StoreState) => {
-    const { entities, histories } = state.wiki;
-    const entityId = entityIds.get(histories.viewEntityIdIndex);
-
-    if (entityId) {
-      return {
-        diff: histories.diff,
-        entity: entities.history.get(entityId),
-      };
-    }
+  const { diff, ended } = useSelector((state: StoreState) => {
+    const { histories } = state.wiki;
 
     return {
       diff: histories.diff,
-      entity: undefined,
+      ended:
+        entityIds.size - 1 === histories.currentEntityIdIndex &&
+        !histories.fetchingDiffContent,
     };
   }, shallowEqual);
 
-  return <StyledComponent diff={diff} entity={entity} entityIds={entityIds} />;
+  const entity = useSelector(
+    (state: StoreState) => {
+      const { entities, histories } = state.wiki;
+      const entityId = entityIds.get(histories.viewEntityIdIndex);
+
+      if (entityId) {
+        return entities.history.get(entityId);
+      }
+
+      return undefined;
+    },
+    (entityA, entityB) => {
+      // console.log(is(entityA, entityB));
+      return is(entityA, entityB);
+    }
+  );
+
+  const userList = useSelector(
+    (state: StoreState) => {
+      const { entities, histories } = state.wiki;
+
+      return histories.entityIds
+        .map((entityId) => entities.history.get(entityId)?.user)
+        .toSet()
+        .toList();
+    },
+    (listA, listB) => {
+      return is(listA, listB);
+    }
+  );
+
+  return (
+    <StyledComponent
+      diff={diff}
+      ended={ended}
+      entity={entity}
+      entityIds={entityIds}
+      userList={userList}
+    />
+  );
 };
 
 export default Player;

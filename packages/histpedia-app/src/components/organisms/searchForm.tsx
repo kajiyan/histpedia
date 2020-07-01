@@ -73,6 +73,10 @@ const SearchForm: React.FC<ContainerProps> = ({ classes }: ContainerProps) => {
       router.push({
         pathname: `/wiki/${encodeURIComponent(sanitizedTitles)}`,
       });
+      // router.push(
+      //   '/wiki/[titles]',
+      //   `/wiki/${encodeURIComponent(sanitizedTitles)}/`
+      // );
     }
   };
 

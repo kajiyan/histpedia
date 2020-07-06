@@ -28,7 +28,7 @@ const WikiPage = (): JSX.Element => {
   useEffect(() => {
     // pageID が未取得、あるいは前回の開いた wiki/[titles] と
     // タイトルが異なっていれば pageID を再取得する
-    if (typeof pageid === 'undefined' && typeof titles !== 'undefined') {
+    if (typeof titles !== 'undefined') {
       const decodeTitles = decodeURIComponent(titles as string);
       if (currentTitle !== decodeTitles) {
         dispatch(WikiActions.fetchPageId(decodeTitles));

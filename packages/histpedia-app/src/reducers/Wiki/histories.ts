@@ -44,12 +44,16 @@ export function reducer(
   switch (action.type) {
     // PageID の取得開始
     case types.asyncFetchPageIdStarted: {
+      const { currentTitle } = action.payload;
+
       return state.withMutations((mutable) => {
         mutable.merge({
           currentEntityIdIndex: defaultState.currentEntityIdIndex,
+          currentTitle,
           diff: defaultState.diff,
           entityIds: defaultState.entityIds,
           fetchingDiffContent: defaultState.fetchingDiffContent,
+          pageid: defaultState.pageid,
           paused: defaultState.paused,
           stylesheets: defaultState.stylesheets,
           viewEntityIdIndex: defaultState.viewEntityIdIndex,
@@ -59,11 +63,10 @@ export function reducer(
     }
     // PageID の取得成功
     case types.asyncFetchPageIdDone: {
-      const { currentTitle, pageid, title } = action.payload;
+      const { pageid, title } = action.payload;
 
       return state.withMutations((mutable) => {
         mutable.merge({
-          currentTitle,
           pageid,
           title,
         });

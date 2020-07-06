@@ -70,13 +70,10 @@ const SearchForm: React.FC<ContainerProps> = ({ classes }: ContainerProps) => {
 
     // サニタイズした文字列
     if (sanitizedTitles.length > 0) {
-      router.push({
-        pathname: `/wiki/${encodeURIComponent(sanitizedTitles)}`,
-      });
-      // router.push(
-      //   '/wiki/[titles]',
-      //   `/wiki/${encodeURIComponent(sanitizedTitles)}/`
-      // );
+      router.push(
+        '/wiki/[titles]',
+        `/wiki/${encodeURIComponent(sanitizedTitles)}/`
+      );
     }
   };
 

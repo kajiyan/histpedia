@@ -13,6 +13,7 @@ export type Injects = {
   fetchingDiffContent: boolean;
   pageid?: number;
   paused: boolean;
+  shareDialogOpen: boolean;
   stylesheets: Immutable.List<string>;
   title?: string; // データの取得に使用された文字列、例えば「猫」で検索すると「ネコ」にリダイレクトされる
   viewEntityIdIndex: number;
@@ -26,6 +27,7 @@ const defaultState: Injects = {
   fetchingDiffContent: false,
   pageid: undefined,
   paused: false,
+  shareDialogOpen: false,
   stylesheets: Immutable.List<string>(),
   title: undefined,
   viewEntityIdIndex: 0,
@@ -55,6 +57,7 @@ export function reducer(
           fetchingDiffContent: defaultState.fetchingDiffContent,
           pageid: defaultState.pageid,
           paused: defaultState.paused,
+          shareDialogOpen: defaultState.shareDialogOpen,
           stylesheets: defaultState.stylesheets,
           viewEntityIdIndex: defaultState.viewEntityIdIndex,
         });
@@ -157,6 +160,17 @@ export function reducer(
         mutable.merge({
           diff,
           paused,
+        });
+        return mutable;
+      });
+    }
+    // Share Dialog の表示状態を表現する真偽値が更新された時
+    case types.updateShareDialogOpen: {
+      const { shareDialogOpen } = action.payload;
+
+      return state.withMutations((mutable) => {
+        mutable.merge({
+          shareDialogOpen,
         });
         return mutable;
       });

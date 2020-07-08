@@ -8,8 +8,10 @@ import {
   TwitterShareButton,
   TwitterIcon,
 } from 'react-share';
-import { shallowEqual, useSelector } from 'react-redux';
+import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import { List } from 'immutable';
+import WikiActions from '../../actions/Wiki';
+import CloseIcon from '../atoms/icon/closeIcon';
 import Checkbox from '../atoms/checkbox';
 import CopyField from '../atoms/copyField';
 import IconButton from '../atoms/iconButton';
@@ -25,11 +27,10 @@ type Props = {
   defaultCheckedList: {
     [key: string]: boolean;
   };
-  isOpen: boolean;
   modalStyle: SerializedStyles;
   onChange: (event: ChangeEvent<HTMLInputElement>) => void;
   onClose: () => void;
-  onOpene: () => void;
+  open: boolean;
   progress: string;
   timestamp?: string;
   title: string;
@@ -43,11 +44,10 @@ Modal.setAppElement('#__next');
 const Component: React.FC<Props> = ({
   className,
   defaultCheckedList,
-  isOpen,
   modalStyle,
   onChange,
   onClose,
-  onOpene,
+  open,
   progress,
   timestamp,
   title,
@@ -61,7 +61,7 @@ const Component: React.FC<Props> = ({
         className="sd-Modal_Content"
         closeTimeoutMS={250}
         htmlOpenClassName="sd-Modal_HTML-open"
-        isOpen={isOpen}
+        isOpen={open}
         onRequestClose={onClose}
         overlayClassName={{
           base: 'sd-Modal',
@@ -115,15 +115,16 @@ const Component: React.FC<Props> = ({
               </div>
             </div>
 
-            <IconButton classes="sd-Button-close" onClick={onClose}>
-              Close
+            <IconButton
+              classes="sd-Button-close"
+              label="close"
+              onClick={onClose}
+            >
+              <CloseIcon />
             </IconButton>
           </div>
         </div>
       </Modal>
-      <button type="button" onClick={onOpene}>
-        Open
-      </button>
     </div>
   );
 };
@@ -143,6 +144,7 @@ const modalStyle = css`
     transition: opacity 250ms ease-in-out;
 
     .sd-Button-close {
+      width: 28px;
       margin: ${(20 / (632 - 72 * 2)) * 100}%;
       position: absolute;
       top: 0;
@@ -219,7 +221,8 @@ const ShareDialog: React.FC<ContainerProps> = ({
 }: ContainerProps) => {
   // console.log('[ShareDialog] render');
 
-  const { currentTitle, progress, start, timestamp } = useSelector(
+  const dispatch = useDispatch();
+  const { currentTitle, progress, open, start, timestamp } = useSelector(
     (state: StoreState) => {
       const { entities, histories } = state.wiki;
       const entityId = entityIds.get(histories.viewEntityIdIndex);
@@ -228,6 +231,7 @@ const ShareDialog: React.FC<ContainerProps> = ({
       const temp = {
         currentTitle: histories.currentTitle,
         progress: `${from}/${to}`,
+        open: histories.shareDialogOpen,
         start: histories.viewEntityIdIndex,
       };
 
@@ -245,7 +249,6 @@ const ShareDialog: React.FC<ContainerProps> = ({
     },
     shallowEqual
   );
-  const [isOpen, setIsOpen] = useState(true);
   const [checkedList, updateChecked] = useState({
     sdDiff: false,
     sdStart: false,
@@ -270,21 +273,16 @@ const ShareDialog: React.FC<ContainerProps> = ({
   };
 
   const onClose = () => {
-    setIsOpen(false);
-  };
-
-  const onOpen = () => {
-    setIsOpen(true);
+    dispatch(WikiActions.updateShareDialogOpen(false));
   };
 
   return (
     <StyledComponent
       defaultCheckedList={checkedList}
-      isOpen={isOpen}
+      open={open}
       modalStyle={modalStyle}
       onChange={onChange}
       onClose={onClose}
-      onOpene={onOpen}
       progress={progress}
       timestamp={timestamp}
       title={`${currentTitle} - Histpedia`}

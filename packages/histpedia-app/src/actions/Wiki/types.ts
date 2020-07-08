@@ -17,4 +17,5 @@ export default {
   updateCurrentEntityIdIndex: 'WIKI_UPDATE_CURRENT_ENTITY_ID_INDEX',
   updateDiff: 'WIKI_UPDATE_DIFF',
   updatePaused: 'WIKI_UPDATE_PAUSED',
+  updateShareDialogOpen: 'WIKI_UPDATE_SHARE_DIALOG_OPEN',
 } as const;

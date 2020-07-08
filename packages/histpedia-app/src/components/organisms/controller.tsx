@@ -3,6 +3,8 @@ import React, { useEffect } from 'react';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import { List, is } from 'immutable';
 import WikiActions from '../../actions/Wiki';
+import ShareIcon from '../atoms/icon/shareIcon';
+import IconButton from '../atoms/iconButton';
 import PlayButton from '../atoms/playButton';
 import ToggleButton from '../atoms/toggleButton';
 import Seekbar from '../molecules/seekbar';
@@ -20,6 +22,7 @@ type Props = {
   initialDiff: boolean;
   initialPaused: boolean;
   initialValue: number;
+  onClickShare: () => void;
   onPause: () => void;
   onPlay: () => void;
   onSeek: (index: number) => void;
@@ -37,6 +40,7 @@ const Component: React.FC<Props> = ({
   onPause,
   onPlay,
   onSeek,
+  onClickShare,
   onToggle,
 }: Props) => {
   return (
@@ -71,6 +75,13 @@ const Component: React.FC<Props> = ({
         initialValue={initialValue}
         onSeek={onSeek}
       />
+      <IconButton
+        classes="ctr-ShareButton"
+        label="share"
+        onClick={onClickShare}
+      >
+        <ShareIcon />
+      </IconButton>
     </div>
   );
 };
@@ -123,6 +134,14 @@ const StyledComponent = styled(Component)`
 
   .ctr-Seekbar {
     flex-grow: 1;
+  }
+
+  .ctr-ShareButton {
+    border-left: solid 1px #000;
+    border-radius: 0;
+    flex-shrink: 0;
+    width: 46px;
+    height: 100%;
   }
 `;
 
@@ -188,6 +207,10 @@ const Controller: React.FC<ContainerProps> = ({
     dispatch(WikiActions.updateDiff(value));
   };
 
+  const onClickShare = () => {
+    dispatch(WikiActions.updateShareDialogOpen(true));
+  };
+
   useEffect(() => {
     const intervalId = setInterval(() => {
       // fetchDiff
@@ -221,6 +244,7 @@ const Controller: React.FC<ContainerProps> = ({
       onPause={onPause}
       onPlay={onPlay}
       onSeek={onSeek}
+      onClickShare={onClickShare}
       onToggle={onToggle}
     />
   );

@@ -50,8 +50,23 @@ export function updatePaused(
   };
 }
 
+export function updateShareDialogOpen(
+  shareDialogOpen: boolean
+): {
+  type: typeof types.updateShareDialogOpen;
+  payload: {
+    shareDialogOpen: boolean;
+  };
+} {
+  return {
+    type: types.updateShareDialogOpen,
+    payload: { shareDialogOpen },
+  };
+}
+
 export default {
   updateCurrentEntityIdIndex,
   updateDiff,
   updatePaused,
+  updateShareDialogOpen,
 };

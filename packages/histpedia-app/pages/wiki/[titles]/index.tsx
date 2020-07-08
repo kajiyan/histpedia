@@ -63,7 +63,7 @@ const WikiPage = (): JSX.Element => {
         <meta property="og:type" content="article" />
         <meta
           property="og:url"
-          content={`https://histpedia.org/${currentTitle}/`}
+          content={`https://histpedia.org/wiki/${currentTitle}/`}
         />
         <title>{currentTitle} - Histpedia</title>
         {stylesheets.map((stylesheet) => (

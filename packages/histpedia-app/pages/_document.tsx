@@ -47,7 +47,7 @@ export default class CustomDocument extends NextDocument<Props> {
           <link rel="manifest" href="/site.webmanifest" />
           <link rel="apple-touch-icon" href="/icon.png" />
           <link
-            href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@700&display=swap"
+            href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;700&display=swap"
             rel="stylesheet"
           />
           <script

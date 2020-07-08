@@ -219,24 +219,27 @@ const ShareDialog: React.FC<ContainerProps> = ({
 }: ContainerProps) => {
   // console.log('[ShareDialog] render');
 
-  const { currentTitle, timestamp, progress } = useSelector(
+  const { currentTitle, progress, start, timestamp } = useSelector(
     (state: StoreState) => {
       const { entities, histories } = state.wiki;
       const entityId = entityIds.get(histories.viewEntityIdIndex);
       const to = `${entityIds.size - 1}`;
       const from = `${histories.viewEntityIdIndex}`.padStart(to.length, '0');
+      const temp = {
+        currentTitle: histories.currentTitle,
+        progress: `${from}/${to}`,
+        start: histories.viewEntityIdIndex,
+      };
 
       if (entityId) {
         return {
-          currentTitle: histories.currentTitle,
-          progress: `${from}/${to}`,
+          ...temp,
           timestamp: entities.history.get(entityId)?.formattedTimestamp(),
         };
       }
 
       return {
-        currentTitle: histories.currentTitle,
-        progress: `${from}/${to}`,
+        ...temp,
         timestamp: undefined,
       };
     },
@@ -255,7 +258,7 @@ const ShareDialog: React.FC<ContainerProps> = ({
   if (checkedList.sdDiff || checkedList.sdStart) {
     url += '?';
     url += checkedList.sdDiff ? 'diff=1' : '';
-    url += checkedList.sdStart ? '&start=N' : '';
+    url += checkedList.sdStart ? `&start=${start}` : '';
   } else {
     url += '/';
   }

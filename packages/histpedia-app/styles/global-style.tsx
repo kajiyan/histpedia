@@ -5,6 +5,16 @@ const globalStyle: SerializedStyles = css`
     font-size: 62.5%;
   }
 
+  ::-moz-selection {
+    color: #fff;
+    background: #000;
+  }
+
+  ::selection {
+    color: #fff;
+    background: #000;
+  }
+
   .hp {
     background-color: #fff;
     color: #000;

@@ -1,4 +1,5 @@
 import * as Immutable from 'immutable';
+import { format } from 'date-fns';
 
 type Props = {
   diffBytes: number;
@@ -22,4 +23,12 @@ const defaultValues: Props = {
   user: undefined,
 };
 
-export default class History extends Immutable.Record(defaultValues) {}
+export default class History extends Immutable.Record(defaultValues) {
+  formattedTimestamp(): string | undefined {
+    if (typeof this.timestamp === 'undefined') {
+      return this.timestamp;
+    }
+
+    return format(new Date(this.timestamp), 'MMM dd, yyyy hh:mm:ss aa');
+  }
+}

@@ -98,6 +98,7 @@ const StyledComponent = styled(Component)`
     pointer-events: none;
     width: 90%;
     height: calc(50% - 4px);
+    padding: 0 8px;
     position: absolute;
     top: 0;
     left: 0;

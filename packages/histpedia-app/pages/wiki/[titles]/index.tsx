@@ -1,16 +1,21 @@
 import React, { useEffect } from 'react';
+import { NextPage } from 'next';
 import Head from 'next/head';
-import { useRouter } from 'next/router';
 import { useDispatch, useSelector, shallowEqual } from 'react-redux';
 import CircularProgressCover from '../../../src/components/organisms/circularProgressCover';
 import Wiki from '../../../src/components/templates/wiki';
 import WikiActions from '../../../src/actions/Wiki';
 import { StoreState } from '../../../src/store';
 
-const WikiPage = (): JSX.Element => {
-  console.log('WikiPage');
+interface PageProps {
+  titles: string;
+}
 
-  const router = useRouter();
+const WikiPage: NextPage<PageProps> = ({ titles }: PageProps) => {
+  console.log('WikiPage', titles);
+
+  const encodeTitles = encodeURIComponent(titles);
+
   const dispatch = useDispatch();
   const wikiState = useSelector((state: StoreState) => {
     return (({ currentTitle, entityIds, stylesheets, pageid, title }) => ({
@@ -23,16 +28,12 @@ const WikiPage = (): JSX.Element => {
   }, shallowEqual);
 
   const { currentTitle, entityIds, stylesheets, pageid, title } = wikiState;
-  const { titles } = router.query;
 
   useEffect(() => {
     // pageID が未取得、あるいは前回の開いた wiki/[titles] と
     // タイトルが異なっていれば pageID を再取得する
-    if (typeof titles !== 'undefined') {
-      const decodeTitles = decodeURIComponent(titles as string);
-      if (currentTitle !== decodeTitles) {
-        dispatch(WikiActions.fetchPageId(decodeTitles));
-      }
+    if (currentTitle !== titles) {
+      dispatch(WikiActions.fetchPageId(titles));
     }
 
     if (
@@ -52,36 +53,40 @@ const WikiPage = (): JSX.Element => {
 
   // Revision が未取得、スタイルシートが未取得、前回の開いた wiki/[titles] とタイトルが異なる、の
   // いづれかであればローディング画面を表示する
-  if (entityIds.isEmpty() || stylesheets.isEmpty() || currentTitle !== titles) {
-    return <CircularProgressCover />;
-  }
+  const isLoading =
+    entityIds.isEmpty() || stylesheets.isEmpty() || currentTitle !== titles;
 
   return (
     <>
       <Head>
-        <meta property="og:title" content={`${currentTitle} - Histpedia`} />
+        <meta property="og:title" content={`${titles} - Histpedia`} />
         <meta property="og:type" content="article" />
         <meta
           property="og:url"
-          content={`https://histpedia.org/wiki/${currentTitle}/`}
+          content={`https://histpedia.org/wiki/${encodeTitles}/`}
         />
-        <title>{currentTitle} - Histpedia</title>
+        <title>{titles} - Histpedia</title>
         {stylesheets.map((stylesheet) => (
           <link rel="stylesheet" href={stylesheet} key={stylesheet} />
         ))}
       </Head>
-      <Wiki entityIds={entityIds} />
-      {/* <a
-        href={`https://ja.wikipedia.org/w/index.php?curid=${pageid}`}
-        rel="noreferrer noopener"
-        target="_blank"
-      >
-        PageID: {pageid}
-        <br />
-        Revisions: {entityIds.size}
-      </a> */}
+      {isLoading && <CircularProgressCover />}
+      {!isLoading && <Wiki entityIds={entityIds} />}
     </>
   );
+};
+
+WikiPage.getInitialProps = (context) => {
+  // 直接このディレクトリにアクセスするかもしれないのでデコードとサニタイズを行う
+  const { query } = context;
+  const { titles } = query;
+
+  const decodeTitles = decodeURIComponent(titles as string);
+  const sanitizedTitles = decodeTitles
+    .replace(/^[\s\0x3000\uFEFF\xA0]+|[\s\0x3000\uFEFF\xA0]+$/g, '')
+    .replace(/\s|\0x3000|\uFEFF|\xA0/g, '_');
+
+  return { titles: sanitizedTitles };
 };
 
 export default WikiPage;

@@ -74,7 +74,11 @@ const Component: React.FC<Props> = ({
             <div className="sd-Heading">Share</div>
             <ul className="sd-Share_List">
               <li className="sd-Share_Item">
-                <TwitterShareButton title={title} url={url}>
+                <TwitterShareButton
+                  hashtags={['histpedia']}
+                  title={title}
+                  url={url}
+                >
                   <TwitterIcon size={44} round />
                 </TwitterShareButton>
               </li>

@@ -1,5 +1,4 @@
 import { css, Global, SerializedStyles } from '@emotion/core';
-import styled from '@emotion/styled';
 import React, { ChangeEvent, useState } from 'react';
 import Modal from 'react-modal';
 import {

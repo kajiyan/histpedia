@@ -57,17 +57,16 @@ const StyledComponent = styled(Component)`
 
   .wiki-Header_Link {
     display: block;
+    color: #000;
     width: ${(188 / 1136) * 100}%;
     padding: 10px 0;
 
     svg {
-      transition: fill 0.25s ease;
+      transition: color 0.25s ease;
     }
 
     &:hover {
-      svg {
-        fill: #484848;
-      }
+      color: #484848;
     }
   }
 

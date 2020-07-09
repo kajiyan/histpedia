@@ -19,7 +19,7 @@ export type Injects = {
   viewEntityIdIndex: number;
 };
 
-const defaultState: Injects = {
+export const defaultState: Injects = {
   currentEntityIdIndex: 0,
   currentTitle: undefined,
   diff: false,
@@ -46,17 +46,20 @@ export function reducer(
   switch (action.type) {
     // PageID の取得開始
     case types.asyncFetchPageIdStarted: {
-      const { currentTitle } = action.payload;
+      const { currentEntityIdIndex, currentTitle, diff } = action.payload;
 
       return state.withMutations((mutable) => {
         mutable.merge({
-          currentEntityIdIndex: defaultState.currentEntityIdIndex,
+          currentEntityIdIndex:
+            typeof currentEntityIdIndex === 'undefined'
+              ? defaultState.currentEntityIdIndex
+              : currentEntityIdIndex,
           currentTitle,
-          diff: defaultState.diff,
+          diff: typeof diff === 'undefined' ? defaultState.diff : diff,
           entityIds: defaultState.entityIds,
           fetchingDiffContent: defaultState.fetchingDiffContent,
           pageid: defaultState.pageid,
-          paused: defaultState.paused,
+          paused: typeof diff === 'undefined' ? defaultState.diff : diff,
           shareDialogOpen: defaultState.shareDialogOpen,
           stylesheets: defaultState.stylesheets,
           viewEntityIdIndex: defaultState.viewEntityIdIndex,

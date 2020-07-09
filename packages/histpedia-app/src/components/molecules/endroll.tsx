@@ -58,7 +58,6 @@ const StyledComponent = styled(Component)`
   overflow: hidden;
   visibility: hidden;
   opacity: 0;
-  transition: opacity 0.5s ease, visibility 0s ease 0.5s;
 
   &.er-show {
     visibility: visible;

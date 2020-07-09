@@ -8,12 +8,16 @@ const repository = repositoryFactory.get('wiki');
 export function asyncFetchPageIdStarted(
   dispatch: Dispatch,
   payload: {
+    currentEntityIdIndex?: number;
     currentTitle: string; // URL で渡ってきたタイトル
+    diff?: boolean;
   }
 ): {
   type: typeof types.asyncFetchPageIdStarted;
   payload: {
+    currentEntityIdIndex?: number;
     currentTitle: string;
+    diff?: boolean;
   };
 } {
   return dispatch({
@@ -65,7 +69,14 @@ export function asyncFetchPageIdFailed(
  * @param {string} titles ID を取得する記事のタイトル
  */
 function fetchPageId(
-  titles: string
+  titles: string,
+  options: {
+    currentEntityIdIndex?: number;
+    diff?: boolean;
+  } = {
+    currentEntityIdIndex: undefined,
+    diff: undefined,
+  }
 ): (
   dispatch: Dispatch<Actions>
 ) => Promise<
@@ -73,7 +84,7 @@ function fetchPageId(
   | ReturnType<typeof asyncFetchPageIdFailed>
 > {
   return async (dispatch: Dispatch) => {
-    asyncFetchPageIdStarted(dispatch, { currentTitle: titles });
+    asyncFetchPageIdStarted(dispatch, { currentTitle: titles, ...options });
 
     try {
       const response = await repository.getPageId(titles);

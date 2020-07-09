@@ -49,13 +49,15 @@ const Player: React.FC<ContainerProps> = ({ entityIds }: ContainerProps) => {
   // console.log('[Player] render');
 
   const { diff, ended } = useSelector((state: StoreState) => {
-    const { histories } = state.wiki;
+    const { entities, histories } = state.wiki;
+    const entityId = entityIds.get(entityIds.size - 1);
 
     return {
       diff: histories.diff,
       ended:
         entityIds.size - 1 === histories.currentEntityIdIndex &&
-        !histories.fetchingDiffContent,
+        entityId &&
+        typeof entities.history.get(entityId)?.text !== 'undefined',
     };
   }, shallowEqual);
 

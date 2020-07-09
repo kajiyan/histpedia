@@ -218,7 +218,12 @@ const Controller: React.FC<ContainerProps> = ({
       // エンティティからpageIDとrevid渡す
       // pageidを取得済みであれば読み込みスキップ
       if (!fetchingDiffContent) {
-        dispatch(WikiActions.fetchDiffContent(currentEntityIdIndex, diff));
+        dispatch(
+          WikiActions.fetchDiffContent(
+            Math.min(currentEntityIdIndex, max),
+            diff
+          )
+        );
         if (!paused && !diff && currentEntityIdIndex < max) {
           dispatch(
             WikiActions.updateCurrentEntityIdIndex(currentEntityIdIndex + 1)

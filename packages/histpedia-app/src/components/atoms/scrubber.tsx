@@ -46,7 +46,7 @@ const StyledComponent = styled(Component)`
   height: 100%;
   overflow: hidden;
 
-  &:before {
+  &::before {
     content: '';
     display: block;
     width: 100%;

@@ -1,4 +1,4 @@
-import styled from '@emotion/styled';
+// import styled from '@emotion/styled';
 import React, { useCallback, useState } from 'react';
 import { useRouter } from 'next/router';
 import classNames from 'classnames';
@@ -42,7 +42,7 @@ const Component: React.FC<Props> = ({
 };
 
 // Style ------------------------------------------
-const StyledComponent = styled(Component)``;
+// const StyledComponent = styled(Component)``;
 
 // Container ------------------------------------------
 const SearchForm: React.FC<ContainerProps> = ({ classes }: ContainerProps) => {
@@ -78,7 +78,7 @@ const SearchForm: React.FC<ContainerProps> = ({ classes }: ContainerProps) => {
   };
 
   return (
-    <StyledComponent
+    <Component
       classes={classes}
       onClick={onClick}
       onChange={onChange}

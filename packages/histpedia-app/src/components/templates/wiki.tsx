@@ -1,4 +1,4 @@
-import styled from '@emotion/styled';
+// import styled from '@emotion/styled';
 import React from 'react';
 import { List } from 'immutable';
 import Controller from '../organisms/controller';
@@ -30,11 +30,11 @@ const Component: React.FC<Props> = ({ className, entityIds }: Props) => {
 };
 
 // Style ------------------------------------------
-const StyledComponent = styled(Component)``;
+// const StyledComponent = styled(Component)``;
 
 // Container ------------------------------------------
 const Wiki: React.FC<ContainerProps> = ({ entityIds }: ContainerProps) => {
-  return <StyledComponent entityIds={entityIds} />;
+  return <Component entityIds={entityIds} />;
 };
 
 export default Wiki;

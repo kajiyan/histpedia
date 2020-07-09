@@ -23,7 +23,6 @@ type ContainerProps = {
 };
 
 type Props = {
-  className?: string;
   defaultCheckedList: {
     [key: string]: boolean;
   };
@@ -42,7 +41,6 @@ Modal.setAppElement('#__next');
 
 // DOM ------------------------------------------
 const Component: React.FC<Props> = ({
-  className,
   defaultCheckedList,
   modalStyle,
   onChange,
@@ -54,7 +52,7 @@ const Component: React.FC<Props> = ({
   url,
 }: Props) => {
   return (
-    <div className={className}>
+    <>
       <Global styles={modalStyle} />
       <Modal
         bodyOpenClassName="sd-Modal_Body-open"
@@ -129,11 +127,12 @@ const Component: React.FC<Props> = ({
           </div>
         </div>
       </Modal>
-    </div>
+    </>
   );
 };
 
 // Style ------------------------------------------
+// Modal がこのコンポーネントの DOM ツリー外に構築されるのでグローバルスタイルを定義する
 const modalStyle = css`
   .sd-Modal {
     background-color: rgba(0, 0, 0, 0.8);
@@ -217,8 +216,6 @@ const modalStyle = css`
   }
 `;
 
-const StyledComponent = styled(Component)``;
-
 // Container ------------------------------------------
 const ShareDialog: React.FC<ContainerProps> = ({
   entityIds,
@@ -281,7 +278,7 @@ const ShareDialog: React.FC<ContainerProps> = ({
   };
 
   return (
-    <StyledComponent
+    <Component
       defaultCheckedList={checkedList}
       open={open}
       modalStyle={modalStyle}

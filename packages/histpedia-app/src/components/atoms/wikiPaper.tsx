@@ -31,7 +31,7 @@ const StyledComponent = styled(Component)`
 
   ins,
   del {
-    &:after {
+    &::after {
       font-size: 0.6em;
       vertical-align: top;
       padding: 0 0.25em;
@@ -42,7 +42,7 @@ const StyledComponent = styled(Component)`
     background-color: #acf2bd;
     text-decoration: none;
 
-    &:after {
+    &::after {
       content: '+';
     }
   }
@@ -51,7 +51,7 @@ const StyledComponent = styled(Component)`
     background-color: #fdb8c0;
     text-decoration: none;
 
-    &:after {
+    &::after {
       content: '-';
     }
   }

@@ -74,16 +74,14 @@ function fetchStylesheet(
       const response = await repository.getStylesheet(titles);
       const doc = new DOMParser().parseFromString(response.data, 'text/html');
       const stylesheets: string[] = [];
-      const stylesheetList = doc.querySelectorAll(
+      const stylesheetList = doc.querySelectorAll<HTMLLinkElement>(
         'head link[rel="stylesheet"]'
       );
 
       stylesheetList.forEach((stylesheet) => {
-        const href = stylesheet.getAttribute('href');
+        const { href } = stylesheet;
 
-        if (href) {
-          stylesheets.push(`https://ja.wikipedia.org${href}`);
-        }
+        stylesheets.push(href);
       });
 
       // ページのIDが取得できなかった時の処理

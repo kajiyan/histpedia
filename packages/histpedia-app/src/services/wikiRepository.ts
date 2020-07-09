@@ -1,11 +1,13 @@
 import axios, { AxiosResponse } from 'axios';
 import Repository from './repository';
+import { IS_MOBILE } from '../utils/browser';
 
 const url = 'https://ja.wikipedia.org/w/api.php';
 
 export function getContent(
   oldid: number
 ): Promise<AxiosResponse<WikiContentResponse>> {
+  const mobileParams = IS_MOBILE ? { mobileformat: 1, mainpage: 1 } : {};
   const params = {
     action: 'parse',
     prop: 'text',
@@ -16,9 +18,13 @@ export function getContent(
     formatversion: 'latest',
     oldid,
     utf8: 1,
+    ...mobileParams,
   };
 
-  return Repository.get<WikiContentResponse>(url, { params });
+  return Repository.get<WikiContentResponse>(
+    'https://ja.wikipedia.org/w/api.php',
+    { params }
+  );
 }
 
 export function getPageId(
@@ -71,8 +77,10 @@ export function getRevisions(
 }
 
 export function getStylesheet(title: string): Promise<AxiosResponse<string>> {
+  const endPoint = IS_MOBILE ? 'mobile-html' : 'html';
+
   return axios.get<string>(
-    `https://ja.wikipedia.org/api/rest_v1/page/html/${encodeURIComponent(
+    `https://ja.wikipedia.org/api/rest_v1/page/${endPoint}/${encodeURIComponent(
       title
     )}`
   );

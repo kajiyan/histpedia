@@ -59,6 +59,7 @@ const StyledComponent = styled(Component)`
     display: block;
     color: #000;
     width: ${(188 / 1136) * 100}%;
+    min-width: 94px;
     padding: 10px 0;
 
     svg {

@@ -1,8 +1,10 @@
 import styled from '@emotion/styled';
 import React from 'react';
+import classNames from 'classnames';
 
 /* types */
 type ContainerProps = {
+  classes?: string;
   text?: string;
 };
 
@@ -11,16 +13,19 @@ type Props = {
 } & ContainerProps;
 
 // DOM ------------------------------------------
-const Component: React.FC<Props> = ({ className, text }: Props) => {
+const Component: React.FC<Props> = ({ classes, className, text }: Props) => {
+  // モバイルの wikipedia のスタイルを適応するのに .content を付与する必要がある
   if (typeof text === 'undefined') {
-    return <div className={className} />;
+    return <div className={classNames('content', className, classes)} />;
   }
 
   return (
     <div
-      className={className}
+      className={classNames('content', className, classes)}
       // eslint-disable-next-line react/no-danger
-      dangerouslySetInnerHTML={{ __html: text }}
+      dangerouslySetInnerHTML={{
+        __html: text,
+      }}
     />
   );
 };
@@ -58,10 +63,13 @@ const StyledComponent = styled(Component)`
 `;
 
 // Container ------------------------------------------
-const wikiPaper: React.FC<ContainerProps> = ({ text }: ContainerProps) => {
+const wikiPaper: React.FC<ContainerProps> = ({
+  classes,
+  text,
+}: ContainerProps) => {
   // console.log('[wikiPaper] render');
 
-  return <StyledComponent text={text} />;
+  return <StyledComponent classes={classes} text={text} />;
 };
 
 export default wikiPaper;

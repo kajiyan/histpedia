@@ -36,7 +36,7 @@ const Component: React.FC<Props> = ({
               </li>
             ))}
           </ul>
-          <div className="er-Outro">つづく</div>
+          <div className="er-Outro">To Be Continued</div>
         </div>
       </Container>
     </article>
@@ -45,6 +45,8 @@ const Component: React.FC<Props> = ({
 
 // Style ------------------------------------------
 const StyledComponent = styled(Component)`
+  font-family: 'Roboto Condensed', 'Helvetica Neue', Arial,
+    'Hiragino Kaku Gothic ProN', 'Hiragino Sans', Meiryo, sans-serif;
   background-color: rgba(0, 0, 0, 0.8);
   text-align: center;
   width: 100%;

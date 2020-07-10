@@ -37,6 +37,15 @@ const nextConfig = {
     };
 
     customConfig.module.rules.push(
+      {
+        test: /\.worker\.js$/,
+        loader: 'worker-loader',
+        options: {
+          // inline: true,
+          name: 'static/[hash].worker.js',
+          publicPath: '/_next/',
+        },
+      },
       /*
        * 下記の警告が表示されるのでコメント
        * .css ファイルを読み込むのは _app.tsx 内の ress だけになる見込み
@@ -53,6 +62,9 @@ const nextConfig = {
         use: [{ loader: 'postcss-loader' }],
       }
     );
+
+    // Overcome webpack referencing `window` in chunks
+    customConfig.output.globalObject = `(typeof self !== 'undefined' ? self : this)`;
 
     return customConfig;
   },

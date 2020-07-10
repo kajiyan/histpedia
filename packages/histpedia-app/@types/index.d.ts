@@ -6,12 +6,21 @@ type ReturnTypes<T> = {
 };
 type CreatorsToActions<T> = Unwrap<ReturnTypes<T>>;
 
+declare module 'worker-loader?name=static/[hash].worker.js!*' {
+  class WebpackWorker extends Worker {
+    constructor()
+  }
+
+  export default WebpackWorker
+}
+
 declare type Actions =
-  | CreatorsToActions<typeof import('../src/actions/Example')>
   | CreatorsToActions<typeof import('../src/actions/Wiki/controller')>
   | CreatorsToActions<typeof import('../src/actions/Wiki/fetchContent')>
+  | CreatorsToActions<typeof import('../src/actions/Wiki/fetchDiffContent')>
   | CreatorsToActions<typeof import('../src/actions/Wiki/fetchPageId')>
-  | CreatorsToActions<typeof import('../src/actions/Wiki/fetchRevisions')>;
+  | CreatorsToActions<typeof import('../src/actions/Wiki/fetchRevisions')>
+  | CreatorsToActions<typeof import('../src/actions/Wiki/fetchStyleSheet')>;
 
 declare type WikiContent = {
   pageid: number;
@@ -48,10 +57,13 @@ declare type WikiPageIdResponse = {
 };
 
 declare type WikiRevision = {
-  revid: number;
+  anon?: true;
+  diffBytes: number;
   parentid: number;
-  timestamp: string;
+  revid: number;
   size: number;
+  timestamp: string;
+  user: string;
 };
 
 declare type WikiRevisionsResponse = {

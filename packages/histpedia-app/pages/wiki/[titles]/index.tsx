@@ -1,112 +1,130 @@
 import React, { useEffect } from 'react';
-import Link from 'next/link';
-import { useRouter } from 'next/router';
+import { NextPage } from 'next';
+import Head from 'next/head';
 import { useDispatch, useSelector, shallowEqual } from 'react-redux';
+import CircularProgressCover from '../../../src/components/organisms/circularProgressCover';
 import Wiki from '../../../src/components/templates/wiki';
 import WikiActions from '../../../src/actions/Wiki';
 import { StoreState } from '../../../src/store';
+import { defaultState } from '../../../src/reducers/Wiki/histories';
 
-const WikiPage = (): JSX.Element => {
-  console.log('WikiPage');
+interface PageProps {
+  diff: boolean;
+  start: number;
+  titles: string;
+}
+
+const WikiPage: NextPage<PageProps> = ({ diff, start, titles }: PageProps) => {
+  // console.log('[WikiPage]');
+
+  const encodeTitles = encodeURIComponent(titles);
+
   const dispatch = useDispatch();
-
   const wikiState = useSelector((state: StoreState) => {
-    const pickHistoriesState = (({ pageid, initialized, entityIds }) => ({
-      pageid,
-      initialized,
+    return (({ currentTitle, entityIds, stylesheets, pageid, title }) => ({
+      currentTitle,
       entityIds,
+      stylesheets,
+      pageid,
+      title,
     }))(state.wiki.histories);
-
-    const pickEntitiesState = (({ history }) => ({
-      history,
-    }))(state.wiki.entities);
-
-    return {
-      ...pickHistoriesState,
-      ...pickEntitiesState,
-    };
   }, shallowEqual);
 
-  const { pageid, initialized, history, entityIds } = wikiState;
-  const entities = history;
-  const router = useRouter();
-  // URL エンコードする必要がある
-  const { titles } = router.query;
+  const { currentTitle, entityIds, stylesheets, pageid, title } = wikiState;
 
   useEffect(() => {
-    if (initialized) {
-      if (typeof pageid !== 'undefined') {
-        if (entityIds.isEmpty()) {
-          // pageid を取得済みかつ entityIds が未設定であれば Revision を取得する
-          dispatch(WikiActions.fetchRevisions(pageid));
-        } else if (entityIds.has(0)) {
-          // pageid を取得済みかつ entityIds が設定済みであれば Context を取得する
-          // entityIds.has(0) で undefined でないことを保証している
-          const entityId = entityIds.get(0) as string;
-          const entity = entities.get(entityId);
+    // pageID が未取得、あるいは前回の開いた wiki/[titles] と
+    // タイトルが異なっていれば pageID を再取得する
+    if (currentTitle !== titles) {
+      dispatch(
+        WikiActions.fetchPageId(titles, {
+          currentEntityIdIndex: start,
+          diff,
+        })
+      );
+    }
 
-          if (typeof entity?.revid !== 'undefined') {
-            dispatch(WikiActions.fetchContent(entity.revid));
-          }
-        }
-      }
-    } else {
-      // string 型へのキャスト
-      // title が undefined の場合 404 ページが表示されるので undefined の可能性はない
-      dispatch(WikiActions.fetchPageId(titles as string));
+    if (
+      typeof pageid !== 'undefined' &&
+      entityIds.isEmpty() &&
+      stylesheets.isEmpty()
+    ) {
+      // pageid を取得済みかつ entityIds, stylesheets が未設定であれば Revision とスタイルシートのパスを取得する
+      dispatch(WikiActions.fetchStylesheet(title as string));
+      dispatch(WikiActions.fetchRevisions(pageid));
     }
 
     return () => {
-      if (initialized && typeof pageid !== 'undefined') {
-        // Todo: ステートの初期化をする
-        console.log('useEffect clean', pageid, initialized);
-      }
+      // console.log('%c[WikiPage] useEffect clean', 'color: green');
     };
-  }, [dispatch, entities, entityIds, initialized, pageid, titles]);
+  }, [
+    currentTitle,
+    diff,
+    dispatch,
+    entityIds,
+    start,
+    stylesheets,
+    pageid,
+    title,
+    titles,
+  ]);
+
+  // Revision が未取得、スタイルシートが未取得、前回の開いた wiki/[titles] とタイトルが異なる、の
+  // いづれかであればローディング画面を表示する
+  const isLoading =
+    entityIds.isEmpty() || stylesheets.isEmpty() || currentTitle !== titles;
 
   return (
     <>
-      <h1>
-        wiki page {titles} {pageid} {Date.now()}
-      </h1>
-      <Link href="/">
-        <a>Home</a>
-      </Link>{' '}
-      <br />
-      <br />
-      <br />
-      <div>
-        <Wiki entityIds={entityIds} />
-      </div>
-      <br />
-      <br />
-      <br />
-      <a
-        href={`https://ja.wikipedia.org/w/index.php?curid=${pageid}`}
-        rel="noreferrer noopener"
-        target="_blank"
-      >
-        {titles}
-        <br />
-        PageID: {pageid}
-        <br />
-        Revisions: {entityIds.size}
-      </a>
-      <div
-        // eslint-disable-next-line react/no-danger
-        dangerouslySetInnerHTML={(() => {
-          if (entityIds.has(0)) {
-            return {
-              __html: entities.get(entityIds.get(0) as string)?.text as string,
-            };
-          }
-          return {
-            __html: '',
-          };
-        })()}
-      />
+      <Head>
+        <meta property="og:title" content={`${titles} - Histpedia`} />
+        <meta property="og:type" content="article" />
+        <meta
+          property="og:url"
+          content={`https://histpedia.org/wiki/${encodeTitles}/`}
+        />
+        <title>{titles} - Histpedia</title>
+        {stylesheets.map((stylesheet) => (
+          <link rel="stylesheet" href={stylesheet} key={stylesheet} />
+        ))}
+      </Head>
+      {isLoading && <CircularProgressCover />}
+      {!isLoading && <Wiki entityIds={entityIds} />}
     </>
   );
+};
+
+WikiPage.getInitialProps = (context) => {
+  // 直接このディレクトリにアクセスするかもしれないのでデコードとサニタイズを行う
+  const { query } = context;
+
+  const diff =
+    typeof query.diff === 'undefined' ? defaultState.diff : query.diff === '1';
+
+  const start = (() => {
+    if (typeof query.start === 'undefined') {
+      return defaultState.currentEntityIdIndex;
+    }
+
+    const num = Number.parseInt(query.start as string, 10);
+
+    if (Number.isNaN(num) || num < 0) {
+      return defaultState.currentEntityIdIndex;
+    }
+
+    return num;
+  })();
+
+  const decodeTitles = decodeURIComponent(query.titles as string);
+  const titles = decodeTitles
+    .replace(/^[\s\0x3000\uFEFF\xA0]+|[\s\0x3000\uFEFF\xA0]+$/g, '')
+    .replace(/\s|\0x3000|\uFEFF|\xA0/g, '_');
+
+  return {
+    diff,
+    start,
+    titles,
+  };
 };
 
 export default WikiPage;

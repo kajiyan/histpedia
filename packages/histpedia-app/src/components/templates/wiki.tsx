@@ -1,7 +1,11 @@
-import styled from '@emotion/styled';
+// import styled from '@emotion/styled';
 import React from 'react';
 import { List } from 'immutable';
 import Controller from '../organisms/controller';
+import Header from '../organisms/wiki/header';
+import Progress from '../organisms/wiki/progress';
+import Player from '../organisms/player';
+import ShareDialog from '../organisms/shareDialog';
 
 /* types */
 type ContainerProps = {
@@ -16,18 +20,21 @@ type Props = {
 const Component: React.FC<Props> = ({ className, entityIds }: Props) => {
   return (
     <div className={className}>
-      <h1>Template</h1>
+      <Progress />
+      <Header entityIds={entityIds} />
+      <Player entityIds={entityIds} />
       <Controller entityIds={entityIds} />
+      <ShareDialog entityIds={entityIds} />
     </div>
   );
 };
 
 // Style ------------------------------------------
-const StyledComponent = styled(Component)``;
+// const StyledComponent = styled(Component)``;
 
 // Container ------------------------------------------
 const Wiki: React.FC<ContainerProps> = ({ entityIds }: ContainerProps) => {
-  return <StyledComponent entityIds={entityIds} />;
+  return <Component entityIds={entityIds} />;
 };
 
 export default Wiki;

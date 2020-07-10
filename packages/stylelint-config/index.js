@@ -27,6 +27,7 @@ module.exports = {
         ignore: ['empty-lines'],
       },
     ],
+    'no-descending-specificity': null,
     'length-zero-no-unit': null,
     indentation: null,
     'string-quotes': 'single',

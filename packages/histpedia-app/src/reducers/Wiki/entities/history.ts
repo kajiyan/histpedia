@@ -19,9 +19,12 @@ export function reducer(
       const { result, entities } = action.payload;
 
       return result.reduce((accumulator, entityId) => {
-        const { revid } = entities.revisions[entityId];
+        const { diffBytes, revid, timestamp, user } = entities.revisions[
+          entityId
+        ];
+
         return accumulator.update(entityId, new History(), (history) => {
-          return history.merge({ revid });
+          return history.merge({ diffBytes, revid, timestamp, user });
         });
       }, state);
     }
@@ -34,6 +37,12 @@ export function reducer(
           return history.merge(entity);
         });
       }, state);
+    }
+    // リビジョン同士の差分の比較をして終了
+    case types.asyncFetchDiffContentDone: {
+      const { diffHTML, entityId } = action.payload;
+
+      return state.update(entityId, (history) => history.merge({ diffHTML }));
     }
     default: {
       return state;

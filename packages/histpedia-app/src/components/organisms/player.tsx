@@ -56,7 +56,7 @@ const Player: React.FC<ContainerProps> = ({ entityIds }: ContainerProps) => {
       diff: histories.diff,
       ended:
         entityIds.size - 1 === histories.currentEntityIdIndex &&
-        entityId &&
+        typeof entityId !== 'undefined' &&
         typeof entities.history.get(entityId)?.text !== 'undefined',
     };
   }, shallowEqual);

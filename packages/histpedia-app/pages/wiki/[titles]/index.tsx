@@ -15,7 +15,7 @@ interface PageProps {
 }
 
 const WikiPage: NextPage<PageProps> = ({ diff, start, titles }: PageProps) => {
-  console.log('WikiPage', titles);
+  // console.log('[WikiPage]');
 
   const encodeTitles = encodeURIComponent(titles);
 
@@ -55,7 +55,7 @@ const WikiPage: NextPage<PageProps> = ({ diff, start, titles }: PageProps) => {
     }
 
     return () => {
-      console.log('%c[WikiPage] useEffect clean', 'color: green');
+      // console.log('%c[WikiPage] useEffect clean', 'color: green');
     };
   }, [
     currentTitle,

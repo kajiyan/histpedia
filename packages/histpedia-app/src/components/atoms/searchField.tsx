@@ -58,7 +58,7 @@ const SearchField: React.FC<ContainerProps> = ({
   onChange,
   onInput,
 }: ContainerProps) => {
-  console.log('[SearchField] render');
+  // console.log('[SearchField] render');
   return (
     <StyledComponent
       classes={classes}

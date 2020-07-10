@@ -69,7 +69,7 @@ const Button: React.FC<ContainerProps> = ({
   onClick,
   type = 'button',
 }: ContainerProps) => {
-  console.log('[SearchField] Button');
+  // console.log('[Button] render');
   return (
     <StyledComponent classes={classes} type={type} onClick={onClick}>
       {children}

@@ -1,6 +1,39 @@
 {
-  "name": "histpedia",
   "dependencies": {
+    "@kajiyan/eslint-config": "1.0.0",
     "cross-env": "^7.0.2"
+  },
+  "name": "@kajiyan/histpedia",
+  "private": true,
+  "scripts": {
+    "app:analyze": "yarn workspace @kajiyan/histpedia-app analyze",
+    "app:build": "yarn workspace @kajiyan/histpedia-app build",
+    "app:dev": "yarn workspace @kajiyan/histpedia-app dev",
+    "app:export": "yarn workspace @kajiyan/histpedia-app export",
+    "app:preprod": "yarn workspace @kajiyan/histpedia-app preprod",
+    "app:start": "yarn workspace @kajiyan/histpedia-app start",
+    "app:server:delete": "yarn workspace @kajiyan/histpedia-app server:delete",
+    "app:server:launch": "yarn workspace @kajiyan/histpedia-app server:launch",
+    "app:server:logs": "yarn workspace @kajiyan/histpedia-app server:logs",
+    "lint": "yarn lint:script && yarn lint:style",
+    "lint:script": "eslint --fix --ext .ts,.tsx --ignore-pattern .eslintignore .",
+    "lint:style": "stylelint --fix --cache --syntax css-in-js './**/*.ts?(x)'"
+  },
+  "workspaces": [
+    "packages/*"
+  ],
+  "devDependencies": {
+    "@kajiyan/stylelint-config": "1.0.0",
+    "@typescript-eslint/eslint-plugin": "^3.1.0",
+    "babel-eslint": "^10.1.0",
+    "eslint": "6.8.0",
+    "eslint-config-airbnb-typescript": "^8.0.2",
+    "eslint-config-prettier": "^6.11.0",
+    "eslint-plugin-import": "2.20.2",
+    "eslint-plugin-jsx-a11y": "6.2.3",
+    "eslint-plugin-prettier": "^3.1.3",
+    "eslint-plugin-react": "7.19.0",
+    "eslint-plugin-react-hooks": "2.5.0",
+    "prettier": "^2.0.5"
   }
 }

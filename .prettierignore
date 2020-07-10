@@ -1,0 +1,17 @@
+.*
+!.eslintrc.js
+node_modules/
+package.json
+package.lock.json
+report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
+yarn.lock
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# next
+**/out/**/*

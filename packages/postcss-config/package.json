@@ -11,12 +11,12 @@
   "license": "MIT",
   "private": true,
   "devDependencies": {
-    "postcss-easings": "^2.0.0",
-    "postcss-flexbugs-fixes": "^4.2.1",
-    "postcss-jsx": "^0.36.4",
-    "postcss-preset-env": "^6.7.0",
-    "postcss-reporter": "^6.0.1",
-    "postcss-sorting": "^5.0.1",
-    "postcss-syntax": "^0.36.2"
+    "postcss-easings": "2.0.0",
+    "postcss-flexbugs-fixes": "4.2.1",
+    "postcss-jsx": "0.36.4",
+    "postcss-preset-env": "6.7.0",
+    "postcss-reporter": "6.0.1",
+    "postcss-sorting": "5.0.1",
+    "postcss-syntax": "0.36.2"
   }
 }

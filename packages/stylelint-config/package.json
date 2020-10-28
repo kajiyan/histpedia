@@ -11,8 +11,8 @@
   "license": "MIT",
   "private": true,
   "devDependencies": {
-    "stylelint": "^13.6.0",
-    "stylelint-config-prettier": "^8.0.1",
-    "stylelint-config-standard": "^20.0.0"
+    "stylelint": "13.6.0",
+    "stylelint-config-prettier": "8.0.1",
+    "stylelint-config-standard": "20.0.0"
   }
 }

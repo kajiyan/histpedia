@@ -16,7 +16,7 @@
     "@types/webpack-env": "^1.15.2",
     "@zeit/next-workers": "^1.0.0",
     "babel-plugin-emotion": "^10.0.33",
-    "next-compose-plugins": "^2.2.0",
+    "next-compose-plugins": "2.2.1",
     "next-images": "^1.4.0",
     "pm2": "^4.4.0",
     "postcss-loader": "^3.0.0",

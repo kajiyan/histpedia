@@ -34,7 +34,7 @@
     "immutable": "^4.0.0-rc.12",
     "next": "^9.4.4",
     "next-redux-wrapper": "^6.0.2",
-    "normalizr": "^3.6.0",
+    "normalizr": "3.6.2",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-modal": "^3.11.2",

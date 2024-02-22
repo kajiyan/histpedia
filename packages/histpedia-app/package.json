@@ -26,7 +26,7 @@
   "dependencies": {
     "@emotion/core": "^10.0.28",
     "@emotion/styled": "^10.0.27",
-    "axios": "^0.19.2",
+    "axios": "^0.28.0",
     "axios-jsonp": "^1.0.4",
     "classnames": "^2.2.6",
     "core-js": "^3.6.5",

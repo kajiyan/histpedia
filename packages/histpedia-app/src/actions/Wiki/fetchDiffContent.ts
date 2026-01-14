@@ -1,6 +1,6 @@
 // ※ この Action は Web Worker を含むのでクライアント側でしか実行することができない
 import { Dispatch } from 'redux';
-import { ThunkAction } from 'redux-thunk';
+import { ThunkAction } from '@reduxjs/toolkit';
 // eslint-disable-next-line import/no-webpack-loader-syntax
 import DiffWorker from 'worker-loader?name=static/[hash].worker.js!../../workers/diff.worker';
 import types from './types';

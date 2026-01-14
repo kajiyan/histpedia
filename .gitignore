@@ -149,3 +149,21 @@ CVS
 ###############################################################################
 #[ gitに追加する場合はここに追加していく]
 ###############################################################################
+
+# Terraform
+terraform/.terraform/
+terraform/*.tfstate
+terraform/*.tfstate.*
+terraform/*.tfvars
+terraform/.terraform.lock.hcl
+terraform/crash.log
+terraform/override.tf
+terraform/override.tf.json
+terraform/*_override.tf
+terraform/*_override.tf.json
+
+# Next.js static export
+packages/histpedia-app/out/
+
+# Claude Code
+.claude/

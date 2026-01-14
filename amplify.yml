@@ -1,0 +1,19 @@
+version: 1
+frontend:
+  phases:
+    preBuild:
+      commands:
+        - node --version
+        - npm --version
+        - npm ci
+    build:
+      commands:
+        - npm run app:build
+  artifacts:
+    baseDirectory: packages/histpedia-app/out
+    files:
+      - '**/*'
+  cache:
+    paths:
+      - node_modules/**/*
+      - packages/histpedia-app/node_modules/**/*

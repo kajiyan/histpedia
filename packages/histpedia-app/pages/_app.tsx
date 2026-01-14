@@ -1,55 +1,43 @@
-import { AppProps } from 'next/app';
-import Router from 'next/router';
-import React, { useEffect } from 'react';
+import { Global } from '@emotion/react';
+import type { AppProps } from 'next/app';
+import Head from 'next/head';
+import { useRouter } from 'next/router';
+import { useEffect } from 'react';
+import { Provider } from 'react-redux';
 import { reduxWrapper } from '../src/store';
 import * as gtag from '../src/utils/gtag';
+import globalStyle from '../styles/global-style';
 import '../styles/ress.min.css';
 
-// type TPageProps = {
-//   // eslint-disable-next-line @typescript-eslint/ban-types
-//   pageProps: {};
-// };
+function HistpediaApp({ Component, ...rest }: AppProps) {
+  const router = useRouter();
+  const { store, props } = reduxWrapper.useWrappedStore(rest);
+  const pageProps = props.pageProps ?? {};
 
-// type Props = AppProps<AppInitialProps> & TPageProps;
-
-// class HistpediaApp extends App<Props> {
-//   static async getInitialProps({
-//     Component,
-//     ctx,
-//   }: AppContext): Promise<TPageProps> {
-//     const pageProps = Component.getInitialProps
-//       ? await Component.getInitialProps(ctx)
-//       : {};
-
-//     return { pageProps };
-//   }
-
-//   /**
-//    * render
-//    */
-//   render(): JSX.Element {
-//     const { Component, pageProps } = this.props;
-
-//     // eslint-disable-next-line react/jsx-props-no-spreading
-//     return <Component {...pageProps} />;
-//   }
-// }
-
-const HistpediaApp = ({ Component, pageProps }: AppProps) => {
   useEffect(() => {
     const handleRouteChange = (pagePath: string) => {
       gtag.pageview(pagePath);
     };
 
-    Router.events.on('routeChangeComplete', handleRouteChange);
+    router.events.on('routeChangeComplete', handleRouteChange);
 
     return () => {
-      Router.events.off('routeChangeComplete', handleRouteChange);
+      router.events.off('routeChangeComplete', handleRouteChange);
     };
-  }, []);
+  }, [router.events]);
 
-  // eslint-disable-next-line react/jsx-props-no-spreading
-  return <Component {...pageProps} />;
-};
+  return (
+    <Provider store={store}>
+      <Global styles={globalStyle} />
+      <Head>
+        <meta
+          name="viewport"
+          content="width=device-width, initial-scale=1, viewport-fit=cover"
+        />
+      </Head>
+      <Component {...pageProps} />
+    </Provider>
+  );
+}
 
-export default reduxWrapper.withRedux(HistpediaApp);
+export default HistpediaApp;

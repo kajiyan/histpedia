@@ -1,6 +1,7 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { NextPage } from 'next';
 import Head from 'next/head';
+import { useRouter } from 'next/router';
 import { useDispatch, useSelector, shallowEqual } from 'react-redux';
 import CircularProgressCover from '../../../src/components/organisms/circularProgressCover';
 import Wiki from '../../../src/components/templates/wiki';
@@ -8,18 +9,63 @@ import WikiActions from '../../../src/actions/Wiki';
 import { StoreState } from '../../../src/store';
 import { defaultState } from '../../../src/reducers/Wiki/histories';
 
+/**
+ * URLパスからタイトルを抽出する
+ */
+const extractTitlesFromPath = (path: string): string | null => {
+  const match = path.match(/^\/wiki\/([^/?]+)\/?/);
+  if (!match || !match[1]) return null;
+  const decoded = decodeURIComponent(match[1]);
+  return decoded
+    .replace(/^[\s\u3000\uFEFF\xA0]+|[\s\u3000\uFEFF\xA0]+$/g, '')
+    .replace(/[\s\u3000\uFEFF\xA0]/g, '_');
+};
+
+/**
+ * titlesが有効な値かどうかを判定
+ */
+const isValidTitles = (titles: string | undefined | null): titles is string => {
+  return (
+    typeof titles === 'string' &&
+    titles !== 'undefined' &&
+    titles !== '' &&
+    titles !== '[titles]'
+  );
+};
+
 interface PageProps {
   diff: boolean;
   start: number;
   titles: string;
 }
 
-const WikiPage: NextPage<PageProps> = ({ diff, start, titles }: PageProps) => {
-  // console.log('[WikiPage]');
-
-  const encodeTitles = encodeURIComponent(titles);
-
+const WikiPage: NextPage<PageProps> = ({
+  diff,
+  start,
+  titles: propTitles,
+}: PageProps) => {
+  const router = useRouter();
   const dispatch = useDispatch();
+
+  // propsのtitlesが無効な場合、URLから取得するフォールバック処理
+  const titles = useMemo(() => {
+    // 1. propsから渡されたtitlesが有効ならそれを使用
+    if (isValidTitles(propTitles)) {
+      return propTitles;
+    }
+
+    // 2. router.asPath（実際のURLパス）から取得（直接アクセス時のフォールバック）
+    if (router.asPath && router.asPath !== '/wiki/[titles]/') {
+      const extracted = extractTitlesFromPath(router.asPath);
+      if (extracted) {
+        return extracted;
+      }
+    }
+
+    return null;
+  }, [propTitles, router.asPath]);
+
+  const encodeTitles = titles ? encodeURIComponent(titles) : '';
   const wikiState = useSelector((state: StoreState) => {
     return (({ currentTitle, entityIds, stylesheets, pageid, title }) => ({
       currentTitle,
@@ -33,6 +79,11 @@ const WikiPage: NextPage<PageProps> = ({ diff, start, titles }: PageProps) => {
   const { currentTitle, entityIds, stylesheets, pageid, title } = wikiState;
 
   useEffect(() => {
+    // titlesが取得できない場合は何もしない
+    if (!titles) {
+      return;
+    }
+
     // pageID が未取得、あるいは前回の開いた wiki/[titles] と
     // タイトルが異なっていれば pageID を再取得する
     if (currentTitle !== titles) {
@@ -68,6 +119,11 @@ const WikiPage: NextPage<PageProps> = ({ diff, start, titles }: PageProps) => {
     title,
     titles,
   ]);
+
+  // titlesが取得できない場合はローディング表示
+  if (!titles) {
+    return <CircularProgressCover />;
+  }
 
   // Revision が未取得、スタイルシートが未取得、前回の開いた wiki/[titles] とタイトルが異なる、の
   // いづれかであればローディング画面を表示する

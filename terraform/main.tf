@@ -30,6 +30,13 @@ resource "aws_amplify_app" "histpedia" {
   EOT
 
   # Custom rules for SPA routing
+  # /wiki/<title>/ へのアクセスを /wiki/[titles]/index.html にリライト
+  custom_rule {
+    source = "/wiki/<*>"
+    status = "200"
+    target = "/wiki/[titles]/index.html"
+  }
+
   custom_rule {
     source = "/<*>"
     status = "404-200"

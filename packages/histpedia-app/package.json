@@ -51,7 +51,7 @@
     "build": "npm run preprod && next build",
     "dev": "next dev -p 3002",
     "export": "npm run build",
-    "preprod": "rimraf out && rimraf .next",
+    "preprod": "rm -rf out && rm -rf .next",
     "server:delete": "pm2 delete \"Histpedia\"",
     "server:launch": "pm2 start npm --name 'Histpedia' -- run start",
     "server:logs": "pm2 logs \"Histpedia\"",

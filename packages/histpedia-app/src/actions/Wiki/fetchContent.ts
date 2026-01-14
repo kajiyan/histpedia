@@ -79,16 +79,32 @@ function fetchContent(
     if (isntError) {
       // 正常にAPIからデータを取得した場合は正規化する
       const { data } = response;
+
+      // data.parse が存在するか確認
+      if (!data.parse) {
+        return asyncFetchContentFailed(
+          dispatch,
+          new Error('Parse data is missing from API response')
+        );
+      }
+
       const contentSchema = new schema.Entity<WikiContent>(
         'content',
         {},
         {
           idAttribute: (value: WikiContent) => {
+            // 防御的なnullチェック
+            if (value?.revid === undefined) {
+              console.error('[fetchContent] Missing revid:', value);
+              return `unknown-${Date.now()}`;
+            }
             return value.revid.toString();
           },
         }
       );
       const contentListSchema = new schema.Array(contentSchema);
+
+      // data.parse を配列に包んでnormalizeに渡す（修正: data → [data.parse]）
       const { result, entities } = normalize<
         WikiContent,
         {
@@ -97,7 +113,7 @@ function fetchContent(
           };
         },
         string[]
-      >(data, contentListSchema);
+      >([data.parse], contentListSchema);
 
       return asyncFetchContentDone(dispatch, {
         result,

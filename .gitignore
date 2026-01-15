@@ -167,3 +167,4 @@ packages/histpedia-app/out/
 
 # Claude Code
 .claude/
+tfplan

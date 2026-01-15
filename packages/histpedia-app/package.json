@@ -24,6 +24,7 @@
     "classnames": "^2.2.6",
     "core-js": "^3.6.5",
     "date-fns": "^2.14.0",
+    "fast-myers-diff": "^3.2.0",
     "immutable": "^4.0.0-rc.12",
     "next": "^14.2.35",
     "next-redux-wrapper": "^8.1.0",

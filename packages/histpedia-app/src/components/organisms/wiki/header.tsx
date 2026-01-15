@@ -27,10 +27,8 @@ const Component: React.FC<Props> = ({ classes, className, entity }: Props) => {
     <header className={classNames(className, classes, 'wiki-Header')}>
       <Container>
         <div className="wiki-Header_Inner">
-          <Link href="/">
-            <a className="wiki-Header_Link">
-              <Logo classes="wiki-Header_heading" />
-            </a>
+          <Link href="/" className="wiki-Header_Link">
+            <Logo classes="wiki-Header_heading" />
           </Link>
           <Timestamp timestamp={entity?.timestamp} />
         </div>

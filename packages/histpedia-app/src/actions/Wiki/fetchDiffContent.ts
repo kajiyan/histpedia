@@ -1,8 +1,6 @@
 // ※ この Action は Web Worker を含むのでクライアント側でしか実行することができない
 import { Dispatch } from 'redux';
 import { ThunkAction } from '@reduxjs/toolkit';
-// eslint-disable-next-line import/no-webpack-loader-syntax
-import DiffWorker from 'worker-loader?name=static/[hash].worker.js!../../workers/diff.worker';
 import types from './types';
 import contentActions from './fetchContent';
 import { StoreState } from '../../store/index';
@@ -158,7 +156,10 @@ function fetchDiffContent(
                     typeof prevEntity?.text !== 'undefined'
                   ) {
                     // 差分検出をして、差分用のマークアップを含む HTML 文字列を返す Worker
-                    const diffWorker = new DiffWorker();
+                    // webpack 5 native web worker support
+                    const diffWorker = new Worker(
+                      new URL('../../workers/diff.worker.ts', import.meta.url)
+                    );
 
                     // Worker からのメッセージを受け取った時の処理するイベントハンドラー
                     const onMessage = (e: {

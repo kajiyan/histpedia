@@ -1,5 +1,5 @@
 module.exports = {
-  extends: ['stylelint-config-standard', 'stylelint-config-prettier'],
+  extends: ['stylelint-config-standard'],
   rules: {
     'at-rule-empty-line-before': [
       'always',
@@ -29,7 +29,8 @@ module.exports = {
     ],
     'no-descending-specificity': null,
     'length-zero-no-unit': null,
-    indentation: null,
-    'string-quotes': 'single',
+    // stylelint v16 で stylistic rules が削除されたため、以下は Prettier で処理
+    // 'indentation': null,
+    // 'string-quotes': 'single',
   },
 };

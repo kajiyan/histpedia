@@ -593,5 +593,3 @@ ctx.addEventListener(
     ctx.postMessage({ html });
   }
 );
-
-export default ctx;

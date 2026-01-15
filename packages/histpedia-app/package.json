@@ -3,8 +3,8 @@
     "@kajiyan/postcss-config": "1.0.0",
     "@next/bundle-analyzer": "^14.2.35",
     "@types/classnames": "^2.2.10",
-    "@types/google.analytics": "^0.0.40",
-    "@types/gtag.js": "^0.0.3",
+    "@types/google.analytics": "^0.0.46",
+    "@types/gtag.js": "^0.0.20",
     "@types/node": "^20.19.29",
     "@types/react": "^18.3.27",
     "@types/react-dom": "^18.3.7",
@@ -12,14 +12,7 @@
     "@types/redux-logger": "^3.0.8",
     "@types/ua-parser-js": "^0.7.33",
     "@types/webpack-env": "^1.15.2",
-    "@zeit/next-workers": "^1.0.0",
-    "babel-plugin-emotion": "^10.0.33",
-    "next-compose-plugins": "^2.2.0",
-    "next-images": "^1.4.0",
-    "pm2": "^4.4.0",
-    "postcss-loader": "^3.0.0",
-    "typescript": "^5.9.3",
-    "worker-loader": "^2.0.0"
+    "typescript": "^5.9.3"
   },
   "dependencies": {
     "@emotion/babel-plugin": "^11.13.5",
@@ -52,9 +45,6 @@
     "dev": "next dev -p 3002",
     "export": "npm run build",
     "preprod": "rm -rf out && rm -rf .next",
-    "server:delete": "pm2 delete \"Histpedia\"",
-    "server:launch": "pm2 start npm --name 'Histpedia' -- run start",
-    "server:logs": "pm2 logs \"Histpedia\"",
     "start": "next start -p 3002"
   },
   "name": "@kajiyan/histpedia-app",

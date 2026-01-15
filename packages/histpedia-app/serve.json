@@ -1,0 +1,5 @@
+{
+  "rewrites": [
+    { "source": "/wiki/**", "destination": "/wiki/[titles]/index.html" }
+  ]
+}

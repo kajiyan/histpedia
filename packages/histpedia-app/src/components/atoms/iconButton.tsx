@@ -25,7 +25,7 @@ const Component: React.FC<Props> = ({
   type,
 }: Props) => {
   return (
-    // eslint-disable-next-line react/button-has-type
+     
     <button
       aria-label={label}
       className={classNames(className, classes)}

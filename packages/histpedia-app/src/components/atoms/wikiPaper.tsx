@@ -22,7 +22,7 @@ const Component: React.FC<Props> = ({ classes, className, text }: Props) => {
   return (
     <div
       className={classNames('content', className, classes)}
-      // eslint-disable-next-line react/no-danger
+       
       dangerouslySetInnerHTML={{
         __html: text,
       }}

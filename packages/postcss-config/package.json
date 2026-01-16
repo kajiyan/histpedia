@@ -15,6 +15,6 @@
     "postcss-flexbugs-fixes": "^5.0.2",
     "postcss-preset-env": "^10.6.1",
     "postcss-reporter": "^7.1.0",
-    "postcss-sorting": "^8.0.2"
+    "postcss-sorting": "^9.0.0"
   }
 }

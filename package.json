@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "cross-env": "^7.0.2"
+    "cross-env": "^10.0.0"
   },
   "name": "@kajiyan/histpedia",
   "private": true,

@@ -1,7 +1,7 @@
 {
   "devDependencies": {
     "@kajiyan/postcss-config": "1.0.0",
-    "@next/bundle-analyzer": "^14.2.35",
+    "@next/bundle-analyzer": "^16.0.0",
     "@types/classnames": "^2.2.10",
     "@types/google.analytics": "^0.0.46",
     "@types/gtag.js": "^0.0.20",
